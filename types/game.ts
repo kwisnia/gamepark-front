@@ -10,8 +10,3 @@ export interface GameListElement {
   name: string;
   cover?: Cover;
 }
-
-export interface GamePageResponse {
-  data: GameListElement[];
-  nextCursor: string;
-}

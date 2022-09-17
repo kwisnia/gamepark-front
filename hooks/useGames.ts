@@ -1,22 +1,25 @@
 import { useCallback, useState } from "react";
-import { GameListElement, GamePageResponse } from "../types/game";
+import { GameListElement } from "../types/game";
 import { SWRInfiniteKeyLoader } from "swr/infinite";
 import useSWRInfinite from "swr/infinite";
 
-const getKey: SWRInfiniteKeyLoader = (
-  pageIndex: number,
-  previousPageData: GamePageResponse | undefined
-) => {
-  if (previousPageData && !previousPageData.data.length) return null;
-  // first page, we don't have `previousPageData`
-  console.log(pageIndex);
-  if (pageIndex === 0) return `/games?pageSize=50`;
-  // add the cursor to the API endpoint
-  return `/games?after=${previousPageData?.nextCursor}&pageSize=50`;
-};
-
 const useGames = () => {
-  const { data, size, setSize } = useSWRInfinite<GamePageResponse>(getKey, {
+  const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<number[]>([]);
+  const [sort, setSort] = useState("name");
+  const [order, setOrder] = useState("desc");
+
+  const getKey = useCallback(
+    (pageIndex: number, previousPageData: GameListElement[] | undefined) => {
+      if (previousPageData && !previousPageData.length) return null;
+      return `/games?page=${pageIndex + 1}&pageSize=50${filters
+        .map((id) => `&filters=${id}`)
+        .join("")}&search=${search}&sort=${sort}.${order}`;
+    },
+    [search, filters, sort, order]
+  );
+
+  const { data, size, setSize } = useSWRInfinite<GameListElement[]>(getKey, {
     revalidateFirstPage: false,
   });
 
@@ -24,7 +27,18 @@ const useGames = () => {
     setSize((prev) => prev + 1);
   }, [setSize]);
 
-  return { games: data, fetchNextPage };
+  return {
+    games: data,
+    fetchNextPage,
+    filters,
+    setFilters,
+    search,
+    setSearch,
+    sort,
+    setSort,
+    order,
+    setOrder,
+  };
 };
 
 export default useGames;
