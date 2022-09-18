@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { animated, useSpring, useTransition } from "react-spring";
 import { GameListElement } from "../types/game";
 
 interface Props {
@@ -15,26 +16,44 @@ const getCoverUrl = (coverId?: string) => {
 };
 
 const GameListElement = ({ game }: Props) => {
+  const [hover, setHover] = useState(false);
+  const [rollIn, api] = useSpring(() => ({
+    bottom: -100,
+  }));
   const { name, slug, cover } = game;
-  const router = useRouter();
+
+  useEffect(() => {
+    api.start({
+      bottom: hover ? 0 : -100,
+    });
+
+    return () => {
+      api.stop();
+    };
+  }, [hover, api]);
+
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div
-        className="w-32 md:w-48 lg:w-64 cursor-pointer h-full"
-        onClick={() => router.push(`/games/${slug}`)}
+    <Link className="cursor-pointer" href={`/games/${slug}`}>
+      <a
+        className="transition-transform hover:-translate-y-3 relative overflow-y-hidden rounded-lg w-[264px] h-[374px]"
+        onMouseOver={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
       >
         <Image
           src={getCoverUrl(cover?.imageId)}
-          width={264}
-          height={374}
+          layout="fill"
           alt={name}
-          className="object-cover w-full h-full rounded-lg"
+          className="object-cover rounded-lg"
         />
-      </div>
-      <div className="mt-2 w-full text-sm font-medium text-center text-orange-500">
-        {name}
-      </div>
-    </div>
+        <animated.div
+          style={rollIn}
+          className="w-full font-medium text-center text-orange-500 bg-black bg-opacity-60 h-14
+        absolute"
+        >
+          <h1>{name}</h1>
+        </animated.div>
+      </a>
+    </Link>
   );
 };
 export default GameListElement;
