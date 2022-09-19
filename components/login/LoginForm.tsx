@@ -1,5 +1,9 @@
+import {
+  Button,
+  ModalBody,
+  ModalFooter,
+} from "@chakra-ui/react";
 import { useState } from "react";
-import { animated } from "react-spring";
 import { login } from "../../api/UserApi";
 import TextField from "../common/TextField";
 
@@ -28,24 +32,23 @@ const LoginForm = ({ mutate, onRequestClose }: Props) => {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-extrabold text-center">Login</h1>
-      <TextField label="Email" value={email} onChange={setEmail} required />
-      <TextField
-        label="Password"
-        value={password}
-        onChange={setPassword}
-        type="password"
-        required
-      />
-      <button
-        className="bg-slate-600 text-white p-2 rounded-md m-2"
-        onClick={() => submitLogin()}
-        disabled={loading}
-      >
-        Login
-      </button>
-    </div>
+    <>
+      <ModalBody>
+        <TextField label="Email" value={email} onChange={setEmail} required />
+        <TextField
+          label="Password"
+          value={password}
+          onChange={setPassword}
+          type="password"
+          required
+        />
+      </ModalBody>
+      <ModalFooter margin={"auto"}>
+        <Button onClick={() => submitLogin()} disabled={loading}>
+          Login
+        </Button>
+      </ModalFooter>
+    </>
   );
 };
 

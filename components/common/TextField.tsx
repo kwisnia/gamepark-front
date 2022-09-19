@@ -1,3 +1,5 @@
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+
 interface TextFieldProps {
   label: string;
   value: string;
@@ -14,16 +16,16 @@ const TextField = ({
   required,
 }: TextFieldProps) => {
   return (
-    <div className="flex flex-col">
-      <label className="text-white">{label}</label>
-      <input
+    <FormControl isRequired={required}>
+      <FormLabel className="text-white">{label}</FormLabel>
+      <Input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="bg-slate-600 p-2 rounded-md my-2"
-        required={required}
+        backgroundColor="gray.600"
+        border={"none"}
       />
-    </div>
+    </FormControl>
   );
 };
 

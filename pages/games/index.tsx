@@ -1,3 +1,4 @@
+import { Flex, SimpleGrid } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -27,19 +28,21 @@ const GamesList: NextPage = () => {
 
   return (
     <div className="w-4/5 m-auto">
-      <FilterSortWindow
-        filter={filters}
-        setFilter={setFilters}
-        sort={sort}
-        setSort={setSort}
-      />
-      <div className="grid grid-cols-5 gap-4">
+      <Flex width={"full"} justifyContent={"flex-end"} paddingRight={8}>
+        <FilterSortWindow
+          filter={filters}
+          setFilter={setFilters}
+          sort={sort}
+          setSort={setSort}
+        />
+      </Flex>
+      <SimpleGrid columns={5} columnGap={16} rowGap={8}>
         {games &&
           games.map((games) =>
             games.map((game) => <GameListElement key={game.slug} game={game} />)
           )}
         {games && <div ref={ref} className="h-1" />}
-      </div>
+      </SimpleGrid>
     </div>
   );
 };
