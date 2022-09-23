@@ -1,3 +1,4 @@
+import { Button, ModalBody } from "@chakra-ui/react";
 import { useState } from "react";
 import { register } from "../../api/UserApi";
 import TextField from "../common/TextField";
@@ -33,28 +34,32 @@ const RegisterForm = ({ mutate, onRequestClose }: Props) => {
   };
 
   return (
-    <div className="flex flex-col">
-      <TextField label="Username" onChange={setUserName} value={userName} />
-      <TextField label="Email" onChange={setEmail} value={email} />
-      <TextField
-        label="Password"
-        onChange={setPassword}
-        value={password}
-        type="password"
-      />
-      <TextField
-        label="Confirm password"
-        onChange={setConfirmPassword}
-        value={confirmPassword}
-        type="password"
-      />
-      <button
-        className="bg-blue-500 text-white rounded-md p-2"
+    <>
+      <ModalBody>
+        <TextField label="Username" onChange={setUserName} value={userName} />
+        <TextField label="Email" onChange={setEmail} value={email} />
+        <TextField
+          label="Password"
+          onChange={setPassword}
+          value={password}
+          type="password"
+        />
+        <TextField
+          label="Confirm password"
+          onChange={setConfirmPassword}
+          value={confirmPassword}
+          type="password"
+        />
+      </ModalBody>
+      <Button
+        colorScheme={"blue"}
         onClick={() => submitRegister()}
+        isLoading={loading}
+        loadingText={"Submitting"}
       >
         Register
-      </button>
-    </div>
+      </Button>
+    </>
   );
 };
 

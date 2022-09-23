@@ -6,7 +6,7 @@ export const login = async (email: string, password: string) => {
   axiosClient.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${response.headers.authorization}`;
-  localStorage.setItem("gaming-token", response.data.token);
+  localStorage.setItem("gaming-token", response.headers.authorization);
 };
 
 export const register = async (
@@ -22,5 +22,5 @@ export const register = async (
   axiosClient.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${response.headers.authorization}`;
-  localStorage.setItem("gaming-token", response.data.token);
+  localStorage.setItem("gaming-token", response.headers.authorization);
 };

@@ -1,25 +1,18 @@
-import ReactModal from "react-modal";
-import { animated, useTransition } from "react-spring";
+import { Modal as ChakraModal, ModalOverlay } from "@chakra-ui/react";
 
-const centerStyles: ReactModal.Styles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#334155",
-    border: "none",
-    borderRadius: "25px",
-  },
-  overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-};
+interface Props {
+  children: React.ReactNode;
+  isOpen: boolean;
+  onRequestClose: () => void;
+}
 
-const Modal = (props: ReactModal.Props) => {
-  return <ReactModal {...props} style={{ ...centerStyles }} />;
+const Modal = ({ children, isOpen, onRequestClose }: Props) => {
+  return (
+    <ChakraModal isOpen={isOpen} onClose={onRequestClose}>
+      <ModalOverlay />
+      {children}
+    </ChakraModal>
+  );
 };
 
 export default Modal;

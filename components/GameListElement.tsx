@@ -1,7 +1,7 @@
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { animated, useSpring, useTransition } from "react-spring";
+import { useState } from "react";
 import { GameListElement } from "../types/game";
 
 interface Props {
@@ -17,20 +17,7 @@ const getCoverUrl = (coverId?: string) => {
 
 const GameListElement = ({ game }: Props) => {
   const [hover, setHover] = useState(false);
-  const [rollIn, api] = useSpring(() => ({
-    bottom: -100,
-  }));
   const { name, slug, cover } = game;
-
-  useEffect(() => {
-    api.start({
-      bottom: hover ? 0 : -100,
-    });
-
-    return () => {
-      api.stop();
-    };
-  }, [hover, api]);
 
   return (
     <Link className="cursor-pointer" href={`/games/${slug}`}>
@@ -45,13 +32,13 @@ const GameListElement = ({ game }: Props) => {
           alt={name}
           className="object-cover rounded-lg"
         />
-        <animated.div
-          style={rollIn}
+        <motion.div
+          animate={{ bottom: hover ? 0 : -100 }}
           className="w-full font-medium text-center text-orange-500 bg-black bg-opacity-60 h-14
         absolute"
         >
           <h1>{name}</h1>
-        </animated.div>
+        </motion.div>
       </a>
     </Link>
   );

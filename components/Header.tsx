@@ -1,3 +1,4 @@
+import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { axiosClient } from "../constants";
 import useUser from "../hooks/useUser";
@@ -6,9 +7,9 @@ import LoginModal from "./login/LoginModal";
 const Header = () => {
   const { user, mutate, loggedOut } = useUser();
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [formType, setFormType] = useState<"login" | "register">("login");
+  const [formType, setFormType] = useState<"Login" | "Register">("Login");
 
-  const openForm = (type: "login" | "register") => {
+  const openForm = (type: "Login" | "Register") => {
     setFormType(type);
     setIsFormVisible(true);
   };
@@ -20,38 +21,34 @@ const Header = () => {
   };
 
   return (
-    <div className="w-full h-12 text-white bg-slate-700 flex justify-between">
-      <div>Gaming</div>
-      <div className="flex items-center">
-        {!loggedOut ? (
-          <div className="flex items-center">
-            <div className="mr-2">{user.username}</div>
-            <button
-              className="bg-slate-600 text-white p-2 rounded-md m-2"
-              onClick={() => logout()}
-            >
+    <Box className="w-full h-12 text-white bg-slate-700 flex justify-between">
+      <Heading>Gaming</Heading>
+      <Center>
+        {!loggedOut && user ? (
+          <Center>
+            <Text className="mr-2">{user.username}</Text>
+            <Button colorScheme={"red"} onClick={() => logout()}>
               Logout
-            </button>
-          </div>
+            </Button>
+          </Center>
         ) : (
-          <div className="flex">
-            <button
-              className="bg-slate-600 text-white p-2 rounded-md"
-              onClick={() => openForm("login")}
-            >
+          <Flex>
+            <Button colorScheme={"orange"} onClick={() => openForm("Login")}>
               Login
-            </button>
-            <button onClick={() => openForm("register")}>Register</button>
-          </div>
+            </Button>
+            <Button colorScheme={"green"} onClick={() => openForm("Register")}>
+              Register
+            </Button>
+          </Flex>
         )}
-      </div>
+      </Center>
       <LoginModal
         isOpen={isFormVisible}
-        initialState={formType}
+        formType={formType}
         onRequestClose={() => setIsFormVisible(false)}
         mutate={mutate}
       />
-    </div>
+    </Box>
   );
 };
 
