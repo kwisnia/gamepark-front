@@ -21,7 +21,6 @@ const GamesList: NextPage = () => {
 
   useEffect(() => {
     if (inView) {
-      console.log("New page time");
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);

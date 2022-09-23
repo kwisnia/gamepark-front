@@ -7,7 +7,6 @@ const useUser = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("gaming-token");
-    console.log(token);
     axiosClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     mutate();
   }, [mutate]);

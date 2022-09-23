@@ -6,7 +6,6 @@ export const login = async (email: string, password: string) => {
   axiosClient.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${response.headers.authorization}`;
-  console.log("Halo kurwa");
   localStorage.setItem("gaming-token", response.headers.authorization);
 };
 
