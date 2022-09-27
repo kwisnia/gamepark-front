@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Image from "next/future/image";
 import Link from "next/link";
-import { useState } from "react";
+import { getPlaiceholder } from "plaiceholder";
+import { useEffect, useState } from "react";
 import { GameListElement } from "../types/game";
 
 interface Props {
@@ -19,6 +20,8 @@ const GameListElement = ({ game }: Props) => {
   const [hover, setHover] = useState(false);
   const { name, slug, cover } = game;
 
+  // TODO: Implement chakra transitions, see https://chakra-ui.com/docs/components/transition
+  // TODO: Implement chakra LinkOverlay, see https://chakra-ui.com/docs/components/link-overlay
   return (
     <Link className="cursor-pointer" href={`/games/${slug}`}>
       <a
@@ -28,7 +31,7 @@ const GameListElement = ({ game }: Props) => {
       >
         <Image
           src={getCoverUrl(cover?.imageId)}
-          layout="fill"
+          fill
           alt={name}
           className="object-cover rounded-lg"
         />

@@ -1,7 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GameListElement } from "../types/game";
 import { SWRInfiniteKeyLoader } from "swr/infinite";
 import useSWRInfinite from "swr/infinite";
+import { getPlaiceholder } from "plaiceholder";
 
 const useGames = () => {
   const [search, setSearch] = useState("");

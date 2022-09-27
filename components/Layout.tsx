@@ -1,3 +1,4 @@
+import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import Header from "./Header";
 
@@ -7,10 +8,12 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="layout">
+    <Flex flexDirection="column" flex={1} minHeight="100vh" width="full">
       <Header />
-      <main className="layout__content bg-gray-900">{children}</main>
-    </div>
+      <main className="layout__content bg-gray-900 h-full flex-1">
+        {children}
+      </main>
+    </Flex>
   );
 };
 

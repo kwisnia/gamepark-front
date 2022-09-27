@@ -5,5 +5,6 @@ const nextConfig = {
     domains: ["images.igdb.com", "media.istockphoto.com"],
   },
 };
+const { withPlaiceholder } = require("@plaiceholder/next");
 
-module.exports = nextConfig;
+module.exports = withPlaiceholder(nextConfig);
