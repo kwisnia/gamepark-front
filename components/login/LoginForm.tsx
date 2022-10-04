@@ -1,10 +1,14 @@
 import {
   Button,
+  Center,
+  Flex,
   ModalBody,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { login } from "../../api/UserApi";
+import { LoginModalContext } from "../../contexts/LoginModalContext";
 import TextField from "../common/TextField";
 
 interface Props {
@@ -17,6 +21,7 @@ const LoginForm = ({ mutate, onRequestClose }: Props) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { setFormType } = useContext(LoginModalContext);
 
   const submitLogin = async () => {
     setLoading(true);
@@ -42,6 +47,17 @@ const LoginForm = ({ mutate, onRequestClose }: Props) => {
           type="password"
           required
         />
+        <Center>
+          <Text paddingRight={1}>Don&apos;t have an account? </Text>
+          <Button
+            variant="link"
+            onClick={() => {
+              setFormType("Register");
+            }}
+          >
+            Sign up!
+          </Button>
+        </Center>
       </ModalBody>
       <ModalFooter margin={"auto"}>
         <Button onClick={() => submitLogin()} disabled={loading}>

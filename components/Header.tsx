@@ -1,22 +1,22 @@
 import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { axiosClient } from "../constants";
-import useUser from "../hooks/useUser";
+import { LoginModalContext } from "../contexts/LoginModalContext";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 import LoginModal from "./login/LoginModal";
 import UserMenu from "./UserMenu";
 
 const Header = () => {
-  const { user, mutate, loggedOut } = useUser();
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [formType, setFormType] = useState<"Login" | "Register">("Login");
+  const { user, mutate, loggedOut } = useLoggedInUser();
+  const { setFormType, openModal } = useContext(LoginModalContext);
 
   const openForm = (type: "Login" | "Register") => {
     setFormType(type);
-    setIsFormVisible(true);
+    openModal();
   };
 
   return (
-    <Box className="w-full h-12 text-white bg-slate-700 flex justify-between z-10">
+    <Box className="w-full h-12 bg-slate-700 flex justify-between z-10">
       <Heading>Gaming</Heading>
       <Center>
         {!loggedOut && user ? (
@@ -34,12 +34,6 @@ const Header = () => {
           </Flex>
         )}
       </Center>
-      <LoginModal
-        isOpen={isFormVisible}
-        formType={formType}
-        onRequestClose={() => setIsFormVisible(false)}
-        mutate={mutate}
-      />
     </Box>
   );
 };

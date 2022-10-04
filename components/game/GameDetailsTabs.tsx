@@ -6,6 +6,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
+import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { GameDetails } from "../../types/game";
 import GameInfo from "./GameInfo";
 

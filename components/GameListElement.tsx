@@ -1,20 +1,15 @@
+import { Box, Center, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Image from "next/future/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
 import { useEffect, useState } from "react";
-import { GameListElement } from "../types/game";
+import { GameListElement, IGDBImageSize } from "../types/game";
+import { getCoverUrl } from "../utils/ImageUtils";
 
 interface Props {
   game: GameListElement;
 }
-
-const getCoverUrl = (coverId?: string) => {
-  if (!coverId) {
-    return "https://media.istockphoto.com/vectors/thumbnail-image-vector-graphic-vector-id1147544807?k=20&m=1147544807&s=612x612&w=0&h=pBhz1dkwsCMq37Udtp9sfxbjaMl27JUapoyYpQm0anc=";
-  }
-  return `https://images.igdb.com/igdb/image/upload/t_cover_big/${coverId}.jpg`;
-};
 
 const GameListElement = ({ game }: Props) => {
   const [hover, setHover] = useState(false);
@@ -29,12 +24,19 @@ const GameListElement = ({ game }: Props) => {
         onMouseOver={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        <Image
-          src={getCoverUrl(cover?.imageId)}
-          fill
-          alt={name}
-          className="object-cover rounded-lg"
-        />
+        {cover?.imageId ? (
+          <Image
+            src={getCoverUrl(cover?.imageId, IGDBImageSize.CoverBig, false)}
+            fill
+            alt={name}
+            className="object-cover rounded-lg"
+          />
+        ) : (
+          <Center background="gray.500" height="full" rounded="lg">
+            <Heading>{name}</Heading>
+          </Center>
+        )}
+
         <motion.div
           animate={{ bottom: hover ? 0 : -100 }}
           className="w-full font-medium text-center text-orange-500 bg-black bg-opacity-60 h-14

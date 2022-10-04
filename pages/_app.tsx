@@ -4,6 +4,7 @@ import { SWRConfig } from "swr";
 import Layout from "../components/Layout";
 import { axiosClient } from "../constants";
 import { ChakraProvider } from "@chakra-ui/react";
+import theme from "../styles/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -15,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         },
       }}
     >
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

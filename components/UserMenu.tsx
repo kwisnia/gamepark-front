@@ -7,11 +7,13 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { axiosClient } from "../constants";
-import useUser from "../hooks/useUser";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 
 const UserMenu = () => {
-  const { user, mutate } = useUser();
+  const { user, mutate } = useLoggedInUser();
+  const router = useRouter();
 
   const logout = () => {
     localStorage.removeItem("gaming-token");
@@ -28,10 +30,12 @@ const UserMenu = () => {
         _active={{ background: "transparent" }}
         _hover={{ background: "transparent" }}
       >
-        {user?.username}
+        {user?.displayName}
       </MenuButton>
       <MenuList textColor="black">
-        <MenuItem>Profile</MenuItem>
+        <MenuItem onClick={() => router.push(`/users/${user?.username}`)}>
+          Profile
+        </MenuItem>
         <MenuDivider />
         <MenuItem onClick={logout}>Logout</MenuItem>
       </MenuList>

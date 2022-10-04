@@ -8,6 +8,8 @@ import { GameDetails } from "../../types/game";
 import Image from "next/future/image";
 import { getRandomImage } from "../../utils/ImageUtils";
 import styles from "../../styles/GamePage.module.css";
+import useLoggedInUser from "../../hooks/useLoggedInUser";
+import { useMemo } from "react";
 
 interface Props {
   game: GameDetails;
@@ -15,20 +17,23 @@ interface Props {
 
 const GamePage = ({ game }: Props) => {
   const router = useRouter();
+  const { loggedOut, user } = useLoggedInUser();
+  const randomImageUrl = useMemo(() => getRandomImage(game), [game]);
 
   if (router.isFallback) {
     return <Box>Loading...</Box>;
   }
+
   return (
     <Box>
       {getRandomImage(game) && (
         <Image
-          src={getRandomImage(game)}
+          src={randomImageUrl}
           alt={game.name}
           sizes="100vw"
           width={1920}
           height={1080}
-          className={`w-full -translate-y-96 absolute z-0 opacity-30 ${styles["game-header-image"]}`}
+          className={`w-full -translate-y-96 absolute z-0 opacity-30 ${styles["game-header-image"]} select-none`}
         />
       )}
       <GameHeader game={game} />

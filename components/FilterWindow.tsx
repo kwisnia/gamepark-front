@@ -5,7 +5,9 @@ import {
   PopoverContent,
   PopoverTrigger,
   Text,
+  useColorMode,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 const gameOptions = [
   { value: 0, label: "Games" },
@@ -35,15 +37,15 @@ const FilterSortWindow = ({
   sort,
   setSort,
 }: FilterSortWindowProps) => {
+  const test = useColorMode();
+
+  useEffect(() => {
+    console.log(test);
+  }, [test]);
   return (
     <Popover>
       <PopoverTrigger>
-        <Button
-          bg={"gray.600"}
-          display="flex"
-          justifyContent={"flex-end"}
-          className="text-white"
-        >
+        <Button bg={"gray.600"} display="flex" justifyContent={"flex-end"}>
           Filter options
         </Button>
       </PopoverTrigger>
@@ -52,8 +54,9 @@ const FilterSortWindow = ({
         border={"none"}
         className="bg-slate-600 p-2 rounded-md m-2 mr-10"
       >
-        <Text className="text-white">Game types</Text>
+        <Text>Game types</Text>
         <Select
+          colorScheme="red"
           closeMenuOnSelect={false}
           options={gameOptions}
           isMulti
@@ -62,7 +65,7 @@ const FilterSortWindow = ({
           )}
           onChange={(value) => setFilter(value.map((option) => option.value))}
         />
-        <Text className="text-white">Sort by</Text>
+        <Text>Sort by</Text>
         <Select
           options={sortOptions}
           defaultValue={sortOptions[0]}

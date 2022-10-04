@@ -34,7 +34,7 @@ const GameHeader = ({ game }: Props) => {
           alt={game.name}
           width={264}
           height={374}
-          className="rounded-lg"
+          className="rounded-lg select-none"
         />
         <Flex
           flex={8}
@@ -45,7 +45,7 @@ const GameHeader = ({ game }: Props) => {
           paddingBottom={10}
           zIndex={1}
         >
-          <Heading size="4xl" fontWeight="bold" color="white" paddingBottom={5}>
+          <Heading size="4xl" fontWeight="bold" paddingBottom={5}>
             {game.name}
           </Heading>
           <Text fontSize="xl" fontWeight="semibold" color="gray.400">
@@ -55,7 +55,7 @@ const GameHeader = ({ game }: Props) => {
         </Flex>
         <Flex direction="column" justifyContent={"end"} paddingBottom={10}>
           <CircularProgress value={game.aggregatedRating} size="150px">
-            <CircularProgressLabel textColor="white">
+            <CircularProgressLabel>
               {Math.floor(game.aggregatedRating)}
             </CircularProgressLabel>
           </CircularProgress>

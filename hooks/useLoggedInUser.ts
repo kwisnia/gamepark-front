@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import useSWR from "swr";
 import { axiosClient } from "../constants";
+import { UserDetails } from "../types/user";
 
-const useUser = () => {
-  const { data, mutate, error } = useSWR("/me/details");
+const useLoggedInUser = () => {
+  const { data, mutate, error } = useSWR<UserDetails>("/me/details");
 
   useEffect(() => {
     const token = localStorage.getItem("gaming-token");
@@ -22,4 +23,4 @@ const useUser = () => {
   };
 };
 
-export default useUser;
+export default useLoggedInUser;

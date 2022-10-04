@@ -11,14 +11,14 @@ export const getCoverUrl = (
 };
 
 export const getRandomImage = (game: GameDetails) => {
-  if (game.screenshots?.length) {
+  if (game?.screenshots?.length) {
     const randomIndex = Math.floor(Math.random() * game.screenshots.length);
     return getCoverUrl(
       game.screenshots[randomIndex].imageId,
       IGDBImageSize.FullHD,
       false
     );
-  } else if (game.artworks?.length) {
+  } else if (game?.artworks?.length) {
     const randomIndex = Math.floor(Math.random() * game.artworks.length);
     return getCoverUrl(
       game.artworks[randomIndex].imageId,

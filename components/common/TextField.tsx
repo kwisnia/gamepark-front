@@ -17,7 +17,7 @@ const TextField = ({
 }: TextFieldProps) => {
   return (
     <FormControl isRequired={required}>
-      <FormLabel className="text-white">{label}</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <Input
         type={type}
         value={value}

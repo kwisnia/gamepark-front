@@ -1,5 +1,6 @@
 import axios from "axios";
 import { axiosClient } from "../constants";
+import { UserDetails } from "../types/user";
 
 export const login = async (email: string, password: string) => {
   const response = await axiosClient.post("/login", { email, password });
@@ -23,4 +24,11 @@ export const register = async (
     "Authorization"
   ] = `Bearer ${response.headers.authorization}`;
   localStorage.setItem("gaming-token", response.headers.authorization);
+};
+
+export const getUserDetails = async (
+  userName: string
+): Promise<UserDetails> => {
+  const response = await axiosClient.get(`/${userName}/details`);
+  return response.data;
 };
