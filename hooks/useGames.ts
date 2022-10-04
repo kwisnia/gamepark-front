@@ -15,7 +15,7 @@ const useGames = () => {
       if (previousPageData && !previousPageData.length) return null;
       return `/games?page=${pageIndex + 1}&pageSize=50${filters
         .map((id) => `&filters=${id}`)
-        .join("")}&search=${search}&sort=${sort}.${order}`;
+        .join("")}&search=${search.toLowerCase()}&sort=${sort}.${order}`;
     },
     [search, filters, sort, order]
   );
