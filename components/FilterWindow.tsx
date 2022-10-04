@@ -1,6 +1,9 @@
 import { Select } from "chakra-react-select";
 import {
+  Box,
   Button,
+  Flex,
+  IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -8,6 +11,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 
 const gameOptions = [
   { value: 0, label: "Games" },
@@ -29,6 +33,8 @@ interface FilterSortWindowProps {
   setFilter: (value: number[]) => void;
   sort: string;
   setSort: (value: string) => void;
+  order: "asc" | "desc";
+  setOrder: (value: "asc" | "desc") => void;
 }
 
 const FilterSortWindow = ({
@@ -36,12 +42,17 @@ const FilterSortWindow = ({
   setFilter,
   sort,
   setSort,
+  order,
+  setOrder,
 }: FilterSortWindowProps) => {
-  const test = useColorMode();
+  const changeSortOrder = () => {
+    if (order === "asc") {
+      setOrder("desc");
+    } else {
+      setOrder("asc");
+    }
+  };
 
-  useEffect(() => {
-    console.log(test);
-  }, [test]);
   return (
     <Popover>
       <PopoverTrigger>
@@ -56,6 +67,7 @@ const FilterSortWindow = ({
       >
         <Text>Game types</Text>
         <Select
+          useBasicStyles
           colorScheme="red"
           closeMenuOnSelect={false}
           options={gameOptions}
@@ -66,11 +78,21 @@ const FilterSortWindow = ({
           onChange={(value) => setFilter(value.map((option) => option.value))}
         />
         <Text>Sort by</Text>
-        <Select
-          options={sortOptions}
-          defaultValue={sortOptions[0]}
-          onChange={(option) => setSort(option!.value)}
-        />
+        <Flex>
+          <Box flex={9}>
+            <Select
+              useBasicStyles
+              options={sortOptions}
+              defaultValue={sortOptions[0]}
+              onChange={(option) => setSort(option!.value)}
+            />
+          </Box>
+          <IconButton
+            icon={order === "asc" ? <ArrowUpIcon /> : <ArrowDownIcon />}
+            aria-label="Change sort direction"
+            onClick={changeSortOrder}
+          />
+        </Flex>
       </PopoverContent>
     </Popover>
   );

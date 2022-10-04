@@ -8,7 +8,7 @@ const useGames = () => {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<number[]>([]);
   const [sort, setSort] = useState("name");
-  const [order, setOrder] = useState("desc");
+  const [order, setOrder] = useState<"asc" | "desc">("desc");
 
   const getKey = useCallback(
     (pageIndex: number, previousPageData: GameListElement[] | undefined) => {

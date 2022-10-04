@@ -17,7 +17,7 @@ const GamesList: NextPage = () => {
     order,
     setOrder,
   } = useGames();
-  const { ref, inView, entry } = useInView();
+  const { ref, inView } = useInView();
 
   useEffect(() => {
     if (inView) {
@@ -33,6 +33,8 @@ const GamesList: NextPage = () => {
           setFilter={setFilters}
           sort={sort}
           setSort={setSort}
+          order={order}
+          setOrder={setOrder}
         />
       </Flex>
       <SimpleGrid columns={5} columnGap={16} rowGap={8}>
