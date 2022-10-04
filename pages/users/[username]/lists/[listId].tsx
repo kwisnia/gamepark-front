@@ -21,8 +21,11 @@ import { getCoverUrl } from "../../../../utils/ImageUtils";
 import { IGDBImageSize } from "../../../../types/game";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { removeFromList } from "../../../../api/ListApi";
+import ListCreateModal from "../../../../components/user/ListCreateModal";
+import { useState } from "react";
 
 const DetailedListPage = () => {
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const router = useRouter();
   const { username, listId } = router.query;
   const { user } = useUserDetails(username as string);
@@ -49,7 +52,9 @@ const DetailedListPage = () => {
     <Box width="60%" margin="auto">
       <Heading>{data?.name}</Heading>
       <Text>{data?.description}</Text>
-      {user?.username === loggedInUser?.username && <Button>Edit</Button>}
+      {user?.username === loggedInUser?.username && (
+        <Button onClick={() => setEditModalOpen(true)}>Edit</Button>
+      )}
       <List>
         {data?.games.map((game) => (
           <ListItem
@@ -100,6 +105,17 @@ const DetailedListPage = () => {
           </ListItem>
         ))}
       </List>
+      {data && isOwner && (
+        <ListCreateModal
+          open={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          mode="edit"
+          listId={Number(listId)}
+          initialName={data.name}
+          initialDescription={data.description}
+          mutate={mutate}
+        />
+      )}
     </Box>
   );
 };

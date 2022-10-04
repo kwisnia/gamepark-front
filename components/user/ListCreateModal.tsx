@@ -12,15 +12,32 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { Field, Form, Formik, FormikHelpers, FieldProps } from "formik";
-import { useState } from "react";
-import { createList } from "../../api/ListApi";
+import { createList, updateList } from "../../api/ListApi";
 import Modal from "../common/Modal";
 import * as yup from "yup";
+import { useMemo } from "react";
+import { KeyedMutator } from "swr";
+import { GameList, GameListDetails } from "../../types/lists";
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
+
+interface CreateProps extends Props {
+  mode: "create";
+  mutate: KeyedMutator<GameList[]>;
+}
+
+interface EditProps extends Props {
+  mode: "edit";
+  listId: number;
+  initialName: string;
+  initialDescription: string;
+  mutate: KeyedMutator<GameListDetails>;
+}
+
+type ModalProps = CreateProps | EditProps;
 
 interface ListForm {
   name: string;
@@ -37,26 +54,46 @@ const listCreateSchema = yup.object().shape({
     .max(350, "Description cannot be longer than 350 characters"),
 });
 
-const initialValues: ListForm = {
-  name: "",
-  description: "",
-};
-
-const ListCreateModal = ({ open, onClose }: Props) => {
+const ListCreateModal = (props: ModalProps) => {
+  const { onClose, open, mode, mutate } = props;
   const toast = useToast();
+
+  const initialValues = useMemo<ListForm>(() => {
+    if (mode === "create") {
+      return {
+        name: "",
+        description: "",
+      };
+    } else {
+      return {
+        name: props.initialName,
+        description: props.initialDescription,
+      };
+    }
+  }, [mode, props]);
 
   const submit = async (
     values: ListForm,
     { setSubmitting }: FormikHelpers<ListForm>
   ) => {
-    console.log("Halo");
-    await createList(values.name, values.description);
-    toast({
-      title: "List created",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    if (mode === "create") {
+      await createList(values.name, values.description);
+      toast({
+        title: "List created",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      await updateList(props.listId, values.name, values.description);
+      toast({
+        title: "List updated",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    mutate();
     setSubmitting(false);
     onClose();
   };
@@ -64,7 +101,9 @@ const ListCreateModal = ({ open, onClose }: Props) => {
     <Modal isOpen={open} onRequestClose={onClose}>
       <ModalContent bg="gray.700">
         <ModalCloseButton />
-        <ModalHeader>Create a list</ModalHeader>
+        <ModalHeader>
+          {mode[0].toUpperCase() + mode.substring(1)} a list
+        </ModalHeader>
         <Formik
           initialValues={initialValues}
           onSubmit={submit}
