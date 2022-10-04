@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import ListCreateModal from "../../../../components/user/ListCreateModal";
+import useLoggedInUser from "../../../../hooks/useLoggedInUser";
 import useUserDetails from "../../../../hooks/useUserDetails";
 import { GameList } from "../../../../types/lists";
 
@@ -21,6 +22,7 @@ const UserListPage = () => {
   const { data, error } = useSWR<GameList[]>(`/${username}/lists`);
   const { user, loading } = useUserDetails(username as string);
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  const { user: loggedInUser } = useLoggedInUser();
 
   useEffect(() => {
     console.log(data);
@@ -34,9 +36,8 @@ const UserListPage = () => {
       <Heading>{user.displayName}&apos;s lists</Heading>
       <Flex justifyContent="space-between" alignItems="center">
         <Text color="gray.200">{data.length} lists</Text>
-        {username === user?.username && (
+        {username === loggedInUser?.username && (
           <Button
-            color="gray.200"
             colorScheme="facebook"
             onClick={() => setCreateModalOpen(true)}
           >

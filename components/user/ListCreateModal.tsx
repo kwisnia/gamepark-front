@@ -97,12 +97,7 @@ const ListCreateModal = ({ open, onClose }: Props) => {
                 </Field>
               </ModalBody>
               <ModalFooter>
-                <Button
-                  variant="ghost"
-                  colorScheme="whiteAlpha"
-                  mr={3}
-                  onClick={onClose}
-                >
+                <Button variant="ghost" mr={3} onClick={onClose}>
                   Close
                 </Button>
                 <Button

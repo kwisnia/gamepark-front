@@ -32,7 +32,7 @@ const UserMenu = () => {
       >
         {user?.displayName}
       </MenuButton>
-      <MenuList textColor="black">
+      <MenuList>
         <MenuItem onClick={() => router.push(`/users/${user?.username}`)}>
           Profile
         </MenuItem>
