@@ -32,7 +32,7 @@ const GameSidebar = ({ game }: Props) => {
     openModal();
   };
 
-  const listsWithoutGame = user?.lists.filter(
+  const listsWithoutGame = user?.lists?.filter(
     (list) =>
       !lists || lists.some((gameList) => gameList.id === list.id) === false
   );

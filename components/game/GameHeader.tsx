@@ -53,7 +53,7 @@ const GameHeader = ({ game }: Props) => {
             {DateTime.fromISO(game.firstReleaseDate).toFormat("dd LLL yyyy")}
           </Text>
         </Flex>
-        <Flex direction="column" justifyContent={"end"} paddingBottom={10}>
+        <Flex direction="column" justifyContent="end" paddingBottom={10}>
           <CircularProgress value={game.aggregatedRating} size="150px">
             <CircularProgressLabel>
               {Math.floor(game.aggregatedRating)}
@@ -66,6 +66,26 @@ const GameHeader = ({ game }: Props) => {
             textAlign="center"
           >
             {game.aggregatedRatingCount} critic ratings
+          </Text>
+        </Flex>
+        <Flex
+          direction="column"
+          justifyContent="end"
+          paddingBottom={10}
+          paddingLeft={5}
+        >
+          <CircularProgress value={game.rating} size="120px">
+            <CircularProgressLabel textAlign="center">
+              {Math.floor(game.rating)}
+            </CircularProgressLabel>
+          </CircularProgress>
+          <Text
+            fontSize="xl"
+            fontWeight="semibold"
+            color="gray.400"
+            textAlign="center"
+          >
+            {game.rating} user ratings
           </Text>
         </Flex>
       </Flex>

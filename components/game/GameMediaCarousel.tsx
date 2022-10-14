@@ -21,8 +21,6 @@ const GameMediaCarousel = ({ game }: Props) => {
         slidesPerView="auto"
         navigation
         pagination={{ clickable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log("slide change")}
         autoHeight
       >
         {game.screenshots?.map((screenshot) => (

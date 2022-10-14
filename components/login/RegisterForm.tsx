@@ -1,64 +1,125 @@
-import { Button, ModalBody } from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, ModalBody, ModalFooter, useToast } from "@chakra-ui/react";
+import { Form, Formik, FormikHelpers } from "formik";
 import { register } from "../../api/UserApi";
-import TextField from "../common/TextField";
+import FormTextField from "../common/FormTextField";
+import * as yup from "yup";
+import zxcvbn from "zxcvbn";
 
 interface Props {
   mutate: () => void;
   onRequestClose: () => void;
 }
 
-const RegisterForm = ({ mutate, onRequestClose }: Props) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [userName, setUserName] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+interface RegisterForm {
+  email: string;
+  username: string;
+  displayName: string;
+  password: string;
+  confirmPassword: string;
+}
 
-  const submitRegister = async () => {
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-    setLoading(true);
-    setError("");
+const registerSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Email must be a valid email address")
+    .required("Email is required"),
+  username: yup.string().required("Username is required"),
+  displayName: yup.string().required("Display name is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .test("passwordStrength", function (value) {
+      const { path, createError } = this;
+      const passwordStrength = zxcvbn(value ?? "");
+      console.log(passwordStrength);
+      return passwordStrength.score < 3
+        ? createError({ path, message: passwordStrength.feedback.warning })
+        : true;
+    }),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match"),
+});
+
+const RegisterForm = ({ mutate, onRequestClose }: Props) => {
+  const toast = useToast();
+
+  const submitRegister = async (
+    values: RegisterForm,
+    { setSubmitting }: FormikHelpers<RegisterForm>
+  ) => {
     try {
-      await register(email, password, userName);
+      await register(
+        values.email,
+        values.password,
+        values.username,
+        values.displayName
+      );
       mutate();
       onRequestClose();
     } catch (error) {
-      setError("dupa");
+      if (!toast.isActive("register-error")) {
+        toast({
+          id: "register-error",
+          title: "Registration failed",
+          description: "Invalid email",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } finally {
+      setSubmitting(false);
     }
-    setLoading(false);
   };
 
   return (
     <>
-      <ModalBody>
-        <TextField label="Username" onChange={setUserName} value={userName} />
-        <TextField label="Email" onChange={setEmail} value={email} />
-        <TextField
-          label="Password"
-          onChange={setPassword}
-          value={password}
-          type="password"
-        />
-        <TextField
-          label="Confirm password"
-          onChange={setConfirmPassword}
-          value={confirmPassword}
-          type="password"
-        />
-      </ModalBody>
-      <Button
-        colorScheme={"blue"}
-        onClick={() => submitRegister()}
-        isLoading={loading}
-        loadingText={"Submitting"}
+      <Formik
+        initialValues={{
+          email: "",
+          username: "",
+          displayName: "",
+          password: "",
+          confirmPassword: "",
+        }}
+        validationSchema={registerSchema}
+        onSubmit={submitRegister}
       >
-        Register
-      </Button>
+        {({ isSubmitting }) => (
+          <Form>
+            <ModalBody>
+              <FormTextField
+                label="Username"
+                name="username"
+                description="Name that will be used to identify you throughout the site"
+              />
+              <FormTextField
+                label="Display name"
+                name="displayName"
+                description="Name that will be displayed to other users"
+              />
+              <FormTextField label="Email" name="email" />
+              <FormTextField label="Password" name="password" type="password" />
+              <FormTextField
+                label="Confirm password"
+                name="confirmPassword"
+                type="password"
+              />
+            </ModalBody>
+            <ModalFooter margin="auto">
+              <Button
+                colorScheme={"blue"}
+                type="submit"
+                isLoading={isSubmitting}
+              >
+                Register
+              </Button>
+            </ModalFooter>
+          </Form>
+        )}
+      </Formik>
     </>
   );
 };

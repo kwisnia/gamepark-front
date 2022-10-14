@@ -18,6 +18,7 @@ import * as yup from "yup";
 import { useMemo } from "react";
 import { KeyedMutator } from "swr";
 import { GameList, GameListDetails } from "../../types/lists";
+import FormTextField from "../common/FormTextField";
 
 interface Props {
   open: boolean;
@@ -109,33 +110,11 @@ const ListCreateModal = (props: ModalProps) => {
           onSubmit={submit}
           validationSchema={listCreateSchema}
         >
-          {({ isSubmitting, errors, touched }) => (
+          {({ isSubmitting }) => (
             <Form>
               <ModalBody>
-                <Field name="name">
-                  {({ field }: FieldProps<string, ListForm>) => (
-                    <FormControl
-                      isInvalid={Boolean(errors.name && touched.name)}
-                    >
-                      <FormLabel htmlFor="name">Name</FormLabel>
-                      <Input {...field} id="name" placeholder="Name" />
-                      <FormErrorMessage>{errors.name}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-                <Field name="description">
-                  {({ field }: FieldProps<string, ListForm>) => (
-                    <FormControl isInvalid={Boolean(errors.description)}>
-                      <FormLabel htmlFor="description">Description</FormLabel>
-                      <Input
-                        {...field}
-                        id="description"
-                        placeholder="Description"
-                      />
-                      <FormErrorMessage>{errors.description}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
+                <FormTextField name="name" label="Name" />
+                <FormTextField name="description" label="Description" />
               </ModalBody>
               <ModalFooter>
                 <Button variant="ghost" mr={3} onClick={onClose}>

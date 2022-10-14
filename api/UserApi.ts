@@ -13,12 +13,14 @@ export const login = async (email: string, password: string) => {
 export const register = async (
   email: string,
   password: string,
-  username: string
+  username: string,
+  displayName: string
 ) => {
   const response = await axiosClient.post("/register", {
     email,
     password,
     username,
+    displayName,
   });
   axiosClient.defaults.headers.common[
     "Authorization"

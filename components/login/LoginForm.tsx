@@ -1,69 +1,96 @@
 import {
   Button,
   Center,
-  Flex,
   ModalBody,
   ModalFooter,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { login } from "../../api/UserApi";
 import { LoginModalContext } from "../../contexts/LoginModalContext";
-import TextField from "../common/TextField";
+import * as yup from "yup";
+import { Form, Formik, FormikHelpers } from "formik";
+import FormTextField from "../common/FormTextField";
 
 interface Props {
   mutate: () => void;
   onRequestClose: () => void;
 }
 
-const LoginForm = ({ mutate, onRequestClose }: Props) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { setFormType } = useContext(LoginModalContext);
+interface LoginForm {
+  email: string;
+  password: string;
+}
 
-  const submitLogin = async () => {
-    setLoading(true);
-    setError("");
+const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Email must be a valid email address")
+    .required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
+
+const LoginForm = ({ mutate, onRequestClose }: Props) => {
+  const { setFormType } = useContext(LoginModalContext);
+  const toast = useToast();
+
+  const submitLogin = async (
+    values: LoginForm,
+    { setSubmitting }: FormikHelpers<LoginForm>
+  ) => {
     try {
-      await login(email, password);
+      await login(values.email, values.password);
       mutate();
       onRequestClose();
     } catch (error) {
-      setError("dupa");
+      if (!toast.isActive("login-error")) {
+        toast({
+          id: "login-error",
+          title: "Login failed",
+          description: "Invalid email or password",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } finally {
+      setSubmitting(false);
     }
-    setLoading(false);
   };
 
   return (
     <>
-      <ModalBody>
-        <TextField label="Email" value={email} onChange={setEmail} required />
-        <TextField
-          label="Password"
-          value={password}
-          onChange={setPassword}
-          type="password"
-          required
-        />
-        <Center>
-          <Text paddingRight={1}>Don&apos;t have an account? </Text>
-          <Button
-            variant="link"
-            onClick={() => {
-              setFormType("Register");
-            }}
-          >
-            Sign up!
-          </Button>
-        </Center>
-      </ModalBody>
-      <ModalFooter margin={"auto"}>
-        <Button onClick={() => submitLogin()} disabled={loading}>
-          Login
-        </Button>
-      </ModalFooter>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validationSchema={loginSchema}
+        onSubmit={submitLogin}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <ModalBody>
+              <FormTextField label="Email" name="email" />
+              <FormTextField type="password" label="Password" name="password" />
+              <Center>
+                <Text paddingRight={1}>Don&apos;t have an account? </Text>
+                <Button
+                  variant="link"
+                  onClick={() => {
+                    setFormType("Register");
+                  }}
+                >
+                  Sign up!
+                </Button>
+              </Center>
+            </ModalBody>
+            <ModalFooter margin="auto">
+              <Button type="submit" isLoading={isSubmitting}>
+                Login
+              </Button>
+            </ModalFooter>
+          </Form>
+        )}
+      </Formik>
     </>
   );
 };
