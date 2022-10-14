@@ -26,7 +26,7 @@ const GamePage = ({ game }: Props) => {
 
   return (
     <Box>
-      {getRandomImage(game) && (
+      {getRandomImage(game) ? (
         <Image
           src={randomImageUrl}
           alt={game.name}
@@ -35,7 +35,7 @@ const GamePage = ({ game }: Props) => {
           height={1080}
           className={`w-full -translate-y-96 absolute z-0 opacity-30 ${styles["game-header-image"]} select-none`}
         />
-      )}
+      ) : null}
       <GameHeader game={game} />
       <GameDetailsTab game={game} />
     </Box>

@@ -77,19 +77,19 @@ const GameSidebar = ({ game }: Props) => {
         {game.platforms?.map((platform) => platform.name).join(", ")}
       </Text>
       {/* TODO: Add release dates and age ratings and genres */}
-      {loggedOut && (
+      {loggedOut ? (
         <Text color="gray.300" marginTop={5}>
           <Button variant="link" onClick={openLoginModal}>
             Log in
           </Button>{" "}
           to keep this and many other games organized in lists!
         </Text>
-      )}
-      {!loggedOut && user && (
+      ) : null}
+      {!loggedOut && user ? (
         <Center flexDirection="column" marginTop={5}>
-          {lists && (
+          {lists ? (
             <Text>This game is already on {lists?.length} of your lists</Text>
-          )}
+          ) : null}
           <Menu>
             <MenuButton
               as={Button}
@@ -108,7 +108,7 @@ const GameSidebar = ({ game }: Props) => {
             </MenuList>
           </Menu>
         </Center>
-      )}
+      ) : null}
     </Box>
   );
 };

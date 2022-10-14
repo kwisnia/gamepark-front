@@ -26,11 +26,11 @@ const GameInfo = ({ game }: Props) => {
           {game.summary}
         </Text>
         <GameMediaCarousel game={game} />
-        {game.storyline && (
+        {game.storyline ? (
           <Accordion allowToggle>
             <AccordionItem>
               <AccordionButton>
-                <Box flex="1" textAlign="left" textColor={"white"}>
+                <Box flex="1" textAlign="left" textColor="white">
                   Storyline (may contain spoilers)
                 </Box>
                 <AccordionIcon />
@@ -42,7 +42,7 @@ const GameInfo = ({ game }: Props) => {
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-        )}
+        ) : null}
       </Box>
       <GameSidebar game={game} />
     </Flex>

@@ -114,7 +114,9 @@ const ListCreateModal = (props: ModalProps) => {
               <ModalBody>
                 <Field name="name">
                   {({ field }: FieldProps<string, ListForm>) => (
-                    <FormControl isInvalid={!!errors.name && touched.name}>
+                    <FormControl
+                      isInvalid={Boolean(errors.name && touched.name)}
+                    >
                       <FormLabel htmlFor="name">Name</FormLabel>
                       <Input {...field} id="name" placeholder="Name" />
                       <FormErrorMessage>{errors.name}</FormErrorMessage>
@@ -123,7 +125,7 @@ const ListCreateModal = (props: ModalProps) => {
                 </Field>
                 <Field name="description">
                   {({ field }: FieldProps<string, ListForm>) => (
-                    <FormControl isInvalid={!!errors.description}>
+                    <FormControl isInvalid={Boolean(errors.description)}>
                       <FormLabel htmlFor="description">Description</FormLabel>
                       <Input
                         {...field}

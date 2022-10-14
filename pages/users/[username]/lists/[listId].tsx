@@ -52,9 +52,9 @@ const DetailedListPage = () => {
     <Box width="60%" margin="auto">
       <Heading>{data?.name}</Heading>
       <Text>{data?.description}</Text>
-      {user?.username === loggedInUser?.username && (
+      {user?.username === loggedInUser?.username ? (
         <Button onClick={() => setEditModalOpen(true)}>Edit</Button>
-      )}
+      ) : null}
       <List>
         {data?.games.map((game) => (
           <ListItem
@@ -92,7 +92,7 @@ const DetailedListPage = () => {
                 </LinkOverlay>
               </Heading>
             </LinkBox>
-            {isOwner && (
+            {isOwner ? (
               <Center flex={1}>
                 <IconButton
                   aria-label="Delete game from list"
@@ -101,11 +101,11 @@ const DetailedListPage = () => {
                   onClick={() => removeGameFromList(game.slug)}
                 />
               </Center>
-            )}
+            ) : null}
           </ListItem>
         ))}
       </List>
-      {data && isOwner && (
+      {data && isOwner ? (
         <ListCreateModal
           open={editModalOpen}
           onClose={() => setEditModalOpen(false)}
@@ -115,7 +115,7 @@ const DetailedListPage = () => {
           initialDescription={data.description}
           mutate={mutate}
         />
-      )}
+      ) : null}
     </Box>
   );
 };

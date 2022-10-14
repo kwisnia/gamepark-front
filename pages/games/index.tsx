@@ -67,11 +67,14 @@ const GamesList: NextPage = () => {
         />
       </Flex>
       <SimpleGrid columns={5} columnGap={16} rowGap={8}>
-        {games &&
-          games.map((games) =>
-            games.map((game) => <GameListElement key={game.slug} game={game} />)
-          )}
-        {games && <div ref={ref} className="h-1" />}
+        {games
+          ? games.map((games) =>
+              games.map((game) => (
+                <GameListElement key={game.slug} game={game} />
+              ))
+            )
+          : null}
+        {games ? <div ref={ref} className="h-1" /> : null}
       </SimpleGrid>
     </div>
   );

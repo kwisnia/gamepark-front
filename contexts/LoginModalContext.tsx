@@ -34,9 +34,9 @@ export const LoginModalProvider = ({ children }: Props) => {
   return (
     <LoginModalContext.Provider value={{ openModal, closeModal, setFormType }}>
       {children}
-      {isModalOpen && (
+      {isModalOpen ? (
         <LoginModal formType={formType} isOpen={isModalOpen} mutate={mutate} />
-      )}
+      ) : null}
     </LoginModalContext.Provider>
   );
 };

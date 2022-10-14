@@ -54,14 +54,14 @@ const UserListPage = () => {
       <Heading>{user.displayName}&apos;s lists</Heading>
       <Flex justifyContent="space-between" alignItems="center">
         <Text color="gray.200">{data.length} lists</Text>
-        {isOwner && (
+        {isOwner ? (
           <Button
             colorScheme="facebook"
             onClick={() => setCreateModalOpen(true)}
           >
             Create a new list
           </Button>
-        )}
+        ) : null}
       </Flex>
       <ListCreateModal
         open={createModalOpen}
@@ -86,7 +86,7 @@ const UserListPage = () => {
                 {gameList.name}
               </LinkOverlay>
             </Heading>
-            {isOwner && (
+            {isOwner ? (
               <Flex>
                 <IconButton
                   aria-label="Delete list"
@@ -95,7 +95,7 @@ const UserListPage = () => {
                   onClick={() => removeList(gameList.id)}
                 />
               </Flex>
-            )}
+            ) : null}
           </LinkBox>
         ))}
       </List>
