@@ -17,7 +17,15 @@ interface Props {
 const GameDetailsTabs = ({ game }: Props) => {
   return (
     <Flex direction="column" alignItems="center">
-      <Tabs variant="line" marginTop="5" width="60%" zIndex={1}>
+      <Tabs
+        variant="line"
+        marginTop="5"
+        width={{
+          base: "100%",
+          md: "60%",
+        }}
+        zIndex={1}
+      >
         <TabList>
           <Tab>Information</Tab>
           <Tab>Discussions</Tab>

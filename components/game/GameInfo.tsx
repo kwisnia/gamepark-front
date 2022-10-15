@@ -20,7 +20,14 @@ interface Props {
 
 const GameInfo = ({ game }: Props) => {
   return (
-    <Flex maxWidth="100%">
+    <Flex
+      maxWidth="100%"
+      gap={5}
+      direction={{
+        base: "column",
+        md: "row",
+      }}
+    >
       <Box flex={8}>
         <Text fontSize="xl" fontWeight="semibold" color="gray.400">
           {game.summary}

@@ -4,6 +4,7 @@ import {
   Flex,
   Heading,
   Text,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import Image from "next/future/image";
@@ -15,17 +16,19 @@ interface Props {
 }
 
 const GameHeader = ({ game }: Props) => {
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
+
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      justifyContent="end"
-      height="96"
-      marginTop="8%"
-    >
+    <Flex alignItems="end" justifyContent="center" marginTop="8%">
       <Flex
-        direction="row"
-        width="60%"
+        direction={{
+          base: "column",
+          md: "row",
+        }}
+        width={{
+          base: "100%",
+          md: "60%",
+        }}
         justifyContent="space-between"
         zIndex={1}
       >
@@ -34,7 +37,7 @@ const GameHeader = ({ game }: Props) => {
           alt={game.name}
           width={264}
           height={374}
-          className="rounded-lg select-none"
+          className="rounded-lg select-none m-auto"
         />
         <Flex
           flex={8}
@@ -45,7 +48,16 @@ const GameHeader = ({ game }: Props) => {
           paddingBottom={10}
           zIndex={1}
         >
-          <Heading size="4xl" fontWeight="bold" paddingBottom={5}>
+          <Heading
+            size={{
+              base: "md",
+              md: "xl",
+              lg: "2xl",
+            }}
+            fontWeight="bold"
+            paddingBottom={5}
+            textAlign="center"
+          >
             {game.name}
           </Heading>
           <Text fontSize="xl" fontWeight="semibold" color="gray.400">
@@ -53,40 +65,60 @@ const GameHeader = ({ game }: Props) => {
             {DateTime.fromISO(game.firstReleaseDate).toFormat("dd LLL yyyy")}
           </Text>
         </Flex>
-        <Flex direction="column" justifyContent="end" paddingBottom={10}>
-          <CircularProgress value={game.aggregatedRating} size="150px">
-            <CircularProgressLabel>
-              {Math.floor(game.aggregatedRating)}
-            </CircularProgressLabel>
-          </CircularProgress>
-          <Text
-            fontSize="xl"
-            fontWeight="semibold"
-            color="gray.400"
-            textAlign="center"
+        <Flex justifyContent="center">
+          <Flex
+            direction="column"
+            justifyContent="end"
+            alignItems="center"
+            paddingBottom={10}
           >
-            {game.aggregatedRatingCount} critic ratings
-          </Text>
-        </Flex>
-        <Flex
-          direction="column"
-          justifyContent="end"
-          paddingBottom={10}
-          paddingLeft={5}
-        >
-          <CircularProgress value={game.rating} size="120px">
-            <CircularProgressLabel textAlign="center">
-              {Math.floor(game.rating)}
-            </CircularProgressLabel>
-          </CircularProgress>
-          <Text
-            fontSize="xl"
-            fontWeight="semibold"
-            color="gray.400"
-            textAlign="center"
+            <CircularProgress
+              value={game.aggregatedRating}
+              size={isMobile ? "100px" : "150px"}
+            >
+              <CircularProgressLabel>
+                {Math.floor(game.aggregatedRating)}
+              </CircularProgressLabel>
+            </CircularProgress>
+            <Text
+              fontSize={{
+                base: "sm",
+                md: "md",
+              }}
+              fontWeight="semibold"
+              color="gray.400"
+              textAlign="center"
+            >
+              {game.aggregatedRatingCount} critic ratings
+            </Text>
+          </Flex>
+          <Flex
+            direction="column"
+            justifyContent="end"
+            alignItems="center"
+            paddingBottom={10}
+            paddingLeft={5}
           >
-            {game.rating} user ratings
-          </Text>
+            <CircularProgress
+              value={game.rating}
+              size={isMobile ? "80px" : "120px"}
+            >
+              <CircularProgressLabel textAlign="center">
+                {Math.floor(game.rating)}
+              </CircularProgressLabel>
+            </CircularProgress>
+            <Text
+              fontSize={{
+                base: "sm",
+                md: "md",
+              }}
+              fontWeight="semibold"
+              color="gray.400"
+              textAlign="center"
+            >
+              {game.rating} user ratings
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
