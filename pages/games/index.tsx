@@ -77,9 +77,15 @@ const GamesList: NextPage = () => {
         />
       </Flex>
       <SimpleGrid
-        minChildWidth="200px"
-        columnGap={16}
+        columns={{
+          base: 1,
+          md: 2,
+          lg: 3,
+          xl: 4,
+          "2xl": 5,
+        }}
         rowGap={8}
+        columnGap={8}
         justifyItems="center"
       >
         {games
