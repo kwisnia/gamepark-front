@@ -23,6 +23,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { removeFromList } from "../../../../api/ListApi";
 import ListCreateModal from "../../../../components/user/ListCreateModal";
 import { useState } from "react";
+import Head from "next/head";
 
 const DetailedListPage = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -50,6 +51,11 @@ const DetailedListPage = () => {
 
   return (
     <Box width="60%" margin="auto">
+      <Head>
+        <title>
+          {data?.name} by {user?.displayName} - GamePark
+        </title>
+      </Head>
       <Heading>{data?.name}</Heading>
       <Text>{data?.description}</Text>
       {user?.username === loggedInUser?.username ? (

@@ -1,7 +1,8 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import React from "react";
 import { LoginModalProvider } from "../contexts/LoginModalContext";
 import Header from "./Header";
+import Footer from "./Footer";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
         <main className="layout__content bg-gray-900 h-full flex-1">
           {children}
         </main>
+        <Footer />
       </Flex>
     </LoginModalProvider>
   );

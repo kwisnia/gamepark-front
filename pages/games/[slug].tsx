@@ -10,6 +10,7 @@ import { getRandomImage } from "../../utils/ImageUtils";
 import styles from "../../styles/GamePage.module.css";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { useMemo } from "react";
+import Head from "next/head";
 
 interface Props {
   game: GameDetails;
@@ -26,6 +27,9 @@ const GamePage = ({ game }: Props) => {
 
   return (
     <Box>
+      <Head>
+        <title>{game.name} - GamePark</title>
+      </Head>
       {getRandomImage(game) ? (
         <Image
           src={randomImageUrl}

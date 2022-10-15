@@ -8,6 +8,7 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
+import Head from "next/head";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDebouncedCallback } from "use-debounce";
@@ -51,6 +52,9 @@ const GamesList: NextPage = () => {
         md: "80%",
       }}
     >
+      <Head>
+        <title>GamePark - Games</title>
+      </Head>
       <Flex width={"full"} justifyContent={"space-between"} padding={4}>
         <InputGroup>
           <InputLeftElement pointerEvents="none">

@@ -19,6 +19,7 @@ import useLoggedInUser from "../../../../hooks/useLoggedInUser";
 import useUserDetails from "../../../../hooks/useUserDetails";
 import { GameList } from "../../../../types/lists";
 import { removeList as removeListApi } from "../../../../api/ListApi";
+import Head from "next/head";
 
 const UserListPage = () => {
   const router = useRouter();
@@ -51,6 +52,9 @@ const UserListPage = () => {
 
   return (
     <Box width="60%" margin="auto">
+      <Head>
+        <title>{user.displayName}&apos;s lists - GamePark</title>
+      </Head>
       <Heading>{user.displayName}&apos;s lists</Heading>
       <Flex justifyContent="space-between" alignItems="center">
         <Text color="gray.200">{data.length} lists</Text>

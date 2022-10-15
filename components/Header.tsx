@@ -24,7 +24,7 @@ import useLoggedInUser from "../hooks/useLoggedInUser";
 import { AiFillHome } from "react-icons/ai";
 import { GiConsoleController } from "react-icons/gi";
 import Image from "next/future/image";
-import GameparkLogo from "./common/Logo";
+import GameparkLogo from "./assets/gamepark-logo.svg";
 import UserMenu from "./UserMenu";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -123,7 +123,7 @@ const Header = () => {
               display="flex"
               alignItems="center"
             >
-              <GameparkLogo fill="white" />
+              <GameparkLogo width="3em" height="3em" fill="white" />
               <VisuallyHidden>Gamepark</VisuallyHidden>
             </chakra.a>
           </Link>

@@ -1,5 +1,6 @@
 import { Avatar, Box, Flex, Heading } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import Head from "next/head";
 import { getUserDetails } from "../../../api/UserApi";
 import { UserDetails } from "../../../types/user";
 
@@ -12,6 +13,9 @@ const UserPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Flex>
+      <Head>
+        <title>{userDetails.displayName}&apos;s profile - GamePark</title>
+      </Head>
       <Box>
         <Heading>{userDetails.displayName}</Heading>
       </Box>
