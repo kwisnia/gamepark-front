@@ -6,6 +6,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { axiosClient } from "../constants";
@@ -14,6 +15,7 @@ import useLoggedInUser from "../hooks/useLoggedInUser";
 const UserMenu = () => {
   const { user, mutate } = useLoggedInUser();
   const router = useRouter();
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const logout = () => {
     localStorage.removeItem("gaming-token");
@@ -30,7 +32,7 @@ const UserMenu = () => {
         _active={{ background: "transparent" }}
         _hover={{ background: "transparent" }}
       >
-        {user?.displayName}
+        {isMobile ? null : user?.displayName}
       </MenuButton>
       <MenuList>
         <MenuItem onClick={() => router.push(`/users/${user?.username}`)}>

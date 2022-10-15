@@ -50,10 +50,18 @@ const DetailedListPage = () => {
   };
 
   return (
-    <Box width="60%" margin="auto">
+    <Box
+      width={{
+        base: "90%",
+        md: "60%",
+      }}
+      margin="auto"
+    >
       <Head>
         <title>
-          {data?.name} by {user?.displayName} - GamePark
+          {data && user
+            ? `${data.name} by ${user.displayName} - GamePark`
+            : "Loading..."}
         </title>
       </Head>
       <Heading>{data?.name}</Heading>

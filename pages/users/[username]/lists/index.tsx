@@ -51,7 +51,13 @@ const UserListPage = () => {
   if (!data || loading || !user) return <div>loading...</div>;
 
   return (
-    <Box width="60%" margin="auto">
+    <Box
+      width={{
+        base: "90%",
+        md: "60%",
+      }}
+      margin="auto"
+    >
       <Head>
         <title>{user.displayName}&apos;s lists - GamePark</title>
       </Head>
