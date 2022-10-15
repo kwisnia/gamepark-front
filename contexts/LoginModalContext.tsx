@@ -1,3 +1,4 @@
+import { useDisclosure } from "@chakra-ui/react";
 import { createContext, useState } from "react";
 import LoginModal from "../components/login/LoginModal";
 import useLoggedInUser from "../hooks/useLoggedInUser";
@@ -19,23 +20,17 @@ export const LoginModalContext = createContext<LoginModalContextData>({
 });
 
 export const LoginModalProvider = ({ children }: Props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [formType, setFormType] = useState<"Login" | "Register">("Login");
   const { mutate } = useLoggedInUser();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
-    <LoginModalContext.Provider value={{ openModal, closeModal, setFormType }}>
+    <LoginModalContext.Provider
+      value={{ openModal: onOpen, closeModal: onClose, setFormType }}
+    >
       {children}
-      {isModalOpen ? (
-        <LoginModal formType={formType} isOpen={isModalOpen} mutate={mutate} />
+      {isOpen ? (
+        <LoginModal formType={formType} isOpen={isOpen} mutate={mutate} />
       ) : null}
     </LoginModalContext.Provider>
   );

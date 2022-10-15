@@ -1,5 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Flex,
   Input,
   InputGroup,
@@ -43,7 +44,13 @@ const GamesList: NextPage = () => {
   );
 
   return (
-    <div className="w-4/5 m-auto">
+    <Box
+      margin="auto"
+      width={{
+        base: "100%",
+        md: "80%",
+      }}
+    >
       <Flex width={"full"} justifyContent={"space-between"} padding={4}>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
@@ -54,7 +61,10 @@ const GamesList: NextPage = () => {
             onChange={handleSearchChange}
             backgroundColor="gray.600"
             border={"none"}
-            width="md"
+            width={{
+              base: "100%",
+              md: "50%",
+            }}
           />
         </InputGroup>
         <FilterSortWindow
@@ -66,7 +76,12 @@ const GamesList: NextPage = () => {
           setOrder={setOrder}
         />
       </Flex>
-      <SimpleGrid columns={5} columnGap={16} rowGap={8}>
+      <SimpleGrid
+        minChildWidth="200px"
+        columnGap={16}
+        rowGap={8}
+        justifyItems="center"
+      >
         {games
           ? games.map((games) =>
               games.map((game) => (
@@ -76,7 +91,7 @@ const GamesList: NextPage = () => {
           : null}
         {games ? <div ref={ref} className="h-1" /> : null}
       </SimpleGrid>
-    </div>
+    </Box>
   );
 };
 

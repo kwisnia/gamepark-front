@@ -3,15 +3,18 @@ import {
   Box,
   Button,
   Flex,
+  Icon,
   IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
   useColorMode,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
+import { BsFilter } from "react-icons/bs";
 
 const gameOptions = [
   { value: 0, label: "Games" },
@@ -45,6 +48,8 @@ const FilterSortWindow = ({
   order,
   setOrder,
 }: FilterSortWindowProps) => {
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
+
   const changeSortOrder = () => {
     if (order === "asc") {
       setOrder("desc");
@@ -56,15 +61,31 @@ const FilterSortWindow = ({
   return (
     <Popover>
       <PopoverTrigger>
-        <Button bg={"gray.600"} display="flex" justifyContent={"flex-end"}>
-          Filter options
-        </Button>
+        {isMobile ? (
+          <IconButton
+            display={{
+              base: "flex",
+              md: "none",
+            }}
+            aria-label="Open menu"
+            fontSize="20px"
+            variant={"ghost"}
+            icon={<Icon as={BsFilter} />}
+          />
+        ) : (
+          <Button
+            bg="gray.600"
+            display={{
+              base: "none",
+              md: "flex",
+            }}
+            justifyContent="flex-end"
+          >
+            Filter options
+          </Button>
+        )}
       </PopoverTrigger>
-      <PopoverContent
-        bg={"gray.600"}
-        border={"none"}
-        className="bg-slate-600 p-2 rounded-md m-2 mr-10"
-      >
+      <PopoverContent bg="gray.600" border="none" className="p-5 rounded-md">
         <Text>Game types</Text>
         <Select
           useBasicStyles
