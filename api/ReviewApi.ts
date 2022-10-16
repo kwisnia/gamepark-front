@@ -4,3 +4,7 @@ import { ReviewForm } from "../types/review";
 export const submitReview = async (review: ReviewForm, gameSlug: string) => {
   return axiosClient.post(`/games/${gameSlug}/reviews`, review);
 };
+
+export const removeReview = async (gameSlug: string) => {
+  return axiosClient.delete(`/games/${gameSlug}/reviews`);
+};

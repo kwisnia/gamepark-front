@@ -1,5 +1,6 @@
 import {
   Button,
+  Flex,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -14,13 +15,16 @@ import FormTextField from "../common/FormTextField";
 import Modal from "../common/Modal";
 import * as yup from "yup";
 import { GameDetails } from "../../types/game";
-import UserRating from "./UserRating";
 import FormSelect from "../common/FormSelect";
 import { SelectOption } from "../../types/common";
 import { GameCompletionStatus, ReviewForm } from "../../types/review";
 import { submitReview } from "../../api/ReviewApi";
 import { KeyedMutator, mutate } from "swr";
 import { UserGameInfo } from "../../hooks/useUserGameInfo";
+import Rating from "./StarRating";
+import { StarIcon } from "@chakra-ui/icons";
+import { AiFillStar } from "react-icons/ai";
+import { BsStarFill } from "react-icons/bs";
 
 interface Props {
   open: boolean;
@@ -123,13 +127,18 @@ const ReviewModal = ({
                 <ModalBody>
                   <Field name="rating">
                     {() => (
-                      <UserRating
-                        onClick={(value) => {
-                          setRating(value);
-                          setFieldValue("rating", value);
-                        }}
-                        initialValue={rating}
-                      />
+                      <Flex justifyContent="center">
+                        <Rating
+                          icons={5}
+                          rating={rating}
+                          onChange={(value) => {
+                            setRating(value);
+                            setFieldValue("rating", value);
+                          }}
+                          icon={<StarIcon />}
+                          iconSize={40}
+                        />
+                      </Flex>
                     )}
                   </Field>
                   <FormTextField name="title" label="Title" />

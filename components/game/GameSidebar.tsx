@@ -1,25 +1,28 @@
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon, StarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Center,
   Flex,
+  IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Text,
+  Tooltip,
   useToast,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import { Rating } from "react-simple-star-rating";
 import { addToList } from "../../api/ListApi";
+import { removeReview } from "../../api/ReviewApi";
 import { LoginModalContext } from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import { GameDetails } from "../../types/game";
+import RemoveReviewDialog from "../review/RemoveReviewDialog";
 import ReviewModal from "../review/ReviewModal";
-import UserRating from "../review/UserRating";
+import Rating from "../review/StarRating";
 
 interface Props {
   game: GameDetails;
@@ -27,6 +30,8 @@ interface Props {
 
 const GameSidebar = ({ game }: Props) => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isRemoveReviewDialogOpen, setIsRemoveReviewDialogOpen] =
+    useState(false);
   const { loggedOut, user } = useLoggedInUser();
   const { lists, review, mutate, loading } = useUserGameInfo(game.slug);
   const { openModal, setFormType } = useContext(LoginModalContext);
@@ -42,6 +47,10 @@ const GameSidebar = ({ game }: Props) => {
     setRating(review?.rating ?? 0);
   }, [review]);
 
+  useEffect(() => {
+    console.log(rating);
+  }, [rating]);
+
   const listsWithoutGame = user?.lists?.filter(
     (list) =>
       !lists || lists.some((gameList) => gameList.id === list.id) === false
@@ -56,6 +65,19 @@ const GameSidebar = ({ game }: Props) => {
       isClosable: true,
     });
     mutate();
+  };
+
+  const confirmRemoveReview = async () => {
+    await removeReview(game.slug);
+    toast({
+      title: "Review removed",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    mutate();
+    setIsRemoveReviewDialogOpen(false);
+    setRating(0);
   };
 
   const getGameDevelopers = () => {
@@ -125,11 +147,35 @@ const GameSidebar = ({ game }: Props) => {
           <Text color="gray.500" fontWeight="bold" marginTop={5}>
             {review ? "Your rating" : "Rate this game"}
           </Text>
-          <UserRating
-            onClick={openReviewModal}
-            initialValue={rating}
-            readonly={Boolean(review)}
-          />
+          <Flex alignItems="center">
+            <Rating
+              icons={5}
+              rating={rating}
+              onChange={openReviewModal}
+              readonly={Boolean(review)}
+              icon={<StarIcon />}
+              iconSize={32}
+            />
+            {review ? (
+              <>
+                <Tooltip label="Remove your rating">
+                  <IconButton
+                    variant="ghost"
+                    size="xs"
+                    aria-label="Remove rating"
+                    icon={<CloseIcon />}
+                    marginLeft={2}
+                    onClick={() => setIsRemoveReviewDialogOpen(true)}
+                  />
+                </Tooltip>
+                <RemoveReviewDialog
+                  confirmAction={confirmRemoveReview}
+                  isOpen={isRemoveReviewDialogOpen}
+                  onClose={() => setIsRemoveReviewDialogOpen(false)}
+                />
+              </>
+            ) : null}
+          </Flex>
           <ReviewModal
             open={isReviewModalOpen}
             onClose={() => {
@@ -137,7 +183,7 @@ const GameSidebar = ({ game }: Props) => {
             }}
             game={game}
             rating={rating}
-            setRating={() => {}}
+            setRating={setRating}
             mutate={mutate}
           />
         </Center>
