@@ -2,9 +2,11 @@ import { GameList } from "../types/lists";
 import useSWRImmutable from "swr/immutable";
 import useLoggedInUser from "./useLoggedInUser";
 import { useEffect } from "react";
+import { UserReview } from "../types/review";
 
-interface UserGameInfo {
+export interface UserGameInfo {
   lists: GameList[];
+  review: UserReview | null;
 }
 
 const useUserGameInfo = (game: string) => {
@@ -21,6 +23,7 @@ const useUserGameInfo = (game: string) => {
 
   return {
     lists: data?.lists,
+    review: data?.review,
     mutate,
     loading: !data || isValidating,
   };

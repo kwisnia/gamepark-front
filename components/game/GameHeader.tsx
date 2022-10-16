@@ -100,11 +100,11 @@ const GameHeader = ({ game }: Props) => {
             paddingLeft={5}
           >
             <CircularProgress
-              value={game.rating}
+              value={game.rating * 20}
               size={isMobile ? "80px" : "120px"}
             >
               <CircularProgressLabel textAlign="center">
-                {Math.floor(game.rating)}
+                {Math.floor(game.rating * 20)}
               </CircularProgressLabel>
             </CircularProgress>
             <Text
@@ -116,7 +116,7 @@ const GameHeader = ({ game }: Props) => {
               color="gray.400"
               textAlign="center"
             >
-              {game.rating} user ratings
+              {game.ratingCount} user ratings
             </Text>
           </Flex>
         </Flex>

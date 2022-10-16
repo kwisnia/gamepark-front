@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Menu,
   MenuButton,
   MenuItem,
@@ -10,27 +11,36 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Rating } from "react-simple-star-rating";
 import { addToList } from "../../api/ListApi";
 import { LoginModalContext } from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import { GameDetails } from "../../types/game";
+import ReviewModal from "../review/ReviewModal";
+import UserRating from "../review/UserRating";
 
 interface Props {
   game: GameDetails;
 }
 
 const GameSidebar = ({ game }: Props) => {
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const { loggedOut, user } = useLoggedInUser();
-  const { lists, mutate, loading } = useUserGameInfo(game.slug);
+  const { lists, review, mutate, loading } = useUserGameInfo(game.slug);
   const { openModal, setFormType } = useContext(LoginModalContext);
+  const [rating, setRating] = useState(review?.rating ?? 0);
   const toast = useToast();
 
   const openLoginModal = () => {
     setFormType("Login");
     openModal();
   };
+
+  useEffect(() => {
+    setRating(review?.rating ?? 0);
+  }, [review]);
 
   const listsWithoutGame = user?.lists?.filter(
     (list) =>
@@ -60,6 +70,11 @@ const GameSidebar = ({ game }: Props) => {
       .map((company) => company.company.name)
       .join(", ");
   };
+
+  const openReviewModal = (rating: number) => {
+    setRating(rating);
+    setIsReviewModalOpen(true);
+  };
   return (
     <Box rounded="md" bg="gray.700" flex={2} padding={5}>
       <Text color="gray.500" fontWeight="bold">
@@ -87,8 +102,8 @@ const GameSidebar = ({ game }: Props) => {
       ) : null}
       {!loggedOut && user ? (
         <Center flexDirection="column" marginTop={5}>
-          {lists ? (
-            <Text>This game is already on {lists?.length} of your lists</Text>
+          {lists && lists.length ? (
+            <Text>This game is already on {lists.length} of your lists</Text>
           ) : null}
           <Menu>
             <MenuButton
@@ -107,6 +122,24 @@ const GameSidebar = ({ game }: Props) => {
               ))}
             </MenuList>
           </Menu>
+          <Text color="gray.500" fontWeight="bold" marginTop={5}>
+            {review ? "Your rating" : "Rate this game"}
+          </Text>
+          <UserRating
+            onClick={openReviewModal}
+            initialValue={rating}
+            readonly={Boolean(review)}
+          />
+          <ReviewModal
+            open={isReviewModalOpen}
+            onClose={() => {
+              setIsReviewModalOpen(false);
+            }}
+            game={game}
+            rating={rating}
+            setRating={() => {}}
+            mutate={mutate}
+          />
         </Center>
       ) : null}
     </Box>

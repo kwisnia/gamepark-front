@@ -94,6 +94,7 @@ export interface Company {
 }
 
 export interface Platform {
+  id: number;
   name: string;
   abbreviation: string;
   generation: number;

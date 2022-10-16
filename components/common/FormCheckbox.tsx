@@ -1,9 +1,9 @@
 import {
+  Checkbox,
+  CheckboxProps,
   FormControl,
   FormErrorMessage,
-  FormLabel,
-  Textarea,
-  TextareaProps,
+  FormHelperText,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { useField } from "formik";
@@ -11,18 +11,25 @@ import { useField } from "formik";
 interface Props {
   name: string;
   label: string;
+  description?: string;
 }
 
-const FormTextArea = ({ label, name, ...rest }: Props & TextareaProps) => {
+const FormCheckbox = ({
+  label,
+  name,
+  description,
+  ...rest
+}: Props & CheckboxProps) => {
   const [field, meta] = useField(name);
-
   return (
     <FormControl isInvalid={Boolean(meta.error && meta.touched)}>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
-      <Textarea {...field} {...rest} id={name} placeholder={label} />
+      <Checkbox {...field} {...rest} id={name} placeholder={label}>
+        {label}
+      </Checkbox>
+      <FormHelperText>{description}</FormHelperText>
       <FormErrorMessage>{meta.error}</FormErrorMessage>
     </FormControl>
   );
 };
 
-export default FormTextArea;
+export default FormCheckbox;
