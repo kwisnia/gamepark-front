@@ -24,11 +24,12 @@ const GamePage = ({ game }: Props) => {
   if (router.isFallback) {
     return <Box>Loading...</Box>;
   }
+  const title = `${game.name} - GamePark`;
 
   return (
     <Box>
       <Head>
-        <title>{game.name} - GamePark</title>
+        <title>{title}</title>
       </Head>
       {getRandomImage(game) ? (
         <Image

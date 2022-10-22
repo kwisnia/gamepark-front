@@ -37,6 +37,10 @@ const DetailedListPage = () => {
   const toast = useToast();
 
   const isOwner = user?.id === loggedInUser?.id;
+  const title =
+    data && user
+      ? `${data.name} by ${user.displayName} - GamePark`
+      : "Loading...";
 
   const removeGameFromList = async (gameSlug: string) => {
     await removeFromList(Number(listId), gameSlug);
@@ -58,11 +62,7 @@ const DetailedListPage = () => {
       margin="auto"
     >
       <Head>
-        <title>
-          {data && user
-            ? `${data.name} by ${user.displayName} - GamePark`
-            : "Loading..."}
-        </title>
+        <title>{title}</title>
       </Head>
       <Heading>{data?.name}</Heading>
       <Text>{data?.description}</Text>

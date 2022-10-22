@@ -7,10 +7,16 @@ import {
   Box,
   Container,
   Flex,
+  Heading,
   Text,
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
+import { useEffect } from "react";
+import { mutate } from "swr";
+import useReviews from "../../hooks/useReviews";
+import useUserGameInfo from "../../hooks/useUserGameInfo";
 import { GameDetails } from "../../types/game";
+import UserReview from "../review/UserReview";
 import GameMediaCarousel from "./GameMediaCarousel";
 import GameSidebar from "./GameSidebar";
 
@@ -19,6 +25,21 @@ interface Props {
 }
 
 const GameInfo = ({ game }: Props) => {
+  const { review, mutate } = useUserGameInfo(game.slug);
+  const {
+    reviews,
+    setFilters,
+    mutate: reviewsMutate,
+  } = useReviews(game.slug, 3);
+
+  useEffect(() => {
+    console.log(reviews);
+  }, [reviews]);
+
+  useEffect(() => {
+    setFilters(game.platforms?.map((p) => p.id) ?? []);
+  }, [game, setFilters]);
+
   return (
     <Flex
       maxWidth="100%"
@@ -50,6 +71,25 @@ const GameInfo = ({ game }: Props) => {
             </AccordionItem>
           </Accordion>
         ) : null}
+        <Heading size="lg" paddingTop={5} paddingBottom={2}>
+          Reviews
+          {review ? <UserReview review={review} mutate={mutate} /> : null}
+          {reviews?.length
+            ? reviews.map((reviewPage) =>
+                reviewPage
+                  .filter(
+                    (gameReview) => gameReview.creator !== review?.creator
+                  )
+                  .map((review) => (
+                    <UserReview
+                      key={review.id}
+                      review={review}
+                      mutate={reviewsMutate}
+                    />
+                  ))
+              )
+            : null}
+        </Heading>
       </Box>
       <GameSidebar game={game} />
     </Flex>

@@ -4,7 +4,9 @@ import { axiosClient } from "../constants";
 import { UserDetails } from "../types/user";
 
 const useLoggedInUser = () => {
-  const { data, mutate, error } = useSWR<UserDetails>("/me/details");
+  const { data, mutate, error } = useSWR<UserDetails>("/me/details", {
+    refreshInterval: 30000,
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("gaming-token");
@@ -13,7 +15,7 @@ const useLoggedInUser = () => {
   }, [mutate]);
 
   const loading = !data && !error;
-  const loggedOut = !!error && error.request.status === 401;
+  const loggedOut = Boolean(error) && error.request.status === 401;
 
   return {
     loading,

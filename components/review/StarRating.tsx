@@ -2,20 +2,20 @@ import { Box, Icon } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 
 interface Props {
-  icons: number;
   icon: ReactNode;
   rating: number;
+  icons?: number;
   iconSize?: number;
   onChange?: (rating: number) => void;
   readonly?: boolean;
 }
 
 const Rating = ({
-  icons,
   icon,
   rating,
   onChange,
   readonly,
+  icons = 5,
   iconSize = 20,
 }: Props) => {
   const [activeRating, setActiveRating] = useState(rating);

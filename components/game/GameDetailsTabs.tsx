@@ -29,6 +29,7 @@ const GameDetailsTabs = ({ game }: Props) => {
         <TabList>
           <Tab>Information</Tab>
           <Tab>Discussions</Tab>
+          <Tab>Reviews</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -36,6 +37,9 @@ const GameDetailsTabs = ({ game }: Props) => {
           </TabPanel>
           <TabPanel>
             <p>Discussions</p>
+          </TabPanel>
+          <TabPanel>
+            <p>Reviews</p>
           </TabPanel>
         </TabPanels>
       </Tabs>

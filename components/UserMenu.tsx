@@ -20,7 +20,7 @@ const UserMenu = () => {
   const logout = () => {
     localStorage.removeItem("gaming-token");
     axiosClient.defaults.headers.common.Authorization = "";
-    mutate();
+    mutate(undefined);
   };
 
   return (
