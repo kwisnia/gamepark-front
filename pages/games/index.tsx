@@ -14,6 +14,7 @@ import { useInView } from "react-intersection-observer";
 import { useDebouncedCallback } from "use-debounce";
 import FilterSortWindow from "../../components/FilterWindow";
 import GameListElement from "../../components/GameListElement";
+import GameListSkeleton from "../../components/GameListElementSkeleton";
 import useGames from "../../hooks/useGames";
 
 const GamesList: NextPage = () => {
@@ -92,14 +93,20 @@ const GamesList: NextPage = () => {
         columnGap={8}
         justifyItems="center"
       >
-        {games
-          ? games.map((games) =>
+        {games ? (
+          <>
+            {games.map((games) =>
               games.map((game) => (
                 <GameListElement key={game.slug} game={game} />
               ))
-            )
-          : null}
-        {games ? <div ref={ref} className="h-1" /> : null}
+            )}
+            <div ref={ref} className="h-1" />
+          </>
+        ) : (
+          [0, 1, 2, 3, 4].map((number) => (
+            <GameListSkeleton key={`skeleton-${number}`} />
+          ))
+        )}
       </SimpleGrid>
     </Box>
   );
