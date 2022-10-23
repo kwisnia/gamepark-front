@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import Image from "next/future/image";
+import { useEffect } from "react";
 import { GameDetails, IGDBImageSize } from "../../types/game";
 import { getCoverUrl } from "../../utils/ImageUtils";
 
@@ -15,8 +16,14 @@ interface Props {
   game: GameDetails;
 }
 
+const EMPTY_DATE_VALUE = "1970-01-01T01:00:00+01:00";
+
 const GameHeader = ({ game }: Props) => {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
+
+  useEffect(() => {
+    console.log(game.firstReleaseDate);
+  }, [game]);
 
   return (
     <Flex alignItems="end" justifyContent="center" marginTop="8%">
@@ -27,7 +34,8 @@ const GameHeader = ({ game }: Props) => {
         }}
         width={{
           base: "100%",
-          md: "60%",
+          md: "90%",
+          xl: "60%",
         }}
         justifyContent="space-between"
         zIndex={1}
@@ -62,7 +70,9 @@ const GameHeader = ({ game }: Props) => {
           </Heading>
           <Text fontSize="xl" fontWeight="semibold" color="gray.400">
             First released on{" "}
-            {DateTime.fromISO(game.firstReleaseDate).toFormat("dd LLL yyyy")}
+            {game.firstReleaseDate !== EMPTY_DATE_VALUE
+              ? DateTime.fromISO(game.firstReleaseDate).toFormat("dd LLL yyyy")
+              : "N/A"}
           </Text>
         </Flex>
         <Flex justifyContent="center">

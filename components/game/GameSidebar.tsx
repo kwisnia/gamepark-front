@@ -98,16 +98,22 @@ const GameSidebar = ({ game }: Props) => {
       <Text color="gray.500" fontWeight="bold">
         Developed by:
       </Text>
-      <Text color="gray.300">{getGameDevelopers()}</Text>
+      <Text color="gray.300">
+        {game.involvedCompanies?.length ? getGameDevelopers() : "N/A"}
+      </Text>
       <Text color="gray.500" fontWeight="bold" paddingTop={5}>
         Published by:
       </Text>
-      <Text color="gray.300">{getGamePublishers()}</Text>
+      <Text color="gray.300">
+        {game.involvedCompanies?.length ? getGamePublishers() : "N/A"}
+      </Text>
       <Text color="gray.500" fontWeight="bold" paddingTop={5}>
         Available on:
       </Text>
       <Text color="gray.300">
-        {game.platforms?.map((platform) => platform.name).join(", ")}
+        {game.platforms?.length
+          ? game.platforms?.map((platform) => platform.name).join(", ")
+          : "N/A"}
       </Text>
       {/* TODO: Add release dates and age ratings and genres */}
       {loggedOut ? (

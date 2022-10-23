@@ -38,7 +38,7 @@ interface Props {
 const reviewSchema = yup.object().shape({
   rating: yup.number().required().min(1).max(5),
   title: yup.string().required("Title is required"),
-  platform: yup.number().required("Platform is required"),
+  platform: yup.number().nullable(),
   body: yup.string().required("Body is required"),
   completionStatus: yup.number().required("Completion status is required"),
   containsSpoilers: yup.boolean(),
@@ -116,7 +116,7 @@ const ReviewModal = ({
               title: "",
               body: "",
               containsSpoilers: false,
-              platform: game.platforms?.[0].id ?? 0,
+              platform: game.platforms?.[0] ? game.platforms[0].id : null,
               completionStatus: GameCompletionStatus.MainStory,
             }}
             onSubmit={submit}

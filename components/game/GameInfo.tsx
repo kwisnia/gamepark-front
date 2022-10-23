@@ -21,9 +21,10 @@ import GameSidebar from "./GameSidebar";
 
 interface Props {
   game: GameDetails;
+  changeTab: (index: number) => void;
 }
 
-const GameInfo = ({ game }: Props) => {
+const GameInfo = ({ game, changeTab }: Props) => {
   const { review, mutate } = useUserGameInfo(game.slug);
   const {
     reviews,
@@ -87,7 +88,7 @@ const GameInfo = ({ game }: Props) => {
                     />
                   ))
               )}
-              <Button>See all reviews</Button>
+              <Button onClick={() => changeTab(2)}>See all reviews</Button>
             </>
           ) : null}
         </Stack>

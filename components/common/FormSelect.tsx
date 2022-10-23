@@ -43,11 +43,20 @@ const FormSelect = ({
     <FormControl isInvalid={Boolean(meta.error && meta.touched)}>
       <FormLabel htmlFor={name}>{label}</FormLabel>
       <Select {...field} {...rest} id={name} onChange={onChange}>
-        {options.map((option) => (
-          <option key={`${option.label}-${option.value}`} value={option.value}>
-            {option.label}
+        {options.length ? (
+          options.map((option) => (
+            <option
+              key={`${option.label}-${option.value}`}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          ))
+        ) : (
+          <option disabled selected>
+            Unknown
           </option>
-        ))}
+        )}
       </Select>
       <FormHelperText>{description}</FormHelperText>
       <FormErrorMessage>{meta.error}</FormErrorMessage>

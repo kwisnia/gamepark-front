@@ -34,7 +34,7 @@ const useReviews = (gameSlug: string, pageSize: number = 20) => {
     setSort,
     order,
     setOrder,
-    mutate
+    mutate,
   };
 };
 

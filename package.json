@@ -11,6 +11,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",
     "@chakra-ui/react": "^2.3.6",
+    "@choc-ui/chakra-autocomplete": "^5.1.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@plaiceholder/next": "^2.5.0",

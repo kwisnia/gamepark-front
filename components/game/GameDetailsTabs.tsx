@@ -7,6 +7,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { GameDetails } from "../../types/game";
 import GameInfo from "./GameInfo";
@@ -17,10 +18,22 @@ interface Props {
 }
 
 const GameDetailsTabs = ({ game }: Props) => {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (index: number) => {
+    setTabIndex(index);
+  };
+
   return (
     <Flex>
       <Container maxW="container.xl" zIndex={1}>
-        <Tabs variant="line" marginTop="5" isLazy>
+        <Tabs
+          variant="line"
+          marginTop="5"
+          index={tabIndex}
+          onChange={handleTabChange}
+          isLazy
+        >
           <TabList>
             <Tab>Information</Tab>
             <Tab>Discussions</Tab>
@@ -28,7 +41,7 @@ const GameDetailsTabs = ({ game }: Props) => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <GameInfo game={game} />
+              <GameInfo game={game} changeTab={handleTabChange} />
             </TabPanel>
             <TabPanel>
               <p>Discussions</p>

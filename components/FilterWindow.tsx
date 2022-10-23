@@ -93,9 +93,7 @@ const FilterSortWindow = ({
           closeMenuOnSelect={false}
           options={gameOptions}
           isMulti
-          defaultValue={gameOptions.filter((option) =>
-            filter.includes(option.value)
-          )}
+          defaultValue={gameOptions}
           onChange={(value) => setFilter(value.map((option) => option.value))}
         />
         <Text>Sort by</Text>

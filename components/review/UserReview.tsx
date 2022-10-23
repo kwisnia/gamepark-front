@@ -93,8 +93,8 @@ const UserReview = ({ review, mutate }: Props) => {
             />
           </Flex>
           <Text fontSize="lg" fontWeight="semibold" color="gray.400">
-            {getReadableCompletionStatus(review.gameCompletionID)} on{" "}
-            {review.platform.name}
+            {getReadableCompletionStatus(review.gameCompletionID)}
+            {review.platform ? ` on ${review.platform.name}` : null}
           </Text>
         </Box>
         <Divider />

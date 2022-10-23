@@ -12,7 +12,7 @@ export interface ReviewForm {
   title: string;
   body: string;
   rating: number;
-  platform: number;
+  platform: number | null;
   completionStatus: GameCompletionStatus;
   containsSpoilers: boolean;
 }
@@ -21,8 +21,8 @@ export interface UserReview {
   id: number;
   rating: number;
   helpfulCount: number;
-  platformID: number;
-  platform: Platform;
+  platformID: number | null;
+  platform: Platform | null;
   gameCompletionID: GameCompletionStatus;
   title: string;
   creator: string;
