@@ -1,4 +1,5 @@
 import {
+  Container,
   Flex,
   Tab,
   TabList,
@@ -17,33 +18,27 @@ interface Props {
 
 const GameDetailsTabs = ({ game }: Props) => {
   return (
-    <Flex direction="column" alignItems="center">
-      <Tabs
-        variant="line"
-        marginTop="5"
-        width={{
-          base: "100%",
-          md: "60%",
-        }}
-        zIndex={1}
-      >
-        <TabList>
-          <Tab>Information</Tab>
-          <Tab>Discussions</Tab>
-          <Tab>Reviews</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <GameInfo game={game} />
-          </TabPanel>
-          <TabPanel>
-            <p>Discussions</p>
-          </TabPanel>
-          <TabPanel>
-            <GameReviews game={game} />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+    <Flex>
+      <Container maxW="container.xl" zIndex={1}>
+        <Tabs variant="line" marginTop="5" isLazy>
+          <TabList>
+            <Tab>Information</Tab>
+            <Tab>Discussions</Tab>
+            <Tab>Reviews</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <GameInfo game={game} />
+            </TabPanel>
+            <TabPanel>
+              <p>Discussions</p>
+            </TabPanel>
+            <TabPanel>
+              <GameReviews game={game} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Container>
     </Flex>
   );
 };
