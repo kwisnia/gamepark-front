@@ -19,11 +19,14 @@ const GameReviews = ({ game }: Props) => {
   const reviewsFlat = useMemo(() => reviews?.flat() ?? [], [reviews]);
   const half = Math.ceil(reviewsFlat.length / 2);
 
-  const platforms =
-    game.platforms?.map((platform) => ({
-      label: platform.name,
-      value: platform.id,
-    })) ?? [];
+  const platforms = useMemo(
+    () =>
+      game.platforms?.map((platform) => ({
+        label: platform.name,
+        value: platform.id,
+      })) ?? [],
+    [game]
+  );
 
   useEffect(() => {
     if (inView) {

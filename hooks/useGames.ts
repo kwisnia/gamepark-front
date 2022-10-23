@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { GameListElement } from "../types/game";
-import { SWRInfiniteKeyLoader } from "swr/infinite";
 import useSWRInfinite from "swr/infinite";
-import { getPlaiceholder } from "plaiceholder";
 
 const useGames = (pageSize: number = 50) => {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<number[]>([]);
-  const [sort, setSort] = useState("name");
+  const [sort, setSort] = useState("aggregated_rating");
   const [order, setOrder] = useState<"asc" | "desc">("desc");
 
   const getKey = useCallback(
@@ -20,7 +18,7 @@ const useGames = (pageSize: number = 50) => {
     [search, filters, sort, order, pageSize]
   );
 
-  const { data, size, setSize } = useSWRInfinite<GameListElement[]>(getKey, {
+  const { data, setSize } = useSWRInfinite<GameListElement[]>(getKey, {
     revalidateFirstPage: false,
   });
 

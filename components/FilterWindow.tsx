@@ -25,10 +25,10 @@ const gameOptions = [
 ];
 
 const sortOptions = [
-  { value: "name", label: "Name" },
-  { value: "first_release_date", label: "Release Date" },
   { value: "aggregated_rating", label: "Critics rating" },
   { value: "rating", label: "Community rating" },
+  { value: "name", label: "Name" },
+  { value: "first_release_date", label: "Release Date" },
 ];
 
 interface FilterSortWindowProps {
@@ -41,9 +41,7 @@ interface FilterSortWindowProps {
 }
 
 const FilterSortWindow = ({
-  filter,
   setFilter,
-  sort,
   setSort,
   order,
   setOrder,

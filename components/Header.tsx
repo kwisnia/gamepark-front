@@ -1,37 +1,28 @@
-import { HamburgerIcon, SearchIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
-  Box,
   Button,
   Center,
   chakra,
-  CloseButton,
   Flex,
   HStack,
   Icon,
-  IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
   useColorModeValue,
   useDisclosure,
   VisuallyHidden,
-  VStack,
 } from "@chakra-ui/react";
 import { useContext, useEffect } from "react";
 import { LoginModalContext } from "../contexts/LoginModalContext";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 import { AiFillHome } from "react-icons/ai";
 import { GiConsoleController } from "react-icons/gi";
-import Image from "next/future/image";
 import GameparkLogo from "./assets/gamepark-logo.svg";
 import UserMenu from "./UserMenu";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import MobileHeaderMenu from "./header/MobileHeaderMenu";
+import GameAutocomplete from "./GameAutocomplete";
 
 const Header = () => {
-  const { user, mutate, loggedOut } = useLoggedInUser();
+  const { user, loggedOut } = useLoggedInUser();
   const { setFormType, openModal } = useContext(LoginModalContext);
   const mobileNav = useDisclosure();
   const router = useRouter();
@@ -104,12 +95,7 @@ const Header = () => {
           display={mobileNav.isOpen ? "none" : "flex"}
           alignItems="center"
         >
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon />
-            </InputLeftElement>
-            <Input type="tel" placeholder="Search..." />
-          </InputGroup>
+          <GameAutocomplete />
 
           <Center>
             {!loggedOut && user ? (

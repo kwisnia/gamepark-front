@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { GameDetails } from "../../types/game";
+import Editor from "../editor/Editor";
 import GameInfo from "./GameInfo";
 import GameReviews from "./GameReviews";
 
@@ -44,7 +45,7 @@ const GameDetailsTabs = ({ game }: Props) => {
               <GameInfo game={game} changeTab={handleTabChange} />
             </TabPanel>
             <TabPanel>
-              <p>Discussions</p>
+              <Editor />
             </TabPanel>
             <TabPanel>
               <GameReviews game={game} />
