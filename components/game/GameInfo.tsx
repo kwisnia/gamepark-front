@@ -5,14 +5,13 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Container,
+  Button,
   Flex,
   Heading,
+  Stack,
   Text,
 } from "@chakra-ui/react";
-import { DateTime } from "luxon";
 import { useEffect } from "react";
-import { mutate } from "swr";
 import useReviews from "../../hooks/useReviews";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import { GameDetails } from "../../types/game";
@@ -31,10 +30,6 @@ const GameInfo = ({ game }: Props) => {
     setFilters,
     mutate: reviewsMutate,
   } = useReviews(game.slug, 3);
-
-  useEffect(() => {
-    console.log(reviews);
-  }, [reviews]);
 
   useEffect(() => {
     setFilters(game.platforms?.map((p) => p.id) ?? []);
@@ -71,11 +66,15 @@ const GameInfo = ({ game }: Props) => {
             </AccordionItem>
           </Accordion>
         ) : null}
-        <Heading size="lg" paddingTop={5} paddingBottom={2}>
-          Reviews
+        <Stack spacing="5">
+          <Heading size="lg" paddingTop={5} paddingBottom={2}>
+            Reviews
+          </Heading>
+
           {review ? <UserReview review={review} mutate={mutate} /> : null}
-          {reviews?.length
-            ? reviews.map((reviewPage) =>
+          {reviews?.length ? (
+            <>
+              {reviews.map((reviewPage) =>
                 reviewPage
                   .filter(
                     (gameReview) => gameReview.creator !== review?.creator
@@ -87,9 +86,11 @@ const GameInfo = ({ game }: Props) => {
                       mutate={reviewsMutate}
                     />
                   ))
-              )
-            : null}
-        </Heading>
+              )}
+              <Button>See all reviews</Button>
+            </>
+          ) : null}
+        </Stack>
       </Box>
       <GameSidebar game={game} />
     </Flex>

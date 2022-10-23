@@ -32,12 +32,13 @@ interface Props {
 }
 
 const UserReview = ({ review, mutate }: Props) => {
-  const { user } = useLoggedInUser();
+  const { user, loggedOut } = useLoggedInUser();
   const isUserReview = user?.username === review.creator;
 
   const [isReviewBlurred, setIsReviewBlurred] = useState(
     review.containsSpoilers
   );
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const markAsHelpful = useCallback(async () => {
     if (review.markedAsHelpful) {
@@ -73,15 +74,20 @@ const UserReview = ({ review, mutate }: Props) => {
           >
             <LinkBox as={Flex} gap={5} alignItems="center">
               <Avatar size="md" />
-              <Text fontSize="xl">
+              <Heading
+                fontSize={{
+                  base: "md",
+                  md: "lg",
+                }}
+              >
                 <Link href={`/users/${review.user.username}`} passHref>
                   <LinkOverlay>{review.user.displayName}</LinkOverlay>
                 </Link>
-              </Text>
+              </Heading>
             </LinkBox>
             <Rating
               icon={<StarIcon />}
-              iconSize={32}
+              iconSize={28}
               rating={review.rating}
               readonly
             />
@@ -127,34 +133,57 @@ const UserReview = ({ review, mutate }: Props) => {
               fontSize="lg"
               fontWeight="medium"
               color="gray.400"
-              noOfLines={1}
+              noOfLines={isExpanded ? undefined : 3}
             >
               {review.body}
             </Text>
+            <Button
+              variant="link"
+              onClick={() => setIsExpanded(!isExpanded)}
+              width={20}
+            >
+              {isExpanded ? "Show less" : "Read more"}
+            </Button>
           </Stack>
         </Box>
 
         <Flex alignItems="center" gap="3">
-          <Tooltip
-            label={review.markedAsHelpful ? "No longer helpful" : "Helpful"}
-          >
-            <Box
-              as={motion.div}
-              whileHover={{
-                scale: 1.1,
-                cursor: "pointer",
-              }}
-              whileTap={{ scale: 0.9 }}
-              onClick={markAsHelpful}
+          {loggedOut ? null : (
+            <Tooltip
+              label={review.markedAsHelpful ? "No longer helpful" : "Helpful"}
             >
-              {review.markedAsHelpful ? (
-                <Icon as={AiFillHeart} color="red.500" />
-              ) : (
-                <Icon as={AiOutlineHeart} />
-              )}
-            </Box>
-          </Tooltip>
-          <Text userSelect="none">{review.helpfulCount}</Text>
+              <Box
+                as={motion.div}
+                whileHover={{
+                  scale: 1.1,
+                  cursor: "pointer",
+                }}
+                whileTap={{ scale: 0.9 }}
+                onClick={markAsHelpful}
+              >
+                {review.markedAsHelpful ? (
+                  <Icon as={AiFillHeart} color="red.500" />
+                ) : (
+                  <Icon as={AiOutlineHeart} />
+                )}
+              </Box>
+            </Tooltip>
+          )}
+
+          <Text userSelect="none">
+            {review.markedAsHelpful
+              ? `You ${
+                  review.helpfulCount - 1 > 0
+                    ? `and ${review.helpfulCount - 1} other ${
+                        review.helpfulCount - 1 > 1 ? "people" : "person"
+                      }`
+                    : ""
+                }`
+              : `${review.helpfulCount} ${
+                  review.helpfulCount === 1 ? "person" : "people"
+                }`}{" "}
+            found this review helpful
+          </Text>
         </Flex>
       </Stack>
     </Box>

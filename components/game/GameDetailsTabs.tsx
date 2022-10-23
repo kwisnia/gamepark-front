@@ -9,6 +9,7 @@ import {
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { GameDetails } from "../../types/game";
 import GameInfo from "./GameInfo";
+import GameReviews from "./GameReviews";
 
 interface Props {
   game: GameDetails;
@@ -39,7 +40,7 @@ const GameDetailsTabs = ({ game }: Props) => {
             <p>Discussions</p>
           </TabPanel>
           <TabPanel>
-            <p>Reviews</p>
+            <GameReviews game={game} />
           </TabPanel>
         </TabPanels>
       </Tabs>

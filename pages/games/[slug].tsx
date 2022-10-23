@@ -18,7 +18,6 @@ interface Props {
 
 const GamePage = ({ game }: Props) => {
   const router = useRouter();
-  const { loggedOut, user } = useLoggedInUser();
   const randomImageUrl = useMemo(() => getRandomImage(game), [game]);
 
   if (router.isFallback) {
