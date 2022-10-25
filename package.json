@@ -39,7 +39,6 @@
     "sharp": "^0.31.1",
     "swiper": "^8.4.4",
     "swr": "^1.3.0",
-    "tiptap-imagresize": "^1.0.2",
     "use-debounce": "^8.0.4",
     "yup": "^0.32.11",
     "zxcvbn": "^4.4.2"
