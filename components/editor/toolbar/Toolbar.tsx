@@ -1,6 +1,9 @@
 import { IconButton, Wrap, WrapItem } from "@chakra-ui/react";
 import { Editor } from "@tiptap/react";
 import {
+  AiOutlineAlignCenter,
+  AiOutlineAlignLeft,
+  AiOutlineAlignRight,
   AiOutlineBold,
   AiOutlineCode,
   AiOutlineItalic,
@@ -13,6 +16,7 @@ import {
 import { BsBlockquoteLeft, BsParagraph } from "react-icons/bs";
 import { BiHeading } from "react-icons/bi";
 import ToolbarButton from "./ToolbarButton";
+import { GiCoinsPile } from "react-icons/gi";
 
 interface ToolbarProps {
   editor: Editor | null;
@@ -85,6 +89,30 @@ const Toolbar = ({ editor }: ToolbarProps) => {
           onClick={() => editor?.chain().focus().toggleBlockquote().run()}
           label="Blockquote"
           icon={<BsBlockquoteLeft />}
+        />
+      </WrapItem>
+      <WrapItem>
+        <ToolbarButton
+          isActive={editor?.isActive({ textAlign: "left" })}
+          onClick={() => editor?.chain().focus().setTextAlign("left").run()}
+          label="Align left"
+          icon={<AiOutlineAlignLeft />}
+        />
+      </WrapItem>
+      <WrapItem>
+        <ToolbarButton
+          isActive={editor?.isActive({ textAlign: "center" })}
+          onClick={() => editor?.chain().focus().setTextAlign("center").run()}
+          label="Align center"
+          icon={<AiOutlineAlignCenter />}
+        />
+      </WrapItem>
+      <WrapItem>
+        <ToolbarButton
+          isActive={editor?.isActive({ textAlign: "right" })}
+          onClick={() => editor?.chain().focus().setTextAlign("right").run()}
+          label="Align right"
+          icon={<AiOutlineAlignRight />}
         />
       </WrapItem>
       <WrapItem>

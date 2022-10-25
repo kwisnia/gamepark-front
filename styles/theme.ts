@@ -15,7 +15,7 @@ const styles = {
           marginTop: "0.75em",
         },
         // @see https://github.com/jesster2k10/guava-cards/blob/5d5c283eb720bf503258f4e17bce3865d35fd8d3/packages/website/src/bundles/editor/ContentEditor.tsx#L86
-        "p.is-editor-empty:first-child::before": {
+        "p.is-editor-empty:first-of-type::before": {
           content: "attr(data-placeholder)",
           color: "gray.500",
           float: "left",
@@ -37,6 +37,7 @@ const styles = {
         "h1, h2, h3, h4,  h5, h6 ": {
           lineHeight: "1.1",
           fontWeight: "700",
+          overflowY: "hidden",
         },
         "ul, ol": {
           padding: "0 1.2rem",
@@ -105,15 +106,12 @@ const styles = {
           borderLeftColor: mode(undefined, "whiteAlpha.500")(props),
         },
         "span[data-spoiler]": {
-          bg: mode("gray.900", "gray.100")(props),
+          bg: "black",
+          color: "black",
           _hover: {
             bg: "transparent",
+            color: "white",
           },
-          // @apply dark:bg-gray-100 bg-gray-900 dark:hover:bg-transparent hover:bg-transparent;
-        },
-        img: {
-          maxW: "full",
-          h: "auto",
         },
         mark: {
           bg: "#FAF594",
@@ -122,6 +120,23 @@ const styles = {
           border: "none",
           borderTop: "2px solid rgba(13,13,13,.1)",
           margin: "2rem 0",
+        },
+        ".image-resizer": {
+          display: "inline-flex",
+          position: "relative",
+          flexGrow: 0,
+          ".resize-trigger": {
+            position: "absolute",
+            right: "-6px",
+            bottom: "-9px",
+            opacity: 0,
+            transition: "opacity .3s ease",
+            color: "#3259a5",
+          },
+          "&:hover .resize-trigger": {
+            opacity: 1,
+            cursor: "nwse-resize",
+          },
         },
       }, // .ProseMirror
     },
