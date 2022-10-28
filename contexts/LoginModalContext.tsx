@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/react";
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import LoginModal from "../components/login/LoginModal";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 
@@ -34,4 +34,12 @@ export const LoginModalProvider = ({ children }: Props) => {
       ) : null}
     </LoginModalContext.Provider>
   );
+};
+
+export const useLoginModal = () => {
+  const context = useContext(LoginModalContext);
+  if (!context) {
+    throw new Error("useLoginModal must be used within LoginModalProvider");
+  }
+  return context;
 };

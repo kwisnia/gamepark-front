@@ -1,6 +1,5 @@
 import { ModalCloseButton, ModalContent, ModalHeader } from "@chakra-ui/react";
-import { useContext } from "react";
-import { LoginModalContext } from "../../contexts/LoginModalContext";
+import { useLoginModal } from "../../contexts/LoginModalContext";
 import Modal from "../common/Modal";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
@@ -14,7 +13,7 @@ interface Props {
 }
 
 const LoginModal = ({ isOpen, formType, mutate }: Props) => {
-  const { closeModal } = useContext(LoginModalContext);
+  const { closeModal } = useLoginModal();
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal}>
       <ModalContent bg="gray.700">

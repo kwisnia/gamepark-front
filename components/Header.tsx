@@ -9,8 +9,8 @@ import {
   useDisclosure,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
-import { LoginModalContext } from "../contexts/LoginModalContext";
+import { useEffect } from "react";
+import { useLoginModal } from "../contexts/LoginModalContext";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 import { AiFillHome } from "react-icons/ai";
 import { GiConsoleController } from "react-icons/gi";
@@ -23,7 +23,7 @@ import GameAutocomplete from "./GameAutocomplete";
 
 const Header = () => {
   const { user, loggedOut } = useLoggedInUser();
-  const { setFormType, openModal } = useContext(LoginModalContext);
+  const { setFormType, openModal } = useLoginModal();
   const mobileNav = useDisclosure();
   const router = useRouter();
   const bg = useColorModeValue("white", "gray.800");

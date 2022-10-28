@@ -1,6 +1,7 @@
 import { Avatar, Box, Flex, Heading } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { getUserDetails } from "../../../api/UserApi";
 import { UserDetails } from "../../../types/user";
 
@@ -11,6 +12,11 @@ interface Props {
 const UserPage = ({
   userDetails,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const router = useRouter();
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Flex>
       <Head>

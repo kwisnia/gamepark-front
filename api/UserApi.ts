@@ -1,3 +1,4 @@
+import invariant from "tiny-invariant";
 import { axiosClient } from "../constants";
 import { UserDetails } from "../types/user";
 
@@ -6,6 +7,7 @@ export const login = async (email: string, password: string) => {
   axiosClient.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${response.headers.authorization}`;
+  invariant(response.headers.authorization, "No authorization header");
   localStorage.setItem("gaming-token", response.headers.authorization);
 };
 
@@ -21,6 +23,7 @@ export const register = async (
     username,
     displayName,
   });
+  invariant(response.headers.authorization, "No authorization header");
   axiosClient.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${response.headers.authorization}`;

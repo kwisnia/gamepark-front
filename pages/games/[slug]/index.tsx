@@ -1,14 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { getGame } from "../../api/GamesApi";
-import GameHeader from "../../components/game/GameHeader";
-import GameDetailsTab from "../../components/game/GameDetailsTabs";
-import { GameDetails } from "../../types/game";
+import { getGame } from "../../../api/GamesApi";
+import GameHeader from "../../../components/game/GameHeader";
+import GameDetailsTab from "../../../components/game/GameDetailsTabs";
+import { GameDetails } from "../../../types/game";
 import Image from "next/future/image";
-import { getRandomImage } from "../../utils/ImageUtils";
-import styles from "../../styles/GamePage.module.css";
-import useLoggedInUser from "../../hooks/useLoggedInUser";
+import { getRandomImage } from "../../../utils/ImageUtils";
+import styles from "styles/GamePage.module.css";
+import useLoggedInUser from "../../../hooks/useLoggedInUser";
 import { useMemo } from "react";
 import Head from "next/head";
 

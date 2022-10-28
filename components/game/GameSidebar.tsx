@@ -13,10 +13,10 @@ import {
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { addToList } from "../../api/ListApi";
 import { removeReview } from "../../api/ReviewApi";
-import { LoginModalContext } from "../../contexts/LoginModalContext";
+import { useLoginModal } from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import { GameDetails } from "../../types/game";
@@ -34,7 +34,7 @@ const GameSidebar = ({ game }: Props) => {
     useState(false);
   const { loggedOut, user } = useLoggedInUser();
   const { lists, review, mutate, loading } = useUserGameInfo(game.slug);
-  const { openModal, setFormType } = useContext(LoginModalContext);
+  const { openModal, setFormType } = useLoginModal();
   const [rating, setRating] = useState(review?.rating ?? 0);
   const toast = useToast();
 

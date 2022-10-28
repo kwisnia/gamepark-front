@@ -121,22 +121,9 @@ const styles = {
           borderTop: "2px solid rgba(13,13,13,.1)",
           margin: "2rem 0",
         },
-        ".image-resizer": {
-          display: "inline-flex",
-          position: "relative",
-          flexGrow: 0,
-          ".resize-trigger": {
-            position: "absolute",
-            right: "-6px",
-            bottom: "-9px",
-            opacity: 0,
-            transition: "opacity .3s ease",
-            color: "#3259a5",
-          },
-          "&:hover .resize-trigger": {
-            opacity: 1,
-            cursor: "nwse-resize",
-          },
+        img: {
+          maxH: "50vh",
+          width: "auto",
         },
       }, // .ProseMirror
     },

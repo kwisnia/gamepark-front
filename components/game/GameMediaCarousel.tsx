@@ -6,7 +6,7 @@ import "swiper/css/pagination";
 import { GameDetails, IGDBImageSize } from "../../types/game";
 import { getCoverUrl } from "../../utils/ImageUtils";
 import { Center } from "@chakra-ui/react";
-import { A11y, Autoplay, Navigation, Pagination } from "swiper";
+import { A11y, Autoplay, Lazy, Navigation, Pagination } from "swiper";
 
 interface Props {
   game: GameDetails;
@@ -16,13 +16,14 @@ const GameMediaCarousel = ({ game }: Props) => {
   return (
     <Center width="100%" paddingX={10} paddingY={5} userSelect="none">
       <Swiper
-        modules={[Navigation, A11y, Pagination, Autoplay]}
+        modules={[Navigation, A11y, Pagination, Autoplay, Lazy]}
         spaceBetween={10}
         slidesPerView="auto"
         navigation
         pagination={{ clickable: true }}
         autoHeight
         autoplay={{ delay: 5000 }}
+        lazy
       >
         {game.screenshots?.map((screenshot) => (
           <SwiperSlide key={screenshot.imageId}>

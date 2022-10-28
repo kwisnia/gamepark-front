@@ -6,9 +6,8 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useContext } from "react";
 import { login } from "../../api/UserApi";
-import { LoginModalContext } from "../../contexts/LoginModalContext";
+import { useLoginModal } from "../../contexts/LoginModalContext";
 import * as yup from "yup";
 import { Form, Formik, FormikHelpers } from "formik";
 import FormTextField from "../common/FormTextField";
@@ -32,7 +31,7 @@ const loginSchema = yup.object().shape({
 });
 
 const LoginForm = ({ mutate, onRequestClose }: Props) => {
-  const { setFormType } = useContext(LoginModalContext);
+  const { setFormType } = useLoginModal();
   const toast = useToast();
 
   const submitLogin = async (
