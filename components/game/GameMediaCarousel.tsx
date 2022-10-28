@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import Image from "next/future/image";
+import Image from "next/image";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";

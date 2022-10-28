@@ -20,6 +20,7 @@ import useUserDetails from "../../../../hooks/useUserDetails";
 import { GameList } from "../../../../types/lists";
 import { removeList as removeListApi } from "../../../../api/ListApi";
 import Head from "next/head";
+import Link from "next/link";
 
 const UserListPage = () => {
   const router = useRouter();
@@ -92,8 +93,10 @@ const UserListPage = () => {
             justifyContent="space-between"
           >
             <Heading key={gameList.id} size="md">
-              <LinkOverlay href={`/users/${username}/lists/${gameList.id}`}>
-                {gameList.name}
+              <LinkOverlay>
+                <Link href={`/users/${username}/lists/${gameList.id}`}>
+                  {gameList.name}
+                </Link>
               </LinkOverlay>
             </Heading>
             {isOwner ? (

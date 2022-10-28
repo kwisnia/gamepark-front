@@ -80,9 +80,11 @@ const UserReview = ({ review, mutate }: Props) => {
                   md: "lg",
                 }}
               >
-                <Link href={`/users/${review.user.username}`} passHref>
-                  <LinkOverlay>{review.user.displayName}</LinkOverlay>
-                </Link>
+                <LinkOverlay>
+                  <Link href={`/users/${review.user.username}`}>
+                    {review.user.displayName}
+                  </Link>
+                </LinkOverlay>
               </Heading>
             </LinkBox>
             <Rating

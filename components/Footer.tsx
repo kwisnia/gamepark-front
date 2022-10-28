@@ -1,4 +1,4 @@
-import { chakra, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, chakra, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import GameparkLogo from "./assets/gamepark-logo.svg";
 import IGDBLogo from "./assets/igdb-logo.svg";
@@ -57,15 +57,15 @@ const Footer = () => {
             color="gray.400"
           >
             Game database powered by
-            <Link href="https://www.igdb.com/" passHref>
-              <chakra.a
+            <Link href="https://www.igdb.com/">
+              <Box
                 fill="gray.400"
                 _hover={{
                   fill: "white",
                 }}
               >
                 <IGDBLogo width="2.5em" height="2.5em" />
-              </chakra.a>
+              </Box>
             </Link>
           </Flex>
           <Text

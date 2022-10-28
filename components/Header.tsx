@@ -52,15 +52,9 @@ const Header = () => {
       <Flex alignItems="center" justifyContent="space-between" mx="auto">
         <HStack display="flex" spacing={3} alignItems="center" zIndex={10}>
           <MobileHeaderMenu backgroundColor={bg} />
-          <Link href="/" passHref>
-            <chakra.a
-              title="Gamepark Home Page"
-              display="flex"
-              alignItems="center"
-            >
-              <GameparkLogo width="3em" height="3em" fill="white" />
-              <VisuallyHidden>Gamepark</VisuallyHidden>
-            </chakra.a>
+          <Link href="/" title="Gamepark home page">
+            <GameparkLogo width="3em" height="3em" fill="white" />
+            <VisuallyHidden>Gamepark</VisuallyHidden>
           </Link>
 
           <HStack

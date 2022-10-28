@@ -12,9 +12,11 @@ const UserDisplay = ({ displayName, username, size }: UserDisplayProps) => {
     <LinkBox as={Flex} gap={2} alignItems="center">
       <Avatar size={size} />
       <Heading fontSize={size}>
-        <Link href={`/users/${username}`} passHref>
-          <LinkOverlay>{displayName}</LinkOverlay>
-        </Link>
+        <LinkOverlay>
+          <Link href={`/users/${username}`} passHref>
+            {displayName}
+          </Link>
+        </LinkOverlay>
       </Heading>
     </LinkBox>
   );

@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
-import Image from "next/future/image";
+import Image from "next/image";
 import { useEffect } from "react";
 import { GameDetails, IGDBImageSize } from "../../types/game";
 import { getCoverUrl } from "../../utils/ImageUtils";

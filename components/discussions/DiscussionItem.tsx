@@ -34,11 +34,13 @@ const DiscussionItem = ({ discussion }: DiscussionItemProps) => {
       </Stack>
       <Stack flex={10} marginLeft={5} alignItems="flex-start" spacing={2}>
         <Heading size="xl">
-          <NextLink
-            href={`/games/${discussion.game}/discussions/${discussion.id}`}
-          >
-            <Link variant="link">{discussion.title}</Link>
-          </NextLink>
+          <Link variant="link">
+            <NextLink
+              href={`/games/${discussion.game}/discussions/${discussion.id}`}
+            >
+              {discussion.title}
+            </NextLink>
+          </Link>
         </Heading>
         <Text fontSize="sm">
           created by{" "}
@@ -50,9 +52,11 @@ const DiscussionItem = ({ discussion }: DiscussionItemProps) => {
                 md: "lg",
               }}
             >
-              <NextLink href={`/users/${discussion.user.username}`} passHref>
-                <LinkOverlay>{discussion.user.displayName}</LinkOverlay>
-              </NextLink>
+              <LinkOverlay>
+                <NextLink href={`/users/${discussion.user.username}`}>
+                  {discussion.user.displayName}
+                </NextLink>
+              </LinkOverlay>
             </Heading>
           </LinkBox>
         </Text>

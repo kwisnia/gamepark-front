@@ -16,7 +16,7 @@ import useUserDetails from "../../../../hooks/useUserDetails";
 import useSWRImmutable from "swr/immutable";
 import { GameListDetails } from "../../../../types/lists";
 import useLoggedInUser from "../../../../hooks/useLoggedInUser";
-import Image from "next/future/image";
+import Image from "next/image";
 import { getCoverUrl } from "../../../../utils/ImageUtils";
 import { IGDBImageSize } from "../../../../types/game";
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -24,6 +24,7 @@ import { removeFromList } from "../../../../api/ListApi";
 import ListCreateModal from "../../../../components/user/ListCreateModal";
 import { useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 
 const DetailedListPage = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -101,8 +102,8 @@ const DetailedListPage = () => {
                 flex={8}
                 textAlign="center"
               >
-                <LinkOverlay href={`/games/${game.slug}`}>
-                  {game.name}
+                <LinkOverlay>
+                  <Link href={`/games/${game.slug}`}>{game.name}</Link>
                 </LinkOverlay>
               </Heading>
             </LinkBox>

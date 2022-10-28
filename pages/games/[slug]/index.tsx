@@ -5,7 +5,7 @@ import { getGame } from "../../../api/GamesApi";
 import GameHeader from "../../../components/game/GameHeader";
 import GameDetailsTab from "../../../components/game/GameDetailsTabs";
 import { GameDetails } from "../../../types/game";
-import Image from "next/future/image";
+import Image from "next/image";
 import { getRandomImage } from "../../../utils/ImageUtils";
 import styles from "styles/GamePage.module.css";
 import useLoggedInUser from "../../../hooks/useLoggedInUser";

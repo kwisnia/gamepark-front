@@ -47,11 +47,9 @@ const GameAutocomplete = () => {
       </InputGroup>
       <AutoCompleteList>
         {gamesFlat.map((game) => (
-          <Link href={`/games/${game.slug}`} key={game.slug}>
-            <AutoCompleteItem value={game.slug} label={game.name}>
-              {game.name}
-            </AutoCompleteItem>
-          </Link>
+          <AutoCompleteItem value={game.slug} label={game.name} key={game.slug}>
+            <Link href={`/games/${game.slug}`}>{game.name}</Link>
+          </AutoCompleteItem>
         ))}
       </AutoCompleteList>
     </AutoComplete>
