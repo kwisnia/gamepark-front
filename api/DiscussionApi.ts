@@ -26,6 +26,10 @@ export const scoreDiscussion = async (
   });
 };
 
+export const deleteDiscussion = async (game: string, discussionId: number) => {
+  return axiosClient.delete(`/games/${game}/discussions/${discussionId}`);
+};
+
 export const scoreDiscussionPost = async (
   game: string,
   discussionId: number,

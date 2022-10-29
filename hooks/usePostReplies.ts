@@ -3,22 +3,20 @@ import { UserReview } from "../types/review";
 import useSWRInfinite from "swr/infinite";
 import { DiscussionPost } from "../types/discussion";
 
-const useDiscussionPosts = (
+const usePostReplies = (
   gameSlug: string,
   discussionId: number,
+  postId: number,
   pageSize: number = 20
 ) => {
   const getKey = useCallback(
     (pageIndex: number, previousPageData: DiscussionPost[] | undefined) => {
-      if (!Boolean(gameSlug && discussionId)) {
-        return null;
-      }
       if (previousPageData && !previousPageData.length) return null;
-      return `/games/${gameSlug}/discussions/${discussionId}/posts?page=${
+      return `/games/${gameSlug}/discussions/${discussionId}/posts/${postId}/replies?page=${
         pageIndex + 1
       }&pageSize=${pageSize}`;
     },
-    [gameSlug, pageSize, discussionId]
+    [gameSlug, pageSize, discussionId, postId]
   );
 
   const { data, size, setSize, mutate } =
@@ -35,4 +33,4 @@ const useDiscussionPosts = (
   };
 };
 
-export default useDiscussionPosts;
+export default usePostReplies;

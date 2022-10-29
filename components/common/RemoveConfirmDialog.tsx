@@ -9,13 +9,19 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
-interface Props {
+interface RemoveConfirmDialogProps {
+  header: string;
   isOpen: boolean;
   onClose: () => void;
   confirmAction: () => void;
 }
 
-const RemoveReviewDialog = ({ isOpen, onClose, confirmAction }: Props) => {
+const RemoveConfirmDialog = ({
+  header,
+  isOpen,
+  onClose,
+  confirmAction,
+}: RemoveConfirmDialogProps) => {
   const cancelRef = useRef(null);
 
   return (
@@ -27,7 +33,7 @@ const RemoveReviewDialog = ({ isOpen, onClose, confirmAction }: Props) => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Delete your review
+            {header}
           </AlertDialogHeader>
 
           <AlertDialogBody>
@@ -48,4 +54,4 @@ const RemoveReviewDialog = ({ isOpen, onClose, confirmAction }: Props) => {
   );
 };
 
-export default RemoveReviewDialog;
+export default RemoveConfirmDialog;

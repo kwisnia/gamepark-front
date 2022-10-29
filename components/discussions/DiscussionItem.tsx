@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { ChatIcon, ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Flex,
@@ -9,24 +9,16 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { GameDiscussion } from "../../types/discussion";
+import { GameDiscussionListItem } from "../../types/discussion";
 import NextLink from "next/link";
 
 interface DiscussionItemProps {
-  discussion: GameDiscussion;
+  discussion: GameDiscussionListItem;
 }
 
 const DiscussionItem = ({ discussion }: DiscussionItemProps) => {
-  console.log(discussion);
   return (
-    <Flex
-      bg="gray.700"
-      rounded="md"
-      padding={5}
-      marginY={2}
-      height="full"
-      width="full"
-    >
+    <Flex bg="gray.700" rounded="md" padding={5} height="full" width="full">
       <Stack direction="column" alignItems="center">
         <ChevronUpIcon w={30} />
         <Heading>{discussion.score}</Heading>
@@ -61,6 +53,12 @@ const DiscussionItem = ({ discussion }: DiscussionItemProps) => {
           </LinkBox>
         </Text>
       </Stack>
+      <Flex gap={1} alignItems="center">
+        <ChatIcon w={25} h={25} />
+        <Text fontWeight="bold" fontSize="xl">
+          {discussion.postsCount}
+        </Text>
+      </Flex>
     </Flex>
   );
 };

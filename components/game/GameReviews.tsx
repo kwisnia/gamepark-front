@@ -30,7 +30,6 @@ const GameReviews = ({ game }: Props) => {
 
   useEffect(() => {
     if (inView) {
-      console.log("more");
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);

@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import { axiosClient } from "../constants";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../styles/theme";
+import { LoadingProgressProvider } from "../contexts/NavigationProgressContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,9 +18,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <ChakraProvider theme={theme}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <LoadingProgressProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </LoadingProgressProvider>
       </ChakraProvider>
     </SWRConfig>
   );

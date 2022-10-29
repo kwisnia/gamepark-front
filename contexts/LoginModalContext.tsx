@@ -13,11 +13,9 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const LoginModalContext = createContext<LoginModalContextData>({
-  openModal: () => {},
-  closeModal: () => {},
-  setFormType: () => {},
-});
+export const LoginModalContext = createContext<
+  LoginModalContextData | undefined
+>(undefined);
 
 export const LoginModalProvider = ({ children }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,7 +36,7 @@ export const LoginModalProvider = ({ children }: Props) => {
 
 export const useLoginModal = () => {
   const context = useContext(LoginModalContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error("useLoginModal must be used within LoginModalProvider");
   }
   return context;

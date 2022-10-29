@@ -20,7 +20,7 @@ import { useLoginModal } from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import { GameDetails } from "../../types/game";
-import RemoveReviewDialog from "../review/RemoveReviewDialog";
+import RemoveConfirmDialog from "../common/RemoveConfirmDialog";
 import ReviewModal from "../review/ReviewModal";
 import Rating from "../review/StarRating";
 
@@ -170,7 +170,8 @@ const GameSidebar = ({ game }: Props) => {
                     onClick={() => setIsRemoveReviewDialogOpen(true)}
                   />
                 </Tooltip>
-                <RemoveReviewDialog
+                <RemoveConfirmDialog
+                  header="Remove your review"
                   confirmAction={confirmRemoveReview}
                   isOpen={isRemoveReviewDialogOpen}
                   onClose={() => setIsRemoveReviewDialogOpen(false)}

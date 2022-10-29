@@ -7,7 +7,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import useSWRImmutable from "swr/immutable";
 import DiscussionMainPost from "../../../../components/discussions/DiscussionMainPost";
 import DiscussionReplyPost from "../../../../components/discussions/DiscussionReplyPost";
@@ -20,8 +20,35 @@ import {
 import { FormikHelpers } from "formik";
 import { createDiscussionPost } from "../../../../api/DiscussionApi";
 import invariant from "tiny-invariant";
+import { useInView } from "react-intersection-observer";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { getGameShortInfo } from "../../../../api/GamesApi";
+import { GameListElement } from "../../../../types/game";
 
-const DiscussionPage = () => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { slug } = query;
+
+  if (!slug) {
+    return {
+      notFound: true,
+    };
+  }
+
+  try {
+    const gameInfo = await getGameShortInfo(slug as string);
+    return {
+      props: {
+        gameInfo,
+      },
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
   const router = useRouter();
   const { slug, discussionId } = router.query;
   const {
@@ -29,14 +56,20 @@ const DiscussionPage = () => {
     error,
     mutate: mutateDiscussion,
   } = useSWRImmutable<GameDiscussion>(
-    `/games/${slug}/discussions/${discussionId}`
+    slug && discussionId ? `/games/${slug}/discussions/${discussionId}` : null
   );
-  const { posts, mutate } = useDiscussionPosts(
+  const { posts, mutate, fetchNextPage } = useDiscussionPosts(
     slug as string,
     Number(discussionId)
   );
   const toast = useToast();
-  const postRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage]);
 
   const flatPosts = useMemo(() => {
     return posts?.flat() ?? [];
@@ -78,34 +111,22 @@ const DiscussionPage = () => {
         <>
           <DiscussionMainPost
             discussion={discussion}
+            game={gameInfo}
             mutate={mutateDiscussion}
           />
           <Heading>Replies</Heading>
           <DiscussionReplyForm onSubmit={handleSubmit} />
           <Stack pt={10}>
-            {flatPosts.map((post, index) => (
+            {flatPosts.map((post) => (
               <DiscussionReplyPost
                 key={`post-${post.id}`}
                 discussion={discussion}
                 post={post}
                 mutate={mutate}
-                originalPost={flatPosts.find(
-                  (displayedPost) => displayedPost.id === post.originalPostID
-                )}
-                originalPostRef={
-                  postRefs.current[
-                    flatPosts.findIndex(
-                      (displayedPost) =>
-                        displayedPost.id === post.originalPostID
-                    )
-                  ]
-                }
-                ref={(ref) => {
-                  postRefs.current[index] = ref;
-                }}
               />
             ))}
           </Stack>
+          <Box h={1} ref={ref} />
         </>
       ) : (
         <Heading>Loading</Heading>

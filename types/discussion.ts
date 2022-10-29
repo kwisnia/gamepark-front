@@ -8,6 +8,7 @@ export interface GameDiscussion {
   user: Pick<UserDetails, "displayName" | "username" | "id">;
   score: number;
   userScore: number;
+  postsCount: number;
 }
 
 export interface DiscussionForm {
@@ -22,7 +23,10 @@ export interface DiscussionPost {
   userScore: number;
   user: Pick<UserDetails, "displayName" | "username" | "id">;
   originalPostID: number | null;
+  replyCount: number;
 }
+
+export type GameDiscussionListItem = Omit<GameDiscussion, "body">;
 
 export interface DiscussionPostForm {
   body: string;

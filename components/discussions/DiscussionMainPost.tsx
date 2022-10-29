@@ -1,29 +1,49 @@
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Heading,
+  IconButton,
   LinkBox,
   LinkOverlay,
+  Text,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { KeyedMutator } from "swr";
-import { scoreDiscussion } from "../../api/DiscussionApi";
+import { deleteDiscussion, scoreDiscussion } from "../../api/DiscussionApi";
 import { useLoginModal } from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { GameDiscussion } from "../../types/discussion";
+import { GameListElement, IGDBImageSize } from "../../types/game";
+import { getCoverUrl } from "../../utils/ImageUtils";
+import RemoveConfirmDialog from "../common/RemoveConfirmDialog";
 import OutputEditor from "../editor/OutputEditor";
 import UserDisplay from "../user/UserDisplay";
 import DiscussionScore from "./DiscussionScore";
 
 interface DiscussionProps {
   discussion: GameDiscussion;
+  game: GameListElement;
   mutate: KeyedMutator<GameDiscussion>;
 }
 
-const DiscussionMainPost = ({ discussion, mutate }: DiscussionProps) => {
+const DiscussionMainPost = ({ discussion, game, mutate }: DiscussionProps) => {
   const { user, loggedOut } = useLoggedInUser();
   const { openModal } = useLoginModal();
+  const {
+    isOpen: isConfirmDialogOpen,
+    onClose: onConfirmDialogClose,
+    onOpen: openConfirmDialog,
+  } = useDisclosure();
+  const router = useRouter();
+  const toast = useToast();
+
   const onScoreChange = async (score: number) => {
     if (loggedOut) {
       openModal();
@@ -36,24 +56,103 @@ const DiscussionMainPost = ({ discussion, mutate }: DiscussionProps) => {
       userScore: score,
     });
   };
+
+  const onDelete = async () => {
+    if (loggedOut) {
+      openModal();
+      return;
+    }
+    try {
+      await deleteDiscussion(discussion.game, discussion.id);
+      router.replace(`/games/${discussion.game}`);
+      toast({
+        title: "Discussion deleted",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (e) {
+      toast({
+        title: "Error deleting discussion",
+        description: "Something went wrong",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const isCreator = user?.id === discussion.user.id;
+
   return (
     <Box>
-      <Heading>{discussion.title}</Heading>
-      <UserDisplay
-        displayName={discussion.user.displayName}
-        username={discussion.user.username}
-        size="md"
-      />
-      <Flex>
+      <Flex gap={5} w="full" alignItems="center" my={5}>
         <DiscussionScore
           score={discussion.score}
           onScoreChange={onScoreChange}
           userScore={discussion.userScore}
         />
-        <Box flex={10}>
-          <OutputEditor content={discussion.body} />
-        </Box>
+        <Flex justifyContent="space-between" flex={10} alignItems="center">
+          <Box>
+            <Heading>{discussion.title}</Heading>
+            <UserDisplay
+              displayName={discussion.user.displayName}
+              username={discussion.user.username}
+              size="md"
+            />
+          </Box>
+          <Box>
+            <Flex gap={3}>
+              <Box alignSelf="end">
+                <Text>Discussion on</Text>
+                <Link href={`/games/${game.slug}`}>
+                  <Text fontWeight="bold">{game.name}</Text>
+                </Link>
+              </Box>
+              <Box
+                rounded="xl"
+                border="2px"
+                borderColor="gray.500"
+                overflow="hidden"
+              >
+                <Image
+                  src={getCoverUrl(
+                    game.cover?.imageId ?? "",
+                    IGDBImageSize.CoverSmall,
+                    true
+                  )}
+                  alt={game.name}
+                  width={100}
+                  height={100}
+                />
+              </Box>
+            </Flex>
+          </Box>
+        </Flex>
       </Flex>
+      <Box>
+        <OutputEditor content={discussion.body} />
+      </Box>
+      {isCreator ? (
+        <>
+          <Button
+            aria-label="Delete discussion"
+            leftIcon={<DeleteIcon />}
+            colorScheme="red"
+            size="xs"
+            my={3}
+            onClick={openConfirmDialog}
+          >
+            Delete discussion
+          </Button>
+          <RemoveConfirmDialog
+            header="Delete discussion"
+            isOpen={isConfirmDialogOpen}
+            onClose={onConfirmDialogClose}
+            confirmAction={onDelete}
+          />
+        </>
+      ) : null}
     </Box>
   );
 };
