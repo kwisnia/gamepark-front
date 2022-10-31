@@ -73,7 +73,7 @@ const UserReview = ({ review, mutate }: Props) => {
             marginBottom={3}
           >
             <LinkBox as={Flex} gap={5} alignItems="center">
-              <Avatar size="md" />
+              <Avatar size="md" src={review.user.avatar ?? ""} />
               <Heading
                 fontSize={{
                   base: "md",

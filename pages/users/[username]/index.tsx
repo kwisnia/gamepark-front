@@ -1,8 +1,9 @@
-import { Avatar, Box, Flex, Heading } from "@chakra-ui/react";
+import { Avatar, Box, Container, Flex, Heading } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getUserDetails } from "../../../api/UserApi";
+import UserProfileHeader from "../../../components/user/UserProfileHeader";
 import { UserDetails } from "../../../types/user";
 
 interface Props {
@@ -17,15 +18,16 @@ const UserPage = ({
     return <div>Loading...</div>;
   }
 
+  const title = `${userDetails.displayName}'s profile - GamePark`;
+
   return (
     <Flex>
       <Head>
-        <title>{userDetails.displayName}&apos;s profile - GamePark</title>
+        <title>{title}</title>
       </Head>
-      <Box>
-        <Heading>{userDetails.displayName}</Heading>
-      </Box>
-      <Avatar />
+      <Container maxW="container.xl">
+        <UserProfileHeader user={userDetails} />
+      </Container>
     </Flex>
   );
 };

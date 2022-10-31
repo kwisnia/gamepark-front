@@ -30,6 +30,8 @@ const GameListElement = ({ game }: Props) => {
           alt={name}
           className="object-cover rounded-lg"
           fill
+          priority
+          sizes="(max-width: 768px) 100vw, 264px"
         />
       ) : (
         <Center background="gray.500" height="full" rounded="lg">

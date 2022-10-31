@@ -25,7 +25,9 @@ import Link from "next/link";
 const UserListPage = () => {
   const router = useRouter();
   const { username } = router.query;
-  const { data, mutate, error } = useSWR<GameList[]>(`/${username}/lists`);
+  const { data, mutate, error } = useSWR<GameList[]>(
+    username ? `/${username}/lists` : null
+  );
   const { user, loading } = useUserDetails(username as string);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const { user: loggedInUser } = useLoggedInUser();
@@ -93,11 +95,12 @@ const UserListPage = () => {
             justifyContent="space-between"
           >
             <Heading key={gameList.id} size="md">
-              <LinkOverlay>
-                <Link href={`/users/${username}/lists/${gameList.id}`}>
-                  {gameList.name}
-                </Link>
-              </LinkOverlay>
+              <Link
+                href={`/users/${username}/lists/${gameList.id}`}
+                legacyBehavior
+              >
+                <LinkOverlay>{gameList.name}</LinkOverlay>
+              </Link>
             </Heading>
             {isOwner ? (
               <Flex>

@@ -5,7 +5,7 @@ export interface GameDiscussion {
   game: string;
   title: string;
   body: string;
-  user: Pick<UserDetails, "displayName" | "username" | "id">;
+  user: Pick<UserDetails, "displayName" | "username" | "id" | "avatar">;
   score: number;
   userScore: number;
   postsCount: number;
@@ -21,7 +21,7 @@ export interface DiscussionPost {
   body: string;
   score: number;
   userScore: number;
-  user: Pick<UserDetails, "displayName" | "username" | "id">;
+  user: Pick<UserDetails, "displayName" | "username" | "id" | "avatar">;
   originalPostID: number | null;
   replyCount: number;
 }

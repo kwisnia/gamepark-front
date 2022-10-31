@@ -33,7 +33,7 @@ const DetailedListPage = () => {
   const { user } = useUserDetails(username as string);
   const { user: loggedInUser } = useLoggedInUser();
   const { data, error, mutate } = useSWRImmutable<GameListDetails>(
-    `/list/${listId}`
+    listId ? `/list/${listId}` : null
   );
   const toast = useToast();
 
@@ -102,9 +102,9 @@ const DetailedListPage = () => {
                 flex={8}
                 textAlign="center"
               >
-                <LinkOverlay>
-                  <Link href={`/games/${game.slug}`}>{game.name}</Link>
-                </LinkOverlay>
+                <Link href={`/games/${game.slug}`} legacyBehavior>
+                  <LinkOverlay>{game.name}</LinkOverlay>
+                </Link>
               </Heading>
             </LinkBox>
             {isOwner ? (

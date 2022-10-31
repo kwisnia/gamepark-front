@@ -64,24 +64,20 @@ const Header = () => {
               md: "inline-flex",
             }}
           >
-            <Link href="/">
-              <Button
-                variant="ghost"
-                leftIcon={<Icon as={AiFillHome} />}
-                size="sm"
-              >
-                Dashboard
-              </Button>
-            </Link>
-            <Link href="/games">
-              <Button
-                variant="ghost"
-                leftIcon={<Icon as={GiConsoleController} />}
-                size="sm"
-              >
-                Games
-              </Button>
-            </Link>
+            <Button
+              variant="ghost"
+              leftIcon={<Icon as={AiFillHome} />}
+              size="sm"
+            >
+              <Link href="/">Dashboard</Link>
+            </Button>
+            <Button
+              variant="ghost"
+              leftIcon={<Icon as={GiConsoleController} />}
+              size="sm"
+            >
+              <Link href="/games">Games</Link>
+            </Button>
           </HStack>
         </HStack>
         <HStack

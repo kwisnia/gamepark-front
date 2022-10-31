@@ -27,7 +27,7 @@ const UserMenu = () => {
     <Menu>
       <MenuButton
         as={Button}
-        rightIcon={<Avatar />}
+        rightIcon={<Avatar src={user?.avatar ?? ""} />}
         bg="transparent"
         _active={{ background: "transparent" }}
         _hover={{ background: "transparent" }}

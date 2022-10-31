@@ -8,6 +8,7 @@ import {
   useRef,
   ReactNode,
 } from "react";
+import invariant from "tiny-invariant";
 import NavigationProgressBar from "../components/common/NavigationProgressBar";
 
 type NavigationProgressContextProps = {
@@ -24,7 +25,7 @@ const NavigationProgressContext = createContext<Progress | undefined>(
   undefined
 );
 
-export const LoadingProgressProvider = ({
+export const NavigationProgressProvider = ({
   children,
 }: NavigationProgressContextProps): ReactElement => {
   const step = useRef(5);
@@ -87,12 +88,11 @@ export const LoadingProgressProvider = ({
   );
 };
 
-export const useLoadingProgress = (): Progress => {
+export const useNavigationProgress = (): Progress => {
   const context = useContext(NavigationProgressContext);
-  if (context === undefined) {
-    throw new Error(
-      "useLoadingProgress must be used within a NavigationProgressProvider"
-    );
-  }
+  invariant(
+    context !== undefined,
+    "useNavigationProgress must be used within NavigationProgressProvider"
+  );
   return context;
 };

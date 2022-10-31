@@ -1,5 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { createContext, useContext, useState } from "react";
+import invariant from "tiny-invariant";
 import LoginModal from "../components/login/LoginModal";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 
@@ -36,8 +37,9 @@ export const LoginModalProvider = ({ children }: Props) => {
 
 export const useLoginModal = () => {
   const context = useContext(LoginModalContext);
-  if (context === undefined) {
-    throw new Error("useLoginModal must be used within LoginModalProvider");
-  }
+  invariant(
+    context !== undefined,
+    "useLoginModal must be used within LoginModalProvider"
+  );
   return context;
 };

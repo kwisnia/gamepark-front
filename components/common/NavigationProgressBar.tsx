@@ -1,8 +1,8 @@
 import { Box, CircularProgress, Progress, VStack } from "@chakra-ui/react";
-import { useLoadingProgress } from "../../contexts/NavigationProgressContext";
+import { useNavigationProgress } from "../../contexts/NavigationProgressContext";
 
 const NavigationProgressBar = () => {
-  const { value } = useLoadingProgress();
+  const { value } = useNavigationProgress();
 
   return (
     <Box position="absolute" top={0} left={0} right={0}>

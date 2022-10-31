@@ -5,7 +5,8 @@ import Layout from "../components/Layout";
 import { axiosClient } from "../constants";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../styles/theme";
-import { LoadingProgressProvider } from "../contexts/NavigationProgressContext";
+import { NavigationProgressProvider } from "../contexts/NavigationProgressContext";
+import { WebSocketProvider } from "../contexts/WebsocketContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -18,11 +19,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <ChakraProvider theme={theme}>
-        <LoadingProgressProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </LoadingProgressProvider>
+        <NavigationProgressProvider>
+          <WebSocketProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </WebSocketProvider>
+        </NavigationProgressProvider>
       </ChakraProvider>
     </SWRConfig>
   );

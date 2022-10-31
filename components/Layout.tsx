@@ -4,7 +4,7 @@ import { LoginModalProvider } from "../contexts/LoginModalContext";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useRouter } from "next/router";
-import { useLoadingProgress } from "../contexts/NavigationProgressContext";
+import { useNavigationProgress } from "../contexts/NavigationProgressContext";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
-  const { start, done } = useLoadingProgress();
+  const { start, done } = useNavigationProgress();
 
   useEffect(() => {
     const handleStart = (url: string) => url !== router.asPath && start();

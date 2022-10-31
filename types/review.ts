@@ -29,6 +29,6 @@ export interface UserReview {
   containsSpoilers: boolean;
   body: string;
   game: string;
-  user: Pick<UserDetails, "displayName" | "username" | "id">;
+  user: Pick<UserDetails, "displayName" | "username" | "id" | "avatar">;
   markedAsHelpful: boolean;
 }

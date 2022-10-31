@@ -1,6 +1,7 @@
 import { ChatIcon, ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Avatar,
+  Box,
   Flex,
   Heading,
   Link,
@@ -26,32 +27,32 @@ const DiscussionItem = ({ discussion }: DiscussionItemProps) => {
       </Stack>
       <Stack flex={10} marginLeft={5} alignItems="flex-start" spacing={2}>
         <Heading size="xl">
-          <Link variant="link">
-            <NextLink
-              href={`/games/${discussion.game}/discussions/${discussion.id}`}
-            >
-              {discussion.title}
-            </NextLink>
-          </Link>
+          <NextLink
+            href={`/games/${discussion.game}/discussions/${discussion.id}`}
+            legacyBehavior
+          >
+            <Link variant="link">{discussion.title}</Link>
+          </NextLink>
         </Heading>
-        <Text fontSize="sm">
-          created by{" "}
+        <Box fontSize="sm">
+          <Text>created by</Text>
           <LinkBox as={Flex} gap={2} alignItems="center">
-            <Avatar size="xs" />
+            <Avatar size="xs" src={discussion.user.avatar ?? ""} />
             <Heading
               fontSize={{
                 base: "md",
                 md: "lg",
               }}
             >
-              <LinkOverlay>
-                <NextLink href={`/users/${discussion.user.username}`}>
-                  {discussion.user.displayName}
-                </NextLink>
-              </LinkOverlay>
+              <NextLink
+                href={`/users/${discussion.user.username}`}
+                legacyBehavior
+              >
+                <LinkOverlay>{discussion.user.displayName}</LinkOverlay>
+              </NextLink>
             </Heading>
           </LinkBox>
-        </Text>
+        </Box>
       </Stack>
       <Flex gap={1} alignItems="center">
         <ChatIcon w={25} h={25} />

@@ -24,6 +24,7 @@ import { useInView } from "react-intersection-observer";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getGameShortInfo } from "../../../../api/GamesApi";
 import { GameListElement } from "../../../../types/game";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug } = query;
@@ -105,8 +106,15 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
     }
   };
 
+  const title = discussion
+    ? `${discussion.title} - ${gameInfo.name} - Game Park`
+    : "Loading...";
+
   return (
     <Container maxW="container.xl">
+      <Head>
+        <title>{title}</title>
+      </Head>
       {discussion ? (
         <>
           <DiscussionMainPost
