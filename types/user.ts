@@ -11,3 +11,8 @@ export interface UserDetails {
   displayName: string;
   lists: GameList[];
 }
+
+export type BasicUserDetails = Pick<
+  UserDetails,
+  "id" | "username" | "displayName" | "avatar"
+>;

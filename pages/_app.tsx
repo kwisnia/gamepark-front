@@ -6,7 +6,7 @@ import { axiosClient } from "../constants";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../styles/theme";
 import { NavigationProgressProvider } from "../contexts/NavigationProgressContext";
-import { WebSocketProvider } from "../contexts/WebsocketContext";
+import { WebSocketProvider } from "../contexts/WebSocketContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

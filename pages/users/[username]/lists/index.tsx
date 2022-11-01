@@ -35,10 +35,6 @@ const UserListPage = () => {
 
   const isOwner = user?.id === loggedInUser?.id;
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const removeList = async (listId: number) => {
     await removeListApi(listId);
     mutate(data?.filter((list) => list.id !== listId));

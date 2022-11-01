@@ -9,6 +9,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Field, useField } from "formik";
 import { useCallback, useEffect } from "react";
+import { axiosClient, BASE_URL } from "../../constants";
 import { Indentation } from "./extensions/Indentation";
 import { uploadImagePlugin } from "./extensions/plugins/ImageUploadPlugin";
 import { SmilieReplacer } from "./extensions/SmileReplacer";
@@ -38,15 +39,11 @@ const Editor = ({ onChange, content }: EditorProps) => {
         }
         const formData = new FormData();
         formData.append("image", file);
-        fetch(
-          "https://api.imgbb.com/1/upload?key=16b66d54971dc8467d548a5894e2121c",
-          {
-            method: "POST",
-            body: formData,
-          }
-        )
-          .then((response) => response.json())
-          .then((result) => resolve(result.data.url))
+        axiosClient
+          .post("/image", formData)
+          .then((result) => {
+            resolve(result.data.url);
+          })
           .catch(() => reject(new Error("Upload failed")));
       }),
     [toast]
@@ -83,7 +80,6 @@ const Editor = ({ onChange, content }: EditorProps) => {
 
   useEffect(() => {
     editor?.on("update", () => {
-      console.log(editor.storage.characterCount.characters());
       if (editor.storage.characterCount.characters() === 0) {
         onChange?.("");
       } else {

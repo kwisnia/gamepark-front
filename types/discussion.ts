@@ -1,11 +1,11 @@
-import { UserDetails } from "./user";
+import { BasicUserDetails, UserDetails } from "./user";
 
 export interface GameDiscussion {
   id: number;
   game: string;
   title: string;
   body: string;
-  user: Pick<UserDetails, "displayName" | "username" | "id" | "avatar">;
+  user: BasicUserDetails;
   score: number;
   userScore: number;
   postsCount: number;
@@ -21,7 +21,7 @@ export interface DiscussionPost {
   body: string;
   score: number;
   userScore: number;
-  user: Pick<UserDetails, "displayName" | "username" | "id" | "avatar">;
+  user: BasicUserDetails;
   originalPostID: number | null;
   replyCount: number;
 }

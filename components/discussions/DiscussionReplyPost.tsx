@@ -129,27 +129,30 @@ const DiscussionReplyPost = ({
         <UserDisplay
           displayName={post.user.displayName}
           username={post.user.username}
+          avatar={post.user.avatar}
           size="md"
         />
-        {isAuthor ? (
-          <Flex gap={3}>
-            <IconButton
-              icon={<BsFillReplyFill />}
-              aria-label="Reply"
-              onClick={setIsReplying.toggle}
-            />
-            <IconButton
-              icon={<EditIcon />}
-              onClick={setIsEditing.toggle}
-              aria-label="Edit post"
-            />
-            <IconButton
-              icon={<DeleteIcon />}
-              onClick={openConfirmDialog}
-              aria-label="Delete post"
-            />
-          </Flex>
-        ) : null}
+        <Flex gap={3}>
+          <IconButton
+            icon={<BsFillReplyFill />}
+            aria-label="Reply"
+            onClick={setIsReplying.toggle}
+          />
+          {isAuthor ? (
+            <>
+              <IconButton
+                icon={<EditIcon />}
+                onClick={setIsEditing.toggle}
+                aria-label="Edit post"
+              />
+              <IconButton
+                icon={<DeleteIcon />}
+                onClick={openConfirmDialog}
+                aria-label="Delete post"
+              />
+            </>
+          ) : null}
+        </Flex>
       </Flex>
       <Flex>
         <DiscussionScore

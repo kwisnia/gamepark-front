@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { createContext, useContext, useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import invariant from "tiny-invariant";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 
@@ -12,43 +12,67 @@ export const WebSocketContext = createContext<WebSocket | null | undefined>(
 );
 
 export const WebSocketProvider = ({ children }: Props) => {
-  const socket = useRef<WebSocket | null>(null);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
   const toast = useToast();
-  const { user, loggedOut } = useLoggedInUser();
+  const { user } = useLoggedInUser();
 
   useEffect(() => {
-    if (!window) {
+    if (!window || !user) {
       return;
     }
-    if (!loggedOut) {
-      socket.current = new WebSocket("ws://localhost:4000");
-      socket.current.onopen = () => {
-        console.log("Connected to websocket");
-      };
-      socket.current.onclose = () => {
-        console.log("Disconnected from websocket");
-        console.log(user?.id);
-      };
-      socket.current.onerror = () => {
-        toast({
-          title: "Error",
-          description:
-            "An error occurred while establishing connection to the server",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      };
-    }
-
-    const socketInstance = socket.current;
-    return () => {
-      socketInstance?.close();
+    const authToken = localStorage.getItem("gaming-token");
+    const newSocket = new WebSocket(
+      `ws://localhost:8080/ws?authorization=${encodeURIComponent(
+        "Bearer " + authToken
+      )}`
+    );
+    newSocket.onopen = () => {
+      console.log("Connected to websocket");
+      toast({
+        title: "Connected to websocket",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     };
-  }, [toast, loggedOut, user]);
+    newSocket.addEventListener("message", (e) => {
+      console.log(e);
+      toast({
+        title: "New message received",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+    });
+    newSocket.onclose = () => {
+      console.log("Disconnected from websocket");
+    };
+
+    newSocket.onerror = (e) => {
+      console.log(e);
+      toast({
+        title: "Error",
+        description:
+          "An error occurred while establishing connection to the server",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    };
+    setSocket(newSocket);
+  }, [toast, user]);
+
+  useEffect(() => {
+    return () => {
+      if (socket) {
+        console.log("Closing socket");
+        socket.close();
+      }
+    };
+  }, [socket]);
 
   return (
-    <WebSocketContext.Provider value={socket.current}>
+    <WebSocketContext.Provider value={socket}>
       {children}
     </WebSocketContext.Provider>
   );

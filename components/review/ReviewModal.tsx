@@ -83,7 +83,6 @@ const ReviewModal = ({
     { setSubmitting }: FormikHelpers<ReviewForm>
   ) => {
     try {
-      console.log(values);
       await submitReview(values, game.slug);
       toast({
         title: "Review submitted",

@@ -21,10 +21,6 @@ const EMPTY_DATE_VALUE = "1970-01-01T01:00:00+01:00";
 const GameHeader = ({ game }: Props) => {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
-  useEffect(() => {
-    console.log(game.firstReleaseDate);
-  }, [game]);
-
   return (
     <Flex alignItems="end" justifyContent="center" marginTop="8%">
       <Flex

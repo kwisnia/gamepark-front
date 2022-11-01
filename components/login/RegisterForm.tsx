@@ -32,7 +32,6 @@ const registerSchema = yup.object().shape({
     .test("passwordStrength", function (value) {
       const { path, createError } = this;
       const passwordStrength = zxcvbn(value ?? "");
-      console.log(passwordStrength);
       return passwordStrength.score < 3
         ? createError({ path, message: passwordStrength.feedback.warning })
         : true;

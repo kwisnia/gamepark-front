@@ -33,9 +33,6 @@ const Header = () => {
     setFormType(type);
     openModal();
   };
-  useEffect(() => {
-    console.log(slug);
-  }, [slug]);
 
   return (
     <chakra.header

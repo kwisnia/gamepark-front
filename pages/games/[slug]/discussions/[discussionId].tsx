@@ -83,7 +83,6 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
     try {
       invariant(discussion, "Discussion is required");
       await createDiscussionPost(discussion.game, discussion.id, values);
-      console.log(values);
       toast({
         title: "Reply created",
         description: "Your reply has been created successfully",
