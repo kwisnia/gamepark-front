@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["images.igdb.com", "media.istockphoto.com"],
+    domains: [
+      "images.igdb.com",
+      "media.istockphoto.com",
+      "gamepark-images.s3.eu-central-1.amazonaws.com",
+    ],
   },
   webpack(config) {
     config.module.rules.push({

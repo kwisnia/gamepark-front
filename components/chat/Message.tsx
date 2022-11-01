@@ -1,4 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
+import Image from "next/image";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { ChatMessage } from "../../types/chat";
 import { BasicUserDetails, UserDetails } from "../../types/user";
@@ -10,6 +11,23 @@ interface MessageProps {
 }
 
 const Message = ({ message, user, loggedInUser }: MessageProps) => {
+  const replaceUrlWithImage = (message: string) => {
+    const regex = /((http|https):\/\/.*\.(?:png|jpg|gif|jpeg))/g;
+    if (message.match(regex)) {
+      return (
+        <Image
+          src={message}
+          alt="Message image"
+          width={300}
+          height={300}
+          priority
+        />
+      );
+    } else {
+      return <Text>{message}</Text>;
+    }
+  };
+
   return (
     <Box
       bg={message.senderID === loggedInUser?.id ? "blue.500" : "gray.500"}
@@ -21,7 +39,7 @@ const Message = ({ message, user, loggedInUser }: MessageProps) => {
       }
       mt={2}
     >
-      <Text>{message.content}</Text>
+      {replaceUrlWithImage(message.content)}
     </Box>
   );
 };

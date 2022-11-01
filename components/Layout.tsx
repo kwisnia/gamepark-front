@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { chakra, Flex } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { LoginModalProvider } from "../contexts/LoginModalContext";
 import Header from "./Header";
@@ -30,11 +30,11 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <LoginModalProvider>
-      <Flex flexDirection="column" flex={1} minHeight="100vh" width="full">
+      <Flex flexDirection="column" minHeight="100vh" width="full">
         <Header />
-        <main className="layout__content bg-gray-900 h-full flex-1">
+        <chakra.main flex={1} className="bg-gray-900">
           {children}
-        </main>
+        </chakra.main>
         <Footer />
       </Flex>
     </LoginModalProvider>

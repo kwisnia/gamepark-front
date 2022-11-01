@@ -10,6 +10,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { Field, useField } from "formik";
 import { useCallback, useEffect } from "react";
 import { axiosClient, BASE_URL } from "../../constants";
+import { uploadImage } from "../../utils/ImageUtils";
 import { Indentation } from "./extensions/Indentation";
 import { uploadImagePlugin } from "./extensions/plugins/ImageUploadPlugin";
 import { SmilieReplacer } from "./extensions/SmileReplacer";
@@ -24,28 +25,22 @@ interface EditorProps {
 const Editor = ({ onChange, content }: EditorProps) => {
   const toast = useToast();
   const handleImageUpload = useCallback(
-    (file: File): Promise<string> =>
-      new Promise((resolve, reject) => {
-        if (file.size > 1000000) {
-          toast({
-            title: "Image too large",
-            description:
-              "The image you are trying to upload is too large. Please upload an image smaller than 10MB.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-          reject("File is too big");
-        }
-        const formData = new FormData();
-        formData.append("image", file);
-        axiosClient
-          .post("/image", formData)
-          .then((result) => {
-            resolve(result.data.url);
-          })
-          .catch(() => reject(new Error("Upload failed")));
-      }),
+    async (file: File) => {
+      try {
+        const url = await uploadImage(file);
+        return url;
+      } catch (e) {
+        const error = e as Error;
+        toast({
+          title: "Error uploading image",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return Promise.reject();
+      }
+    },
     [toast]
   );
 

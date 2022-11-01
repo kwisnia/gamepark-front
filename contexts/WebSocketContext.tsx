@@ -1,6 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import invariant from "tiny-invariant";
+import Notification from "../components/common/Notification";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 
 interface Props {
@@ -37,12 +38,20 @@ export const WebSocketProvider = ({ children }: Props) => {
     };
     newSocket.addEventListener("message", (e) => {
       console.log(e);
-      toast({
-        title: "New message received",
-        status: "info",
-        duration: 3000,
-        isClosable: true,
-      });
+      const data = JSON.parse(e.data);
+      if (data.messageType === "chatMessage") {
+        toast({
+          render: () => (
+            <Notification
+              title={`New message from ${data.sender.displayName}`}
+              message={data.content}
+              image={data.sender.avatar}
+            />
+          ),
+        });
+        const audio = new Audio("/kkondae.mp3");
+        audio.play();
+      }
     });
     newSocket.onclose = () => {
       console.log("Disconnected from websocket");

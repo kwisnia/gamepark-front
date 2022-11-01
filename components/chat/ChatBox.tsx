@@ -1,10 +1,12 @@
 import { Avatar, Box, Flex, Input, Stack, Text } from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
+import { GiConsoleController } from "react-icons/gi";
 import { useInView } from "react-intersection-observer";
 import { useWebSocket } from "../../contexts/WebSocketContext";
 import useChatHistory from "../../hooks/useChatHistory";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { BasicUserDetails } from "../../types/user";
+import { uploadImage } from "../../utils/ImageUtils";
 import Message from "./Message";
 
 interface ChatBoxProps {
@@ -32,7 +34,6 @@ const ChatBox = ({ user }: ChatBoxProps) => {
   );
 
   useEffect(() => {
-    console.log("Dodaj event handler", socket);
     socket?.addEventListener("message", socketMessageHandler);
     return () => {
       socket?.removeEventListener("message", socketMessageHandler);
@@ -46,6 +47,37 @@ const ChatBox = ({ user }: ChatBoxProps) => {
   }, [inView, fetchNextPage]);
 
   const messagesFlat = messages?.flat() ?? [];
+
+  const onPaste = async (event: React.ClipboardEvent<HTMLInputElement>) => {
+    console.log("onPaste");
+    const items = event.clipboardData?.items;
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") !== -1) {
+          const blob = items[i].getAsFile();
+          console.log(blob);
+          if (!blob) {
+            continue;
+          }
+          try {
+            const url = await uploadImage(blob);
+            socket?.send(
+              JSON.stringify({
+                messageType: "chatMessage",
+                data: {
+                  content: url,
+                  receiver: user.id,
+                },
+              })
+            );
+          } catch (e) {
+            const error = e as Error;
+            console.error(error);
+          }
+        }
+      }
+    }
+  };
 
   const onSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -102,7 +134,7 @@ const ChatBox = ({ user }: ChatBoxProps) => {
           </Stack>
         )}
       </Flex>
-      <Input height="10%" onKeyDown={onSubmit} />
+      <Input height="10%" onKeyDown={onSubmit} onPaste={onPaste} />
     </Box>
   );
 };

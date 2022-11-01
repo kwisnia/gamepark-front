@@ -1,3 +1,4 @@
+import { axiosClient } from "../constants";
 import { GameDetails, IGDBImageSize } from "../types/game";
 
 export const getCoverUrl = (
@@ -27,4 +28,18 @@ export const getRandomImage = (game: GameDetails) => {
     );
   }
   return "";
+};
+
+export const uploadImage = async (file: File): Promise<string> => {
+  if (file.size > 1000000) {
+    return Promise.reject("File is too big");
+  }
+  const formData = new FormData();
+  formData.append("image", file);
+  try {
+    const response = await axiosClient.post("/image", formData);
+    return response.data.url;
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };

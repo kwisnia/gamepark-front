@@ -33,6 +33,12 @@ const ChatWindow = () => {
     mutate();
   }, [user, mutate]);
 
+  useEffect(() => {
+    if (users) {
+      setSelectedUser(users[0]);
+    }
+  }, [users]);
+
   const userHistory = useMemo(
     () =>
       users?.map((user) => {
@@ -56,7 +62,7 @@ const ChatWindow = () => {
   );
 
   return (
-    <Flex height="100%" bg="gray.700">
+    <Flex height="100%" bg="gray.700" marginTop={10}>
       <Stack flex={2}>
         <Popover>
           <PopoverTrigger>
