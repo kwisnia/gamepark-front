@@ -20,6 +20,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import MobileHeaderMenu from "./header/MobileHeaderMenu";
 import GameAutocomplete from "./GameAutocomplete";
+import { ChatIcon } from "@chakra-ui/icons";
+import { BsChatRightFill } from "react-icons/bs";
 
 const Header = () => {
   const { user, loggedOut } = useLoggedInUser();
@@ -75,6 +77,15 @@ const Header = () => {
             >
               <Link href="/games">Games</Link>
             </Button>
+            {user ? (
+              <Button
+                variant="ghost"
+                leftIcon={<Icon as={BsChatRightFill} />}
+                size="sm"
+              >
+                <Link href="/chat">Chat</Link>
+              </Button>
+            ) : null}
           </HStack>
         </HStack>
         <HStack

@@ -1,4 +1,5 @@
 import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import invariant from "tiny-invariant";
 import Notification from "../components/common/Notification";
@@ -16,6 +17,7 @@ export const WebSocketProvider = ({ children }: Props) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const toast = useToast();
   const { user } = useLoggedInUser();
+  const router = useRouter();
 
   useEffect(() => {
     if (!window || !user) {
@@ -39,7 +41,7 @@ export const WebSocketProvider = ({ children }: Props) => {
     newSocket.addEventListener("message", (e) => {
       console.log(e);
       const data = JSON.parse(e.data);
-      if (data.messageType === "chatMessage") {
+      if (data.messageType === "chatMessage" && router.pathname !== "/chat") {
         toast({
           render: () => (
             <Notification

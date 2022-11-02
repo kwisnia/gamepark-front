@@ -1,4 +1,12 @@
-import { Avatar, Box, Flex, Input, Stack, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Input,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
 import { GiConsoleController } from "react-icons/gi";
 import { useInView } from "react-intersection-observer";
@@ -8,6 +16,7 @@ import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { BasicUserDetails } from "../../types/user";
 import { uploadImage } from "../../utils/ImageUtils";
 import Message from "./Message";
+import Notification from "../common/Notification";
 
 interface ChatBoxProps {
   user: BasicUserDetails;
@@ -18,6 +27,7 @@ const ChatBox = ({ user }: ChatBoxProps) => {
   const { messages, mutate, fetchNextPage } = useChatHistory(user.username);
   const { ref, inView } = useInView();
   const { user: loggedInUser } = useLoggedInUser();
+  const toast = useToast();
 
   const socketMessageHandler = useCallback(
     (event: MessageEvent) => {
@@ -27,6 +37,19 @@ const ChatBox = ({ user }: ChatBoxProps) => {
         data.messageType === "chatMessage" ||
         data.messageType === "successfulMessageSend"
       ) {
+        if (data.messageType === "chatMessage" && data.sender.id !== user.id) {
+          toast({
+            render: () => (
+              <Notification
+                title={`New message from ${data.sender.displayName}`}
+                message={data.content}
+                image={data.sender.avatar}
+              />
+            ),
+          });
+          const audio = new Audio("/kkondae.mp3");
+          audio.play();
+        }
         mutate();
       }
     },
