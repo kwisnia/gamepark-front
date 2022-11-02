@@ -1,9 +1,16 @@
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import invariant from "tiny-invariant";
 import Notification from "../components/common/Notification";
 import useLoggedInUser from "../hooks/useLoggedInUser";
+import { isChatMessage, SocketMessage } from "../types/socket";
 
 interface Props {
   children: React.ReactNode;
@@ -19,6 +26,27 @@ export const WebSocketProvider = ({ children }: Props) => {
   const { user } = useLoggedInUser();
   const router = useRouter();
 
+  const socketMessageHandler = useCallback(
+    (event: MessageEvent<string>) => {
+      console.log(event);
+      const data: SocketMessage = JSON.parse(event.data);
+      if (isChatMessage(data) && router.pathname !== "/chat") {
+        toast({
+          render: () => (
+            <Notification
+              title={`New message from ${data.sender.displayName}`}
+              message={data.content}
+              image={data.sender.avatar ?? ""}
+            />
+          ),
+        });
+        const audio = new Audio("/kkondae.mp3");
+        audio.play();
+      }
+    },
+    [router.pathname, toast]
+  );
+
   useEffect(() => {
     if (!window || !user) {
       return;
@@ -29,7 +57,7 @@ export const WebSocketProvider = ({ children }: Props) => {
         "Bearer " + authToken
       )}`
     );
-    newSocket.onopen = () => {
+    newSocket.addEventListener("open", () => {
       console.log("Connected to websocket");
       toast({
         title: "Connected to websocket",
@@ -37,27 +65,10 @@ export const WebSocketProvider = ({ children }: Props) => {
         duration: 3000,
         isClosable: true,
       });
-    };
-    newSocket.addEventListener("message", (e) => {
-      console.log(e);
-      const data = JSON.parse(e.data);
-      if (data.messageType === "chatMessage" && router.pathname !== "/chat") {
-        toast({
-          render: () => (
-            <Notification
-              title={`New message from ${data.sender.displayName}`}
-              message={data.content}
-              image={data.sender.avatar}
-            />
-          ),
-        });
-        const audio = new Audio("/kkondae.mp3");
-        audio.play();
-      }
     });
-    newSocket.onclose = () => {
+    newSocket.addEventListener("close", () => {
       console.log("Disconnected from websocket");
-    };
+    });
 
     newSocket.onerror = (e) => {
       console.log(e);
@@ -72,6 +83,14 @@ export const WebSocketProvider = ({ children }: Props) => {
     };
     setSocket(newSocket);
   }, [toast, user]);
+
+  useEffect(() => {
+    socket?.addEventListener("message", socketMessageHandler);
+
+    return () => {
+      socket?.removeEventListener("message", socketMessageHandler);
+    };
+  }, [socket, socketMessageHandler]);
 
   useEffect(() => {
     return () => {
