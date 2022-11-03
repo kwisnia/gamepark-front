@@ -18,12 +18,13 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { KeyedMutator, mutate } from "swr";
+import { KeyedMutator } from "swr";
 import { markHelpful, unmarkHelpful } from "../../api/ReviewApi";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { UserGameInfo } from "../../hooks/useUserGameInfo";
-import { GameCompletionStatus, UserReview } from "../../types/review";
+import { UserReview } from "../../types/review";
 import { getReadableCompletionStatus } from "../../utils/ReviewUtils";
+import UserDisplay from "../user/UserDisplay";
 import Rating from "./StarRating";
 
 interface Props {
@@ -72,21 +73,7 @@ const UserReview = ({ review, mutate }: Props) => {
             justifyContent="space-between"
             marginBottom={3}
           >
-            <LinkBox as={Flex} gap={5} alignItems="center">
-              <Avatar size="md" src={review.user.avatar ?? ""} />
-              <Heading
-                fontSize={{
-                  base: "md",
-                  md: "lg",
-                }}
-              >
-                <LinkOverlay>
-                  <Link href={`/users/${review.user.username}`}>
-                    {review.user.displayName}
-                  </Link>
-                </LinkOverlay>
-              </Heading>
-            </LinkBox>
+            <UserDisplay size="md" user={review.user} />
             <Rating
               icon={<StarIcon />}
               iconSize={28}

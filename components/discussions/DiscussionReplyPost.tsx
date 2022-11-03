@@ -126,12 +126,7 @@ const DiscussionReplyPost = ({
   return (
     <Box bg="gray.700" rounded="md" p={3}>
       <Flex justify="space-between">
-        <UserDisplay
-          displayName={post.user.displayName}
-          username={post.user.username}
-          avatar={post.user.avatar}
-          size="md"
-        />
+        <UserDisplay user={post.user} size="md" />
         <Flex gap={3}>
           <IconButton
             icon={<BsFillReplyFill />}

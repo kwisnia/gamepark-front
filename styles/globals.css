@@ -31,3 +31,8 @@ a {
 .ReactModal__Overlay--before-close{
     opacity: 0;
 }
+
+.FileInput:hover .FileInputHint {
+  opacity: 1;
+  cursor: pointer;
+} 

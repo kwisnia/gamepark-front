@@ -1,5 +1,5 @@
 import { Platform } from "./game";
-import { UserDetails } from "./user";
+import { BasicUserDetails, UserDetails } from "./user";
 
 export enum GameCompletionStatus {
   MainStory = 0,
@@ -29,6 +29,6 @@ export interface UserReview {
   containsSpoilers: boolean;
   body: string;
   game: string;
-  user: Pick<UserDetails, "displayName" | "username" | "id" | "avatar">;
+  user: BasicUserDetails;
   markedAsHelpful: boolean;
 }

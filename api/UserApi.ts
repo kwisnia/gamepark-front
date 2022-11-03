@@ -36,3 +36,13 @@ export const getUserDetails = async (
   const response = await axiosClient.get(`/${userName}/details`);
   return response.data;
 };
+
+export const followUser = async (userName: string) => {
+  const response = await axiosClient.post(`/follow/${userName}`);
+  return response.data;
+};
+
+export const unfollowUser = async (userName: string) => {
+  const response = await axiosClient.delete(`/follow/${userName}`);
+  return response.data;
+};

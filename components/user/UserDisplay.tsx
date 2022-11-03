@@ -1,30 +1,44 @@
-import { Avatar, Flex, Heading, LinkBox, LinkOverlay } from "@chakra-ui/react";
+import {
+  Avatar,
+  Flex,
+  Heading,
+  LinkBox,
+  LinkOverlay,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+} from "@chakra-ui/react";
 import Link from "next/link";
+import { BasicUserDetails } from "../../types/user";
+import UserPopoverBody from "./UserPopover";
 
 interface UserDisplayProps {
-  displayName: string;
-  username: string;
-  avatar: string | null;
+  user: BasicUserDetails;
   size: "sm" | "md" | "lg";
 }
 
-const UserDisplay = ({
-  displayName,
-  username,
-  avatar,
-  size,
-}: UserDisplayProps) => {
+const UserDisplay = ({ user, size }: UserDisplayProps) => {
   return (
-    <LinkBox as={Flex} gap={2} alignItems="center">
-      <Avatar size={size} src={avatar ?? ""} />
-      <Heading fontSize={size}>
-        <LinkOverlay>
-          <Link href={`/users/${username}`} passHref>
-            {displayName}
-          </Link>
-        </LinkOverlay>
-      </Heading>
-    </LinkBox>
+    <Popover trigger="hover" isLazy>
+      <PopoverTrigger>
+        <LinkBox as={Flex} gap={2} alignItems="center">
+          <Avatar size={size} src={user.avatar ?? ""} />
+          <Heading fontSize={size}>
+            <LinkOverlay>
+              <Link href={`/users/${user.username}`} passHref>
+                {user.displayName}
+              </Link>
+            </LinkOverlay>
+          </Heading>
+        </LinkBox>
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverBody>
+          <UserPopoverBody user={user} />
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   );
 };
 

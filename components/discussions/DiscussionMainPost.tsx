@@ -96,9 +96,7 @@ const DiscussionMainPost = ({ discussion, game, mutate }: DiscussionProps) => {
           <Box>
             <Heading>{discussion.title}</Heading>
             <UserDisplay
-              displayName={discussion.user.displayName}
-              username={discussion.user.username}
-              avatar={discussion.user.avatar}
+              user={discussion.user}
               size="md"
             />
           </Box>
