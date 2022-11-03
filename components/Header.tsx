@@ -67,23 +67,26 @@ const Header = () => {
               variant="ghost"
               leftIcon={<Icon as={AiFillHome} />}
               size="sm"
+              onClick={() => router.push("/")}
             >
-              <Link href="/">Dashboard</Link>
+              Dashboard
             </Button>
             <Button
               variant="ghost"
               leftIcon={<Icon as={GiConsoleController} />}
               size="sm"
+              onClick={() => router.push("/games")}
             >
-              <Link href="/games">Games</Link>
+              Games
             </Button>
             {user ? (
               <Button
                 variant="ghost"
                 leftIcon={<Icon as={BsChatRightFill} />}
                 size="sm"
+                onClick={() => router.push("/chat")}
               >
-                <Link href="/chat">Chat</Link>
+                Chat
               </Button>
             ) : null}
           </HStack>
