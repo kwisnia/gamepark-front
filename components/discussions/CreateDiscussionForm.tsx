@@ -18,14 +18,18 @@ import { GameDetails } from "../../types/game";
 import FormTextField from "../common/FormTextField";
 import Editor from "../editor/Editor";
 import * as yup from "yup";
-import { DiscussionForm, GameDiscussion } from "../../types/discussion";
+import {
+  DiscussionForm,
+  GameDiscussion,
+  GameDiscussionListItem,
+} from "../../types/discussion";
 import { createDiscussion } from "../../api/DiscussionApi";
 import { KeyedMutator, mutate } from "swr";
 
 interface CreateDiscussionFormProps {
   game: GameDetails;
   onClose: () => void;
-  mutate: KeyedMutator<GameDiscussion[]>;
+  mutate: KeyedMutator<GameDiscussionListItem[][]>;
 }
 
 const reviewSchema = yup.object().shape({

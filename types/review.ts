@@ -1,4 +1,4 @@
-import { Platform } from "./game";
+import { GameListElement, Platform } from "./game";
 import { BasicUserDetails, UserDetails } from "./user";
 
 export enum GameCompletionStatus {
@@ -31,4 +31,5 @@ export interface UserReview {
   game: string;
   user: BasicUserDetails;
   markedAsHelpful: boolean;
+  gameDetails?: GameListElement;
 }

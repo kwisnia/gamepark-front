@@ -1,4 +1,5 @@
-import { BasicUserDetails, UserDetails } from "./user";
+import type { GameListElement } from "./game";
+import type { BasicUserDetails } from "./user";
 
 export interface GameDiscussion {
   id: number;
@@ -9,6 +10,7 @@ export interface GameDiscussion {
   score: number;
   userScore: number;
   postsCount: number;
+  gameDetails?: GameListElement;
 }
 
 export interface DiscussionForm {

@@ -5,23 +5,16 @@ export interface UserDetails {
   username: string;
   id: number;
   avatar: string | null;
-  bio: string | null;
+  bio: string;
   displayName: string;
   lists: GameList[];
   followerCount: number;
   followingCount: number;
+  banner: string | null;
+  bannerPosition: number;
 }
 
-export type BasicUserDetails = Pick<
-  UserDetails,
-  | "id"
-  | "username"
-  | "displayName"
-  | "avatar"
-  | "followerCount"
-  | "followingCount"
-  | "bio"
->;
+export type BasicUserDetails = Omit<UserDetails, "email" | "lists">;
 
 export interface UserProfileEditForm {
   displayName: string;

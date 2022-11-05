@@ -12,6 +12,7 @@ const DiscussionScore = ({
   onScoreChange,
   userScore,
 }: DiscussionScoreProps) => {
+  console.log(userScore);
   return (
     <Stack direction="column" alignItems="center">
       <ChevronUpIcon

@@ -12,19 +12,42 @@ import {
 } from "@chakra-ui/react";
 import { GameDiscussionListItem } from "../../types/discussion";
 import NextLink from "next/link";
+import DiscussionScore from "./DiscussionScore";
+import { useLoginModal } from "../../contexts/LoginModalContext";
+import useLoggedInUser from "../../hooks/useLoggedInUser";
+import { scoreDiscussion } from "../../api/DiscussionApi";
+import { KeyedMutator } from "swr";
 
 interface DiscussionItemProps {
   discussion: GameDiscussionListItem;
+  isUserPage?: boolean;
+  mutate?: KeyedMutator<GameDiscussionListItem[][]>;
 }
 
-const DiscussionItem = ({ discussion }: DiscussionItemProps) => {
+const DiscussionItem = ({
+  discussion,
+  isUserPage,
+  mutate,
+}: DiscussionItemProps) => {
+  const { loggedOut } = useLoggedInUser();
+  const { openModal } = useLoginModal();
+
+  const onScoreChange = async (score: number) => {
+    if (loggedOut) {
+      openModal();
+      return;
+    }
+    await scoreDiscussion(discussion.game, discussion.id, score);
+    mutate?.();
+  };
+
   return (
     <Flex bg="gray.700" rounded="md" padding={5} height="full" width="full">
-      <Stack direction="column" alignItems="center">
-        <ChevronUpIcon w={30} />
-        <Heading>{discussion.score}</Heading>
-        <ChevronDownIcon />
-      </Stack>
+      <DiscussionScore
+        score={discussion.score}
+        onScoreChange={onScoreChange}
+        userScore={discussion.userScore}
+      />
       <Stack flex={10} marginLeft={5} alignItems="flex-start" spacing={2}>
         <Heading size="xl">
           <NextLink
@@ -34,25 +57,45 @@ const DiscussionItem = ({ discussion }: DiscussionItemProps) => {
             <Link variant="link">{discussion.title}</Link>
           </NextLink>
         </Heading>
-        <Box fontSize="sm">
-          <Text>created by</Text>
-          <LinkBox as={Flex} gap={2} alignItems="center">
-            <Avatar size="xs" src={discussion.user.avatar ?? ""} />
-            <Heading
-              fontSize={{
-                base: "md",
-                md: "lg",
-              }}
-            >
-              <NextLink
-                href={`/users/${discussion.user.username}`}
-                legacyBehavior
+        {isUserPage ? (
+          <Box fontSize="sm">
+            <Text>on </Text>
+            <LinkBox as={Flex} gap={2} alignItems="center">
+              <Heading
+                fontSize={{
+                  base: "md",
+                  md: "lg",
+                }}
               >
-                <LinkOverlay>{discussion.user.displayName}</LinkOverlay>
-              </NextLink>
-            </Heading>
-          </LinkBox>
-        </Box>
+                <LinkOverlay>
+                  <NextLink href={`/games/${discussion.game}`} legacyBehavior>
+                    {discussion.gameDetails?.name}
+                  </NextLink>
+                </LinkOverlay>
+              </Heading>
+            </LinkBox>
+          </Box>
+        ) : (
+          <Box fontSize="sm">
+            <Text>created by</Text>
+            <LinkBox as={Flex} gap={2} alignItems="center">
+              <Avatar size="xs" src={discussion.user.avatar ?? ""} />
+              <Heading
+                fontSize={{
+                  base: "md",
+                  md: "lg",
+                }}
+              >
+                <NextLink
+                  href={`/users/${discussion.user.username}`}
+                  legacyBehavior
+                >
+                  <LinkOverlay>{discussion.user.displayName}</LinkOverlay>
+                </NextLink>
+              </Heading>
+            </LinkBox>
+          </Box>
+        )}
       </Stack>
       <Flex gap={1} alignItems="center">
         <ChatIcon w={25} h={25} />

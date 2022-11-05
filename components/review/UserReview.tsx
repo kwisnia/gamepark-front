@@ -22,17 +22,21 @@ import { KeyedMutator } from "swr";
 import { markHelpful, unmarkHelpful } from "../../api/ReviewApi";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { UserGameInfo } from "../../hooks/useUserGameInfo";
+import { IGDBImageSize } from "../../types/game";
 import { UserReview } from "../../types/review";
+import { getCoverUrl } from "../../utils/ImageUtils";
 import { getReadableCompletionStatus } from "../../utils/ReviewUtils";
 import UserDisplay from "../user/UserDisplay";
 import Rating from "./StarRating";
+import Image from "next/image";
 
 interface Props {
   review: UserReview;
   mutate: KeyedMutator<UserReview[][]> | KeyedMutator<UserGameInfo>;
+  isUserPage?: boolean;
 }
 
-const UserReview = ({ review, mutate }: Props) => {
+const UserReview = ({ review, mutate, isUserPage }: Props) => {
   const { user, loggedOut } = useLoggedInUser();
   const isUserReview = user?.username === review.creator;
 
@@ -73,7 +77,34 @@ const UserReview = ({ review, mutate }: Props) => {
             justifyContent="space-between"
             marginBottom={3}
           >
-            <UserDisplay size="md" user={review.user} />
+            {isUserPage ? (
+              <Flex alignItems="center" gap={3}>
+                <Box
+                  rounded="xl"
+                  border="2px"
+                  borderColor="gray.500"
+                  overflow="hidden"
+                >
+                  <Image
+                    src={getCoverUrl(
+                      review.gameDetails?.cover?.imageId ?? "",
+                      IGDBImageSize.CoverSmall,
+                      true
+                    )}
+                    alt={review.gameDetails?.name ?? ""}
+                    width={100}
+                    height={100}
+                  />
+                </Box>
+                <Box alignSelf="end">
+                  <Link href={`/games/${review.game}`}>
+                    <Text fontWeight="bold">{review.gameDetails?.name}</Text>
+                  </Link>
+                </Box>
+              </Flex>
+            ) : (
+              <UserDisplay size="md" user={review.user} />
+            )}
             <Rating
               icon={<StarIcon />}
               iconSize={28}

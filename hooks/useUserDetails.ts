@@ -1,7 +1,8 @@
 import useSWRImmutable from "swr/immutable";
+import { BasicUserDetails } from "../types/user";
 
 const useUserDetails = (user: string) => {
-  const { data, error, mutate } = useSWRImmutable(
+  const { data, error, mutate } = useSWRImmutable<BasicUserDetails>(
     user ? `/${user}/details` : null
   );
 
@@ -10,6 +11,7 @@ const useUserDetails = (user: string) => {
   return {
     loading,
     user: data,
+    mutate,
   };
 };
 

@@ -11,52 +11,13 @@ import { useState } from "react";
 import useSWR, { KeyedMutator } from "swr";
 import { followUser, unfollowUser } from "../../api/UserApi";
 import { BasicUserDetails } from "../../types/user";
+import FollowButton from "./FollowButton";
 
 interface UserPopoverProps {
   user: Omit<BasicUserDetails, "id">;
 }
 
 const UserPopoverBody = ({ user }: UserPopoverProps) => {
-  const { data: followStatus, mutate } = useSWR<boolean>(
-    `/follow/${user.username}`
-  );
-  const toast = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleFollow = async () => {
-    try {
-      setIsLoading(true);
-      await followUser(user.username);
-      mutate(!followStatus);
-    } catch (e) {
-      const error = e as Error;
-      toast({
-        title: "Error",
-        description: error.message,
-        status: "error",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleUnfollow = async () => {
-    try {
-      setIsLoading(true);
-      await unfollowUser(user.username);
-      mutate(!followStatus);
-    } catch (e) {
-      const error = e as Error;
-      toast({
-        title: "Error",
-        description: error.message,
-        status: "error",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <Stack>
       <Flex alignItems="flex-end" gap={5}>
@@ -65,25 +26,7 @@ const UserPopoverBody = ({ user }: UserPopoverProps) => {
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
         <Heading size="sm">@{user.username}</Heading>
-        {followStatus === undefined ? null : followStatus ? (
-          <Button
-            colorScheme="red"
-            size="sm"
-            onClick={handleUnfollow}
-            isLoading={isLoading}
-          >
-            Stop following
-          </Button>
-        ) : (
-          <Button
-            colorScheme="blue"
-            size="sm"
-            onClick={handleFollow}
-            isLoading={isLoading}
-          >
-            Follow
-          </Button>
-        )}
+        <FollowButton username={user.username} />
       </Flex>
       <Flex
         justifyContent="space-between"

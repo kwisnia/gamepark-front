@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Input,
   ModalBody,
   ModalCloseButton,
@@ -11,20 +10,25 @@ import {
   ModalFooter,
   ModalHeader,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { Field, Form, Formik } from "formik";
-import { BasicUserDetails, UserProfileEditForm } from "../../types/user";
+import { Form, Formik } from "formik";
 import Modal from "../common/Modal";
 import * as yup from "yup";
 import FormTextField from "../common/FormTextField";
 import FormTextArea from "../common/FormTextArea";
 import Image from "next/image";
-import { BsFillCameraFill } from "react-icons/bs";
+import { useCallback, useState } from "react";
+import { updateUserProfile } from "../../api/UserApi";
+import type { FormikHelpers } from "formik";
+import type { BasicUserDetails, UserProfileEditForm } from "../../types/user";
+import { KeyedMutator, mutate } from "swr";
 
 interface ProfileEditModalProps {
   open: boolean;
   onClose: () => void;
   user: BasicUserDetails;
+  mutate: KeyedMutator<BasicUserDetails>;
 }
 
 const profileEditSchema = yup.object().shape({
@@ -34,10 +38,50 @@ const profileEditSchema = yup.object().shape({
 
 const randomColour = Math.floor(Math.random() * 16777215).toString(16);
 
-const ProfileEditModal = ({ open, onClose, user }: ProfileEditModalProps) => {
-  const submit = () => {};
+const ProfileEditModal = ({
+  open,
+  onClose,
+  user,
+  mutate,
+}: ProfileEditModalProps) => {
+  const [avatarUrl, setAvatarUrl] = useState(user.avatar);
+  const [bannerUrl, setBannerUrl] = useState(user.banner);
+  const toast = useToast();
+
+  const submit = async (
+    values: UserProfileEditForm,
+    { setSubmitting }: FormikHelpers<UserProfileEditForm>
+  ) => {
+    try {
+      await updateUserProfile(values);
+      toast({
+        title: "Profile updated",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      mutate();
+      onClose();
+    } catch (e) {
+      toast({
+        title: "Error updating profile",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const closeModal = useCallback(() => {
+    setAvatarUrl(user.avatar);
+    setBannerUrl(user.banner);
+    onClose();
+  }, [user, onClose]);
+
   return (
-    <Modal isOpen={open} onRequestClose={onClose}>
+    <Modal isOpen={open} onRequestClose={closeModal}>
       <ModalContent bg="gray.700">
         <ModalCloseButton />
         <ModalHeader>Update your profile</ModalHeader>
@@ -45,14 +89,14 @@ const ProfileEditModal = ({ open, onClose, user }: ProfileEditModalProps) => {
           initialValues={{
             avatar: null,
             displayName: user.displayName,
-            bio: user.bio ?? "",
+            bio: user.bio,
             banner: null,
             removeBanner: false,
           }}
           onSubmit={submit}
           validationSchema={profileEditSchema}
         >
-          {({ isSubmitting, setFieldValue, values }) => (
+          {({ isSubmitting, setFieldValue }) => (
             <Form>
               <ModalBody>
                 <Box
@@ -62,13 +106,17 @@ const ProfileEditModal = ({ open, onClose, user }: ProfileEditModalProps) => {
                   overflow="hidden"
                   className="FileInput"
                 >
-                  <Image
-                    src="https://gamepark-images.s3.eu-central-1.amazonaws.com/istockphoto-1279840008-1024x1024.jpg"
-                    priority
-                    alt="User header"
-                    className="object-cover shadow-2xl shadow-red-500"
-                    fill
-                  />
+                  {bannerUrl ? (
+                    <Image
+                      src={bannerUrl}
+                      priority
+                      alt="User header"
+                      className="object-cover"
+                      fill
+                    />
+                  ) : (
+                    <Box objectFit="cover" h="full" bg={`#${randomColour}`} />
+                  )}
                   <Input
                     type="file"
                     accept="image/*"
@@ -79,9 +127,14 @@ const ProfileEditModal = ({ open, onClose, user }: ProfileEditModalProps) => {
                     h="full"
                     opacity={0}
                     onChange={(e) => {
-                      if (e.target.files) {
+                      if (e.target.files && e.target.files.length > 0) {
+                        const reader = new FileReader();
                         setFieldValue("banner", e.target.files[0]);
                         setFieldValue("removeBanner", false);
+                        reader.onload = (e) => {
+                          setBannerUrl(e.target?.result as string);
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
                       }
                     }}
                     cursor="pointer"
@@ -111,7 +164,7 @@ const ProfileEditModal = ({ open, onClose, user }: ProfileEditModalProps) => {
                   <Avatar
                     size="2xl"
                     name={user.displayName}
-                    src={values.avatar ? values.avatar.name : user.avatar ?? ""}
+                    src={avatarUrl ?? ""}
                   />
                   <Center
                     position="absolute"
@@ -131,7 +184,12 @@ const ProfileEditModal = ({ open, onClose, user }: ProfileEditModalProps) => {
                     accept="image/*"
                     onChange={(e) => {
                       if (e.target.files) {
+                        const reader = new FileReader();
                         setFieldValue("avatar", e.target.files[0]);
+                        reader.onload = (e) => {
+                          setAvatarUrl(e.target?.result as string);
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
                       }
                     }}
                     position="absolute"
@@ -145,11 +203,25 @@ const ProfileEditModal = ({ open, onClose, user }: ProfileEditModalProps) => {
                     zIndex={10}
                   />
                 </Box>
+                {bannerUrl ? (
+                  <Center>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        setFieldValue("banner", null);
+                        setFieldValue("removeBanner", true);
+                        setBannerUrl("");
+                      }}
+                    >
+                      Remove banner
+                    </Button>
+                  </Center>
+                ) : null}
                 <FormTextField name="displayName" label="Display name" />
                 <FormTextArea name="bio" label="Profile bio" />
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" mr={3} onClick={onClose}>
+                <Button variant="ghost" mr={3} onClick={closeModal}>
                   Close
                 </Button>
                 <Button

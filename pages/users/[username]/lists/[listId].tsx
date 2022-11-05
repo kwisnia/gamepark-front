@@ -25,6 +25,7 @@ import ListCreateModal from "../../../../components/user/ListCreateModal";
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import UserPageLayout from "../../../../components/user/UserPageLayout";
 
 const DetailedListPage = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -55,83 +56,79 @@ const DetailedListPage = () => {
   };
 
   return (
-    <Box
-      width={{
-        base: "90%",
-        md: "60%",
-      }}
-      margin="auto"
-    >
+    <>
       <Head>
         <title>{title}</title>
       </Head>
-      <Heading>{data?.name}</Heading>
-      <Text>{data?.description}</Text>
-      {user?.username === loggedInUser?.username ? (
-        <Button onClick={() => setEditModalOpen(true)}>Edit</Button>
-      ) : null}
-      <List>
-        {data?.games.map((game) => (
-          <ListItem
-            key={game.slug}
-            bg="gray.500"
-            rounded="md"
-            padding={5}
-            marginY={2}
-            display="flex"
-            alignItems="center"
-            height="full"
-            width="full"
-          >
-            <LinkBox display="flex" alignItems="center" flex={10}>
-              <Box flex={1}>
-                <Image
-                  src={getCoverUrl(
-                    game.cover?.imageId || "",
-                    IGDBImageSize.CoverBig,
-                    false
-                  )}
-                  width={100}
-                  height={100}
-                  alt={`${game.name} cover`}
-                />
-              </Box>
-              <Heading
-                size="md"
-                justifyContent="center"
-                flex={8}
-                textAlign="center"
-              >
-                <Link href={`/games/${game.slug}`} legacyBehavior>
-                  <LinkOverlay>{game.name}</LinkOverlay>
-                </Link>
-              </Heading>
-            </LinkBox>
-            {isOwner ? (
-              <Center flex={1}>
-                <IconButton
-                  aria-label="Delete game from list"
-                  icon={<DeleteIcon />}
-                  colorScheme="red"
-                  onClick={() => removeGameFromList(game.slug)}
-                />
-              </Center>
-            ) : null}
-          </ListItem>
-        ))}
-      </List>
-      {data && isOwner ? (
-        <ListCreateModal
-          open={editModalOpen}
-          onClose={() => setEditModalOpen(false)}
-          mode="edit"
-          listId={Number(listId)}
-          initialName={data.name}
-          initialDescription={data.description}
-          mutate={mutate}
-        />
-      ) : null}
-    </Box>
+      <UserPageLayout>
+        <Heading>{data?.name}</Heading>
+        <Text>{data?.description}</Text>
+        {user?.username === loggedInUser?.username ? (
+          <Button onClick={() => setEditModalOpen(true)}>Edit</Button>
+        ) : null}
+        <List>
+          {data?.games.map((game) => (
+            <ListItem
+              key={game.slug}
+              bg="gray.500"
+              rounded="md"
+              padding={5}
+              marginY={2}
+              display="flex"
+              alignItems="center"
+              height="full"
+              width="full"
+            >
+              <LinkBox display="flex" alignItems="center" flex={10}>
+                <Box flex={1}>
+                  <Image
+                    src={getCoverUrl(
+                      game.cover?.imageId || "",
+                      IGDBImageSize.CoverBig,
+                      false
+                    )}
+                    width={100}
+                    height={100}
+                    alt={`${game.name} cover`}
+                  />
+                </Box>
+                <Heading
+                  size="md"
+                  justifyContent="center"
+                  flex={8}
+                  textAlign="center"
+                >
+                  <Link href={`/games/${game.slug}`} legacyBehavior>
+                    <LinkOverlay>{game.name}</LinkOverlay>
+                  </Link>
+                </Heading>
+              </LinkBox>
+              {isOwner ? (
+                <Center flex={1}>
+                  <IconButton
+                    aria-label="Delete game from list"
+                    icon={<DeleteIcon />}
+                    colorScheme="red"
+                    onClick={() => removeGameFromList(game.slug)}
+                  />
+                </Center>
+              ) : null}
+            </ListItem>
+          ))}
+        </List>
+        {data && isOwner ? (
+          <ListCreateModal
+            open={editModalOpen}
+            onClose={() => setEditModalOpen(false)}
+            mode="edit"
+            listId={Number(listId)}
+            initialName={data.name}
+            initialDescription={data.description}
+            mutate={mutate}
+          />
+        ) : null}
+      </UserPageLayout>
+    </>
   );
 };
 

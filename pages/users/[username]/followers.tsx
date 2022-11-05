@@ -1,34 +1,45 @@
-import { Container } from "@chakra-ui/react";
-import type { NextPage, GetServerSideProps } from "next";
-import { getUserDetails } from "../../../api/UserApi";
+import { SimpleGrid, Text } from "@chakra-ui/react";
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
+import EmptyState from "../../../components/common/EmptyState";
+import UserPageLayout from "../../../components/user/UserPageLayout";
+import UserProfileOverview from "../../../components/user/UserProfileOverview";
+import useUserDetails from "../../../hooks/useUserDetails";
+import useUserFollowers from "../../../hooks/useUserFollowers";
 
 const UserFollowersPage: NextPage = () => {
-  return <Container maxW="container.xl">
-    
-  </Container>;
-};
+  const router = useRouter();
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { username } = query;
+  const { username } = router.query;
 
-  if (!username) {
-    return {
-      notFound: true,
-    };
-  }
+  const { user } = useUserDetails(username as string);
+  const { followers } = useUserFollowers(username as string);
 
-  try {
-    const userDetails = await getUserDetails(username as string);
-    return {
-      props: {
-        userDetails,
-      },
-    };
-  } catch (e) {
-    return {
-      notFound: true,
-    };
-  }
+  const title = user
+    ? `${user?.displayName}'s followers - GamePark`
+    : "Loading...";
+
+  const followersFlat = useMemo(() => followers?.flat() ?? [], [followers]);
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <UserPageLayout>
+        {followersFlat.length > 0 ? (
+          <SimpleGrid columns={3} spacing={4}>
+            {followersFlat.map((user) => (
+              <UserProfileOverview key={user.id} user={user} />
+            ))}
+          </SimpleGrid>
+        ) : (
+          <EmptyState />
+        )}
+      </UserPageLayout>
+    </>
+  );
 };
 
 export default UserFollowersPage;

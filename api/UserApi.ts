@@ -1,6 +1,6 @@
 import invariant from "tiny-invariant";
 import { axiosClient } from "../constants";
-import { UserDetails } from "../types/user";
+import { UserDetails, UserProfileEditForm } from "../types/user";
 
 export const login = async (email: string, password: string) => {
   const response = await axiosClient.post("/login", { email, password });
@@ -45,4 +45,16 @@ export const followUser = async (userName: string) => {
 export const unfollowUser = async (userName: string) => {
   const response = await axiosClient.delete(`/follow/${userName}`);
   return response.data;
+};
+
+export const updateUserProfile = async (editForm: UserProfileEditForm) => {
+  return await axiosClient.patch("/me/details", editForm, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export const updateUserBannerPosition = async (position: number) => {
+  return await axiosClient.patch("/me/details/banner", { position });
 };

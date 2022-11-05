@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { mutate } from "swr";
 import useDiscussions from "../../hooks/useDiscussions";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { GameDetails } from "../../types/game";
@@ -13,8 +12,8 @@ interface DiscussionsProps {
 }
 
 const GameDiscussions = ({ game }: DiscussionsProps) => {
-  const { user, loggedOut } = useLoggedInUser();
-  const { discussions, fetchNextPage } = useDiscussions(game.slug);
+  const { loggedOut } = useLoggedInUser();
+  const { discussions, fetchNextPage, mutate } = useDiscussions(game.slug);
   const [inCreationMode, setInCreationMode] = useState(false);
   const { ref, inView } = useInView();
 
@@ -47,7 +46,11 @@ const GameDiscussions = ({ game }: DiscussionsProps) => {
           )}
           <Stack direction="column" spacing={2}>
             {discussionsFlat.map((discussion) => (
-              <DiscussionItem key={discussion.id} discussion={discussion} />
+              <DiscussionItem
+                key={discussion.id}
+                discussion={discussion}
+                mutate={mutate}
+              />
             ))}
           </Stack>
           <Box h={1} ref={ref} />
