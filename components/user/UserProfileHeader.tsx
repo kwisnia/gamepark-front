@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Stack,
+  Text,
   useBoolean,
   useDisclosure,
   useSlider,
@@ -128,6 +129,13 @@ const UserProfileHeader = ({ user, mutate }: UserProfileHeaderProps) => {
           <Heading size="md" textColor="gray.400">
             @{user.username}
           </Heading>
+          <Flex gap={3} textColor="gray.400">
+            <Text>
+              {user.followerCount}{" "}
+              {user.followerCount === 1 ? "Follower" : "Followers"}
+            </Text>
+            <Text>{user.followingCount} Following</Text>
+          </Flex>
         </Stack>
         <Flex alignItems="center" mt={-16} mr={6}>
           {isOwner ? (

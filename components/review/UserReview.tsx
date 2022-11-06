@@ -38,7 +38,8 @@ interface Props {
 
 const UserReview = ({ review, mutate, isUserPage }: Props) => {
   const { user, loggedOut } = useLoggedInUser();
-  const isUserReview = user?.username === review.creator;
+  console.log(user?.username, review.creator);
+  const isUserReview = user?.id === review.creator;
 
   const [isReviewBlurred, setIsReviewBlurred] = useState(
     review.containsSpoilers

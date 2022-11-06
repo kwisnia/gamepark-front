@@ -10,7 +10,11 @@ import {
 import invariant from "tiny-invariant";
 import Notification from "../components/common/Notification";
 import useLoggedInUser from "../hooks/useLoggedInUser";
-import { isChatMessage, SocketMessage } from "../types/socket";
+import {
+  isChatMessage,
+  isNewAchievement,
+  SocketMessage,
+} from "../types/socket";
 
 interface Props {
   children: React.ReactNode;
@@ -42,6 +46,19 @@ export const WebSocketProvider = ({ children }: Props) => {
         });
         const audio = new Audio("/kkondae.mp3");
         audio.play();
+      } else if (isNewAchievement(data)) {
+        toast({
+          render: () => (
+            <Notification
+              title={`New achievement unlocked!`}
+              message={`${data.title} +${data.score} points`}
+              image={data.badge}
+            />
+          ),
+        });
+        const audio = new Audio("/new-achievement-ding.mp3");
+        audio.volume = 0.2;
+        audio.play();
       }
     },
     [router.pathname, toast]
@@ -59,12 +76,6 @@ export const WebSocketProvider = ({ children }: Props) => {
     );
     newSocket.addEventListener("open", () => {
       console.log("Connected to websocket");
-      toast({
-        title: "Connected to websocket",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
     });
     newSocket.addEventListener("close", () => {
       console.log("Disconnected from websocket");

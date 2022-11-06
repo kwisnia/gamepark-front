@@ -49,6 +49,11 @@ const UserPageLayout = ({ children }: UserLayoutPageProps) => {
       label: "Following",
       href: `/users/${username}/following`,
     },
+    {
+      id: "user-achievements",
+      label: "Achievements",
+      href: `/users/${username}/achievements`,
+    },
   ];
 
   return (

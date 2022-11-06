@@ -75,7 +75,11 @@ const Editor = ({ onChange, content }: EditorProps) => {
 
   useEffect(() => {
     editor?.on("update", () => {
-      if (editor.storage.characterCount.characters() === 0) {
+      if (
+        editor.storage.characterCount.characters() === 0 ||
+        editor.isEmpty ||
+        editor.getText().trim() === ""
+      ) {
         onChange?.("");
       } else {
         onChange?.(editor?.getHTML());

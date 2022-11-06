@@ -12,6 +12,12 @@ export interface UserDetails {
   followingCount: number;
   banner: string | null;
   bannerPosition: number;
+  userUnlocks: {
+    banner: boolean;
+    avatar: boolean;
+    animatedAvatar: boolean;
+    animatedBanner: boolean;
+  };
 }
 
 export type BasicUserDetails = Omit<UserDetails, "email" | "lists">;

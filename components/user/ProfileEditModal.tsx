@@ -119,16 +119,28 @@ const ProfileEditModal = ({
                   )}
                   <Input
                     type="file"
-                    accept="image/*"
+                    accept={
+                      user.userUnlocks.animatedBanner
+                        ? "image/*"
+                        : "image/jpeg, image/png"
+                    }
                     position="absolute"
                     top={0}
                     left={0}
                     w="full"
                     h="full"
                     opacity={0}
-                    onChange={(e) => {
+                    visibility={user.userUnlocks.banner ? "visible" : "hidden"}
+                    onChange={async (e) => {
                       if (e.target.files && e.target.files.length > 0) {
                         const reader = new FileReader();
+                        if (
+                          !user.userUnlocks.animatedBanner &&
+                          e.target.files[0].type !== "image/jpeg" &&
+                          e.target.files[0].type !== "image/png"
+                        ) {
+                          return;
+                        }
                         setFieldValue("banner", e.target.files[0]);
                         setFieldValue("removeBanner", false);
                         reader.onload = (e) => {
@@ -137,8 +149,9 @@ const ProfileEditModal = ({
                         reader.readAsDataURL(e.target.files[0]);
                       }
                     }}
-                    cursor="pointer"
+                    cursor={user.userUnlocks.banner ? "pointer" : "not-allowed"}
                     zIndex={1}
+                    disabled={!user.userUnlocks.banner}
                   />
                   <Center
                     position="absolute"
@@ -148,9 +161,14 @@ const ProfileEditModal = ({
                     w="full"
                     opacity={0}
                     bg="rgba(0, 0, 0, 0.5)"
-                    className="FileInputHint"
+                    cursor={user.userUnlocks.banner ? "pointer" : "not-allowed"}
+                    className={`FileInputHint`}
                   >
-                    <Text fontWeight="bold">Change banner</Text>
+                    <Text fontWeight="bold">
+                      {user.userUnlocks.banner
+                        ? "Change banner"
+                        : "🔒 Unlocked at 10 points"}
+                    </Text>
                   </Center>
                 </Box>
                 <Box
@@ -181,10 +199,21 @@ const ProfileEditModal = ({
                   </Center>
                   <Input
                     type="file"
-                    accept="image/*"
+                    accept={
+                      user.userUnlocks.animatedAvatar
+                        ? "image/*"
+                        : "image/jpeg, image/png"
+                    }
                     onChange={(e) => {
-                      if (e.target.files) {
+                      if (e.target.files && e.target.files.length > 0) {
                         const reader = new FileReader();
+                        if (
+                          !user.userUnlocks.animatedAvatar &&
+                          e.target.files[0].type !== "image/jpeg" &&
+                          e.target.files[0].type !== "image/png"
+                        ) {
+                          return;
+                        }
                         setFieldValue("avatar", e.target.files[0]);
                         reader.onload = (e) => {
                           setAvatarUrl(e.target?.result as string);

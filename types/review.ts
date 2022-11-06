@@ -25,7 +25,7 @@ export interface UserReview {
   platform: Platform | null;
   gameCompletionID: GameCompletionStatus;
   title: string;
-  creator: string;
+  creator: number;
   containsSpoilers: boolean;
   body: string;
   game: string;

@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import useSWR, { KeyedMutator } from "swr";
 import { followUser, unfollowUser } from "../../api/UserApi";
+import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { BasicUserDetails } from "../../types/user";
 import FollowButton from "./FollowButton";
 
@@ -18,6 +19,7 @@ interface UserPopoverProps {
 }
 
 const UserPopoverBody = ({ user }: UserPopoverProps) => {
+  const { user: loggedInUser } = useLoggedInUser();
   return (
     <Stack>
       <Flex alignItems="flex-end" gap={5}>
@@ -26,7 +28,9 @@ const UserPopoverBody = ({ user }: UserPopoverProps) => {
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
         <Heading size="sm">@{user.username}</Heading>
-        <FollowButton username={user.username} />
+        {user.username === loggedInUser?.username ? null : (
+          <FollowButton username={user.username} />
+        )}
       </Flex>
       <Flex
         justifyContent="space-between"

@@ -2,12 +2,20 @@ import { BasicUserDetails } from "./user";
 
 enum SocketMessageTypes {
   ChatMessage = "chatMessage",
+  NewAchievement = "newAchievement",
 }
 
 interface SocketChatMessage {
   messageType: SocketMessageTypes.ChatMessage;
   sender: BasicUserDetails;
   content: string;
+}
+
+interface SocketNewAchievement {
+  messageType: SocketMessageTypes.NewAchievement;
+  badge: string;
+  score: number;
+  title: string;
 }
 
 export function isChatMessage(
@@ -17,4 +25,10 @@ export function isChatMessage(
   return message.messageType === SocketMessageTypes.ChatMessage;
 }
 
-export type SocketMessage = SocketChatMessage;
+export function isNewAchievement(
+  message: SocketMessage
+): message is SocketNewAchievement {
+  return message.messageType === SocketMessageTypes.NewAchievement;
+}
+
+export type SocketMessage = SocketChatMessage | SocketNewAchievement;

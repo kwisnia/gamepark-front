@@ -74,6 +74,19 @@ const Footer = () => {
             Noun Project
           </Link>
         </Text>
+        <Text
+          fontSize="sm"
+          color="gray.600"
+          _dark={{
+            color: "gray.400",
+          }}
+          textAlign="center"
+        >
+          Achievement badges credit:{" "}
+          <Link href="https://www.iconpacks.net/" title="Badge icons">
+            IconPacks
+          </Link>
+        </Text>
       </Stack>
 
       <Text

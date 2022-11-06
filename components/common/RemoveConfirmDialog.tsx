@@ -6,6 +6,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  useBoolean,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
@@ -23,6 +24,7 @@ const RemoveConfirmDialog = ({
   confirmAction,
 }: RemoveConfirmDialogProps) => {
   const cancelRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useBoolean();
 
   return (
     <AlertDialog
@@ -44,7 +46,19 @@ const RemoveConfirmDialog = ({
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="red" onClick={confirmAction} ml={3}>
+            <Button
+              colorScheme="red"
+              isLoading={isSubmitting}
+              onClick={() => {
+                try {
+                  setIsSubmitting.on();
+                  confirmAction();
+                } catch (e) {
+                  setIsSubmitting.off();
+                }
+              }}
+              ml={3}
+            >
               Delete
             </Button>
           </AlertDialogFooter>
