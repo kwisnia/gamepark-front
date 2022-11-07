@@ -68,6 +68,7 @@ export const WebSocketProvider = ({ children }: Props) => {
     if (!window || !user) {
       return;
     }
+    console.log("New socket time");
     const authToken = localStorage.getItem("gaming-token");
     const newSocket = new WebSocket(
       `ws://localhost:8080/ws?authorization=${encodeURIComponent(
@@ -93,6 +94,10 @@ export const WebSocketProvider = ({ children }: Props) => {
       });
     };
     setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
   }, [toast, user]);
 
   useEffect(() => {

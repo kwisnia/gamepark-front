@@ -26,8 +26,6 @@ const UserDiscussionsPage: NextPage = () => {
     return discussions?.flat() ?? [];
   }, [discussions]);
 
-  console.log(discussionsFlat);
-
   useEffect(() => {
     if (inView) {
       fetchNextPage();

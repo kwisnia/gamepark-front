@@ -6,13 +6,6 @@ import useSWR from "swr";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const { data } = useSWR("/test", {
-    refreshInterval: 1000,
-  });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   return (
     <div className={styles.container}>
       <Head>

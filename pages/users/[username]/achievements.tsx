@@ -20,8 +20,6 @@ const UserAchievementsPage: NextPage = () => {
   const { data: allAchievements } =
     useSWRImmutable<Achievement[]>("/achievements");
 
-  console.log(userAchievements);
-
   const title = user
     ? `${user?.displayName}'s achievements - GamePark`
     : "Loading...";

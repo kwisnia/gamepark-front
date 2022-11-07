@@ -22,7 +22,6 @@ const UserReviewPage: NextPage = () => {
 
   const reviewsFlat = useMemo(() => reviews?.flat() ?? [], [reviews]);
 
-  console.log(reviewsFlat);
   const half = Math.ceil(reviewsFlat.length / 2);
 
   useEffect(() => {

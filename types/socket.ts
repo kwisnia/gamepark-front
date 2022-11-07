@@ -21,7 +21,6 @@ interface SocketNewAchievement {
 export function isChatMessage(
   message: SocketMessage
 ): message is SocketChatMessage {
-  console.log(message);
   return message.messageType === SocketMessageTypes.ChatMessage;
 }
 

@@ -246,6 +246,16 @@ const ProfileEditModal = ({
                     </Button>
                   </Center>
                 ) : null}
+                <Text textAlign="center" textColor="gray.400" fontSize="sm">
+                  {user.userUnlocks.animatedAvatar
+                    ? "You can upload animated avatars!"
+                    : "Ability to upload animated avatars unlocks at 20 points"}
+                </Text>
+                <Text textAlign="center" textColor="gray.400" fontSize="sm">
+                  {user.userUnlocks.animatedBanner
+                    ? "You can upload animated banners!"
+                    : "Ability to upload animated banners unlocks at 35 points"}
+                </Text>
                 <FormTextField name="displayName" label="Display name" />
                 <FormTextArea name="bio" label="Profile bio" />
               </ModalBody>
