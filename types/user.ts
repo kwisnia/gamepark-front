@@ -18,6 +18,7 @@ export interface UserDetails {
     animatedAvatar: boolean;
     animatedBanner: boolean;
   };
+  userScore: number;
 }
 
 export type BasicUserDetails = Omit<UserDetails, "email" | "lists">;

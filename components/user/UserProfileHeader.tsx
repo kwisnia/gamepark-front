@@ -18,6 +18,7 @@ import ProfileEditModal from "./ProfileEditModal";
 import { updateUserBannerPosition } from "../../api/UserApi";
 import { KeyedMutator } from "swr";
 import FollowButton from "./FollowButton";
+import { GiAbstract116 } from "react-icons/gi";
 
 interface UserProfileHeaderProps {
   user: BasicUserDetails;
@@ -135,6 +136,10 @@ const UserProfileHeader = ({ user, mutate }: UserProfileHeaderProps) => {
               {user.followerCount === 1 ? "Follower" : "Followers"}
             </Text>
             <Text>{user.followingCount} Following</Text>
+          </Flex>
+          <Flex alignItems="center">
+            <GiAbstract116 />
+            <Text ml={2}>{user.userScore}</Text>
           </Flex>
         </Stack>
         <Flex alignItems="center" mt={-16} mr={6}>
