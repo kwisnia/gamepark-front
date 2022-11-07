@@ -84,7 +84,7 @@ const UserListPage = () => {
           {data?.map((gameList) => (
             <LinkBox
               key={gameList.id}
-              bg="gray.500"
+              bg="gray.700"
               rounded="md"
               padding={5}
               marginY={2}

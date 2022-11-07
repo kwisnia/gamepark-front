@@ -85,6 +85,10 @@ const Editor = ({ onChange, content }: EditorProps) => {
         onChange?.(editor?.getHTML());
       }
     });
+
+    return () => {
+      editor?.off("update");
+    };
   }, [editor, onChange]);
 
   return (

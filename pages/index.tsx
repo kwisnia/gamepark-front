@@ -1,73 +1,115 @@
+import { ArrowDownIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Flex,
+  Heading,
+  SimpleGrid,
+  SlideFade,
+  Stack,
+  StackDivider,
+  Text,
+} from "@chakra-ui/react";
+import { motion, MotionConfig } from "framer-motion";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect } from "react";
-import useSWR from "swr";
+import AppFeatures from "../components/landing/Features";
+import { useLoginModal } from "../contexts/LoginModalContext";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
+  const { openModal, setFormType } = useLoginModal();
   return (
-    <div className={styles.container}>
+    <Box position="relative" minH="100vh">
       <Head>
         <title>GamePark - Gaming social platform</title>
         <meta name="description" content="GamePark landing page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
+      <Image
+        src="/GameParkBG.png"
+        width={1920}
+        height={1080}
+        alt="GamePark"
+        className={`opacity-20 ${styles["game-header-image"]} absolute w-full`}
+      />
+      <Container
+        maxW="container.xl"
+        zIndex={10}
+        position="relative"
+        centerContent
+      >
+        <Flex direction="column" h="100vh" alignItems="center">
+          <Stack m="auto">
+            <SlideFade
+              in={true}
+              offsetY={-40}
+              transition={{
+                enter: {
+                  duration: 1.25,
+                },
+              }}
+            >
+              <Heading
+                fontSize={{
+                  base: "6xl",
+                  md: "6xl",
+                  lg: "8xl",
+                }}
+              >
+                Welcome to{" "}
+                <Text
+                  display="inline"
+                  w="full"
+                  bgClip="text"
+                  bgGradient="linear(to-r, green.400,purple.500)"
+                  fontWeight="extrabold"
+                >
+                  GamePark
+                </Text>
+                !
+              </Heading>
+            </SlideFade>
+          </Stack>
+          <motion.div
+            animate={{ y: 20 }}
+            transition={{
+              repeat: Infinity,
+              duration: 0.5,
+              repeatType: "reverse",
+            }}
           >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          <span className={styles.logo}>
-          </span>
-        </a>
-      </footer>
-    </div>
+            <ArrowDownIcon fontSize={48} mb={32} />
+          </motion.div>
+        </Flex>
+        <Stack alignItems="center" shadow="xl">
+          <Heading size="2xl">
+            Welcome to the ultimate gaming social platform!
+          </Heading>
+          <AppFeatures />
+          <Center flexDirection="column" pb={10}>
+            <Heading fontWeight="extrabold">Ready to dive in?</Heading>
+            <Heading color="gray.400" fontWeight="extrabold">
+              Create an account and join us!
+            </Heading>
+            <Button
+              colorScheme="green"
+              size="lg"
+              mt={8}
+              onClick={() => {
+                setFormType("Register");
+                openModal();
+              }}
+            >
+              Get started
+            </Button>
+          </Center>
+        </Stack>
+      </Container>
+    </Box>
   );
 };
 

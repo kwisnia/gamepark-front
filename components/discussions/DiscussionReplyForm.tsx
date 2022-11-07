@@ -46,7 +46,10 @@ const DiscussionReplyForm = ({
               {() => (
                 <Editor
                   content={body}
-                  onChange={(value) => setFieldValue("body", value)}
+                  onChange={(value) => {
+                    console.log("On change");
+                    setFieldValue("body", value);
+                  }}
                 />
               )}
             </Field>

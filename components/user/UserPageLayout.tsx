@@ -1,4 +1,4 @@
-import { Box, Container, HStack, Skeleton } from "@chakra-ui/react";
+import { Box, Container, HStack, Skeleton, Stack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
@@ -65,7 +65,15 @@ const UserPageLayout = ({ children }: UserLayoutPageProps) => {
           <Skeleton />
         )}
         <Box as="nav" aria-label="Component navigation" mt="8">
-          <HStack as="ul" listStyleType="none" borderBottomWidth="1px">
+          <Stack
+            as="ul"
+            listStyleType="none"
+            borderBottomWidth="1px"
+            direction={{
+              base: "column",
+              md: "row",
+            }}
+          >
             {tabsData.map((item) => (
               <Box as="li" key={item.id}>
                 <Link href={item.href}>
@@ -88,7 +96,7 @@ const UserPageLayout = ({ children }: UserLayoutPageProps) => {
                 </Link>
               </Box>
             ))}
-          </HStack>
+          </Stack>
         </Box>
         <Box pt={3}>{children}</Box>
       </Container>

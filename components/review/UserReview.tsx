@@ -76,6 +76,11 @@ const UserReview = ({ review, mutate, isUserPage }: Props) => {
             alignItems="center"
             justifyContent="space-between"
             marginBottom={3}
+            gap={3}
+            direction={{
+              base: "column",
+              md: "row",
+            }}
           >
             {isUserPage ? (
               <Flex alignItems="center" gap={3}>

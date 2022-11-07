@@ -29,7 +29,14 @@ const UserFollowingPage: NextPage = () => {
       </Head>
       <UserPageLayout>
         {followingFlat.length > 0 ? (
-          <SimpleGrid columns={3} spacing={4}>
+          <SimpleGrid
+            columns={{
+              base: 1,
+              md: 2,
+              lg: 3,
+            }}
+            spacing={4}
+          >
             {followingFlat.map((user) => (
               <UserProfileOverview key={user.id} user={user} />
             ))}
