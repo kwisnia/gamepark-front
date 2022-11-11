@@ -33,7 +33,11 @@ const Rating = ({
   }, [rating]);
 
   return (
-    <Box onMouseLeave={() => setActiveRating(rating)} position="relative">
+    <Box
+      onMouseLeave={() => setActiveRating(rating)}
+      position="relative"
+      minW={icons * iconSize}
+    >
       {ratings.map((_, i) => (
         <Icon
           as="span"

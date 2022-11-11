@@ -32,7 +32,7 @@ import Image from "next/image";
 
 interface Props {
   review: UserReview;
-  mutate: KeyedMutator<UserReview[][]> | KeyedMutator<UserGameInfo>;
+  mutate?: KeyedMutator<UserReview[][]> | KeyedMutator<UserGameInfo>;
   isUserPage?: boolean;
 }
 
@@ -51,7 +51,7 @@ const UserReview = ({ review, mutate, isUserPage }: Props) => {
     } else {
       await markHelpful(review.game, review.id);
     }
-    mutate();
+    mutate?.();
   }, [review, mutate]);
 
   return (
@@ -103,7 +103,9 @@ const UserReview = ({ review, mutate, isUserPage }: Props) => {
                 </Box>
                 <Box alignSelf="end">
                   <Link href={`/games/${review.game}`}>
-                    <Text fontWeight="bold">{review.gameDetails?.name}</Text>
+                    <Text fontWeight="bold" maxW="100%">
+                      {review.gameDetails?.name}
+                    </Text>
                   </Link>
                 </Box>
               </Flex>

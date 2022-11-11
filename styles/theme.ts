@@ -131,6 +131,11 @@ const styles = {
 };
 
 const theme = extendTheme({
+  fonts: {
+    heading: "'Exo 2', sans-serif",
+    body: "Montserrat, sans-serif",
+    paragraph: "Montserrat, sans-serif",
+  },
   styles,
   config,
 });

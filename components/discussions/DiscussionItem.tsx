@@ -21,7 +21,7 @@ import { KeyedMutator } from "swr";
 interface DiscussionItemProps {
   discussion: GameDiscussionListItem;
   isUserPage?: boolean;
-  mutate?: KeyedMutator<GameDiscussionListItem[][]>;
+  mutate?: () => void;
 }
 
 const DiscussionItem = ({

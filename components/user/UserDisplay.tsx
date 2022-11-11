@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Flex,
   Heading,
   LinkBox,
@@ -22,16 +23,18 @@ const UserDisplay = ({ user, size }: UserDisplayProps) => {
   return (
     <Popover trigger="hover" isLazy>
       <PopoverTrigger>
-        <LinkBox as={Flex} gap={2} alignItems="center">
-          <Avatar size={size} src={user.avatar ?? ""} />
-          <Heading fontSize={size}>
-            <LinkOverlay>
-              <Link href={`/users/${user.username}`} passHref>
-                {user.displayName}
-              </Link>
-            </LinkOverlay>
-          </Heading>
-        </LinkBox>
+        <Box>
+          <LinkBox as={Flex} gap={2} alignItems="center">
+            <Avatar size={size} src={user.avatar ?? ""} />
+            <Heading fontSize={size}>
+              <LinkOverlay>
+                <Link href={`/users/${user.username}`} passHref>
+                  {user.displayName}
+                </Link>
+              </LinkOverlay>
+            </Heading>
+          </LinkBox>
+        </Box>
       </PopoverTrigger>
       <PopoverContent>
         <PopoverBody>

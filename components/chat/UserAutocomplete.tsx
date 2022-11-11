@@ -47,14 +47,14 @@ const UserAutocomplete = ({ onSelect }: UserAutocompleteProps) => {
           <SearchIcon />
         </InputLeftElement>
         <AutoCompleteInput
-          placeholder="Search..."
+          placeholder="Search by username..."
           onChange={handleSearchChange}
         />
       </InputGroup>
       <AutoCompleteList>
         {usersFlat.map((user) => (
           <AutoCompleteItem value={user} label={user.displayName} key={user.id}>
-            <Flex>
+            <Flex alignItems="center" gap={3}>
               <Avatar src={user.avatar ?? ""} />
               <Text>
                 {user.displayName} ({user.username})

@@ -6,8 +6,11 @@ import {
   AccordionPanel,
   Box,
   Button,
+  Container,
   Flex,
   Heading,
+  HStack,
+  SimpleGrid,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -15,6 +18,7 @@ import { useEffect } from "react";
 import useReviews from "../../hooks/useReviews";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import { GameDetails } from "../../types/game";
+import GameListElement from "../GameListElement";
 import UserReview from "../review/UserReview";
 import GameMediaCarousel from "./GameMediaCarousel";
 import GameSidebar from "./GameSidebar";
@@ -92,6 +96,25 @@ const GameInfo = ({ game, changeTab }: Props) => {
             </>
           ) : null}
         </Stack>
+        {game.similarGames ? (
+          <Accordion allowToggle mt={5}>
+            <AccordionItem>
+              <AccordionButton>
+                <Heading flex="1" textAlign="left" textColor="white">
+                  Similar games
+                </Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4}>
+                <SimpleGrid columns={3} spacing={5} paddingTop={5}>
+                  {game.similarGames.map((game) => (
+                    <GameListElement game={game} key={game.slug} />
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        ) : null}
       </Box>
       <GameSidebar game={game} />
     </Flex>

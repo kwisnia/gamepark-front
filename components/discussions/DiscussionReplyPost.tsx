@@ -40,13 +40,15 @@ import RemoveConfirmDialog from "../common/RemoveConfirmDialog";
 interface DiscussionPostProps {
   post: DiscussionPost;
   discussion: GameDiscussion;
-  mutate: KeyedMutator<DiscussionPost[][]>;
+  mutate?: () => void;
+  withActions?: boolean;
 }
 
 const DiscussionReplyPost = ({
   post,
   discussion,
   mutate,
+  withActions,
 }: DiscussionPostProps) => {
   const { user, loggedOut } = useLoggedInUser();
   const { openModal } = useLoginModal();
@@ -60,7 +62,7 @@ const DiscussionReplyPost = ({
   const [areRepliesVisible, setAreRepliesVisible] = useBoolean();
   const toast = useToast();
 
-  const isAuthor = user?.id === post.user.id;
+  const isAuthor = withActions && user?.id === post.user.id;
 
   const onScoreChange = async (score: number) => {
     if (loggedOut) {
@@ -68,12 +70,12 @@ const DiscussionReplyPost = ({
       return;
     }
     await scoreDiscussionPost(discussion.game, discussion.id, post.id, score);
-    mutate();
+    mutate?.();
   };
 
   const deletePost = async () => {
     await deleteDiscussionPost(discussion.game, discussion.id, post.id);
-    mutate();
+    mutate?.();
   };
 
   const handleSubmit = async (
@@ -88,7 +90,7 @@ const DiscussionReplyPost = ({
         post.id,
         values
       );
-      mutate();
+      mutate?.();
       setIsEditing.off();
     } catch (e) {
       toast({
@@ -109,7 +111,7 @@ const DiscussionReplyPost = ({
     try {
       helpers.setSubmitting(true);
       await createDiscussionPost(discussion.game, discussion.id, values);
-      mutate();
+      mutate?.();
       setIsReplying.off();
     } catch (e) {
       toast({
@@ -127,27 +129,29 @@ const DiscussionReplyPost = ({
     <Box bg="gray.700" rounded="md" p={3}>
       <Flex justify="space-between">
         <UserDisplay user={post.user} size="md" />
-        <Flex gap={3}>
-          <IconButton
-            icon={<BsFillReplyFill />}
-            aria-label="Reply"
-            onClick={setIsReplying.toggle}
-          />
-          {isAuthor ? (
-            <>
-              <IconButton
-                icon={<EditIcon />}
-                onClick={setIsEditing.toggle}
-                aria-label="Edit post"
-              />
-              <IconButton
-                icon={<DeleteIcon />}
-                onClick={openConfirmDialog}
-                aria-label="Delete post"
-              />
-            </>
-          ) : null}
-        </Flex>
+        {loggedOut || !withActions ? null : (
+          <Flex gap={3}>
+            <IconButton
+              icon={<BsFillReplyFill />}
+              aria-label="Reply"
+              onClick={setIsReplying.toggle}
+            />
+            {isAuthor ? (
+              <>
+                <IconButton
+                  icon={<EditIcon />}
+                  onClick={setIsEditing.toggle}
+                  aria-label="Edit post"
+                />
+                <IconButton
+                  icon={<DeleteIcon />}
+                  onClick={openConfirmDialog}
+                  aria-label="Delete post"
+                />
+              </>
+            ) : null}
+          </Flex>
+        )}
       </Flex>
       <Flex>
         <DiscussionScore

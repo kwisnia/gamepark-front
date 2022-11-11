@@ -11,6 +11,7 @@ import styles from "styles/GamePage.module.css";
 import useLoggedInUser from "../../../hooks/useLoggedInUser";
 import { useMemo } from "react";
 import Head from "next/head";
+import GameDetailsSkeleton from "../../../components/game/GameDetailsSkeleton";
 
 interface Props {
   game: GameDetails;
@@ -21,7 +22,7 @@ const GamePage = ({ game }: Props) => {
   const randomImageUrl = useMemo(() => getRandomImage(game), [game]);
 
   if (router.isFallback) {
-    return <Box>Loading...</Box>;
+    return <GameDetailsSkeleton />;
   }
   const title = `${game.name} - GamePark`;
 

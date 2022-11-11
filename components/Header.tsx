@@ -36,6 +36,8 @@ const Header = () => {
     openModal();
   };
 
+  const mainPage = user && !loggedOut ? "/dashboard" : "/";
+
   return (
     <chakra.header
       bg={slug ? "transparent" : bg}
@@ -51,7 +53,7 @@ const Header = () => {
       <Flex alignItems="center" justifyContent="space-between" mx="auto">
         <HStack display="flex" spacing={3} alignItems="center" zIndex={10}>
           <MobileHeaderMenu backgroundColor={bg} />
-          <Link href="/" title="Gamepark home page">
+          <Link href={mainPage} title="Gamepark home page">
             <GameparkLogo width="3em" height="3em" fill="white" />
             <VisuallyHidden>Gamepark</VisuallyHidden>
           </Link>
@@ -67,7 +69,7 @@ const Header = () => {
               variant="ghost"
               leftIcon={<Icon as={AiFillHome} />}
               size="sm"
-              onClick={() => router.push("/")}
+              onClick={() => router.push(mainPage)}
             >
               Dashboard
             </Button>

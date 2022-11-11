@@ -35,7 +35,7 @@ export interface GameDetails {
   remakes: GameDetails[] | null;
   remasters: any[] | null;
   screenshots: Cover[] | null;
-  similarGames: GameDetails[] | null;
+  similarGames: GameListElement[] | null;
   slug: string;
   storyline: string;
   summary: string;

@@ -16,12 +16,21 @@ import { motion, MotionConfig } from "framer-motion";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import AppFeatures from "../components/landing/Features";
 import { useLoginModal } from "../contexts/LoginModalContext";
+import useLoggedInUser from "../hooks/useLoggedInUser";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   const { openModal, setFormType } = useLoginModal();
+  const { user, loggedOut } = useLoggedInUser();
+  const router = useRouter();
+
+  if (user && !loggedOut) {
+    router.replace("/dashboard");
+  }
+
   return (
     <Box position="relative" minH="100vh">
       <Head>
