@@ -1,13 +1,17 @@
 import { Flex, Link, Stack, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
-import type { PostActivity as PostActivityType } from "../../types/dashboard";
+import type { KeyedMutator } from "swr";
+import type {
+  PostActivity as PostActivityType,
+  UserActivity,
+} from "../../types/dashboard";
 import { getTimeAgo } from "../../utils/DateUtils";
 import DiscussionReplyPost from "../discussions/DiscussionReplyPost";
 import UserDisplay from "../user/UserDisplay";
 
 interface PostActivityProps {
   activity: PostActivityType;
-  mutate: () => void;
+  mutate: KeyedMutator<UserActivity[][]>;
 }
 
 const PostActivity = ({ activity, mutate }: PostActivityProps) => {

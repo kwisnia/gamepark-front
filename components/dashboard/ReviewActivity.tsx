@@ -1,15 +1,19 @@
 import { Flex, Stack, Text } from "@chakra-ui/react";
-import { ReviewActivity } from "../../types/dashboard";
+import { KeyedMutator } from "swr";
+import type {
+  ReviewActivity as ReviewActivityType,
+  UserActivity,
+} from "../../types/dashboard";
 import { getTimeAgo } from "../../utils/DateUtils";
 import UserReview from "../review/UserReview";
 import UserDisplay from "../user/UserDisplay";
 
 interface ReviewActivityProps {
-  activity: ReviewActivity;
-  mutate: () => void;
+  activity: ReviewActivityType;
+  mutate: KeyedMutator<UserActivity[][]>;
 }
 
-const ReviewActivity = ({ activity }: ReviewActivityProps) => {
+const ReviewActivity = ({ activity, mutate }: ReviewActivityProps) => {
   return (
     <Stack>
       <Flex justifyContent="space-between" alignItems="center">
@@ -22,6 +26,7 @@ const ReviewActivity = ({ activity }: ReviewActivityProps) => {
       <UserReview
         key={activity.data.review.id}
         review={activity.data.review}
+        mutate={mutate}
         isUserPage
       />
     </Stack>

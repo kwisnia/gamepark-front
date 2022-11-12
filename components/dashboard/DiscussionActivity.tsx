@@ -1,12 +1,16 @@
 import { Flex, Stack, Text } from "@chakra-ui/react";
-import { DiscussionActivity } from "../../types/dashboard";
+import type { KeyedMutator } from "swr";
+import type {
+  DiscussionActivity as DiscussionActivityType,
+  UserActivity,
+} from "../../types/dashboard";
 import { getTimeAgo } from "../../utils/DateUtils";
 import DiscussionItem from "../discussions/DiscussionItem";
 import UserDisplay from "../user/UserDisplay";
 
 interface DiscussionActivityProps {
-  activity: DiscussionActivity;
-  mutate: () => void;
+  activity: DiscussionActivityType;
+  mutate: KeyedMutator<UserActivity[][]>;
 }
 
 const DiscussionActivity = ({ activity, mutate }: DiscussionActivityProps) => {
