@@ -8,15 +8,20 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { AiFillHome } from "react-icons/ai";
+import { BsChatRightFill } from "react-icons/bs";
 import { GiConsoleController } from "react-icons/gi";
+import useLoggedInUser from "../../hooks/useLoggedInUser";
 
-interface Props {
+interface MobileHeaderMenuProps {
   backgroundColor: string;
 }
 
-const MobileHeaderMenu = ({ backgroundColor }: Props) => {
+const MobileHeaderMenu = ({ backgroundColor }: MobileHeaderMenuProps) => {
   const mobileNav = useDisclosure();
+  const { user } = useLoggedInUser();
+  const router = useRouter();
 
   return (
     <Box
@@ -61,16 +66,32 @@ const MobileHeaderMenu = ({ backgroundColor }: Props) => {
           justifySelf="self-start"
           onClick={mobileNav.onClose}
         />
-        <Button w="full" variant="ghost" leftIcon={<Icon as={AiFillHome} />}>
+        <Button
+          w="full"
+          variant="ghost"
+          leftIcon={<Icon as={AiFillHome} />}
+          onClick={() => router.push(user ? "/dashboard" : "/")}
+        >
           Dashboard
         </Button>
         <Button
           w="full"
           variant="ghost"
           leftIcon={<Icon as={GiConsoleController} />}
+          onClick={() => router.push("/games")}
         >
           Games
         </Button>
+        {user ? (
+          <Button
+            variant="ghost"
+            leftIcon={<Icon as={BsChatRightFill} />}
+            size="sm"
+            onClick={() => router.push("/chat")}
+          >
+            Chat
+          </Button>
+        ) : null}
       </VStack>
     </Box>
   );

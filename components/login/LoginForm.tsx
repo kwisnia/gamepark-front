@@ -12,7 +12,7 @@ import * as yup from "yup";
 import { Form, Formik, FormikHelpers } from "formik";
 import FormTextField from "../common/FormTextField";
 
-interface Props {
+interface LoginFormProps {
   mutate: () => void;
   onRequestClose: () => void;
 }
@@ -30,7 +30,7 @@ const loginSchema = yup.object().shape({
   password: yup.string().required("Password is required").max(50),
 });
 
-const LoginForm = ({ mutate, onRequestClose }: Props) => {
+const LoginForm = ({ mutate, onRequestClose }: LoginFormProps) => {
   const { setFormType } = useLoginModal();
   const toast = useToast();
 

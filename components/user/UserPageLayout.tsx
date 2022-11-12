@@ -1,10 +1,8 @@
-import { Box, Container, HStack, Skeleton, Stack } from "@chakra-ui/react";
+import { Box, Container, Skeleton, Stack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
-import useSWR from "swr";
 import useUserDetails from "../../hooks/useUserDetails";
-import { BasicUserDetails } from "../../types/user";
 import UserProfileHeader from "./UserProfileHeader";
 
 interface UserLayoutPageProps {

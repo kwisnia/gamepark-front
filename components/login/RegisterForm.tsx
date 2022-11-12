@@ -5,7 +5,7 @@ import FormTextField from "../common/FormTextField";
 import * as yup from "yup";
 import zxcvbn from "zxcvbn";
 
-interface Props {
+interface RegisterFormProps {
   mutate: () => void;
   onRequestClose: () => void;
 }
@@ -50,7 +50,7 @@ const registerSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords must match"),
 });
 
-const RegisterForm = ({ mutate, onRequestClose }: Props) => {
+const RegisterForm = ({ mutate, onRequestClose }: RegisterFormProps) => {
   const toast = useToast();
 
   const submitRegister = async (

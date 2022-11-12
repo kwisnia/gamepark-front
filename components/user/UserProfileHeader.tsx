@@ -16,7 +16,7 @@ import { useCallback } from "react";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import ProfileEditModal from "./ProfileEditModal";
 import { updateUserBannerPosition } from "../../api/UserApi";
-import { KeyedMutator } from "swr";
+import type { KeyedMutator } from "swr";
 import FollowButton from "./FollowButton";
 import { GiAbstract116 } from "react-icons/gi";
 

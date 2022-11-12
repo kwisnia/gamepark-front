@@ -6,13 +6,13 @@ import RegisterForm from "./RegisterForm";
 
 type LoginModalTypes = "Login" | "Register";
 
-interface Props {
+interface LoginModalProps {
   isOpen: boolean;
   formType: LoginModalTypes;
   mutate: () => void;
 }
 
-const LoginModal = ({ isOpen, formType, mutate }: Props) => {
+const LoginModal = ({ isOpen, formType, mutate }: LoginModalProps) => {
   const { closeModal } = useLoginModal();
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal}>

@@ -1,9 +1,5 @@
 import {
   Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -11,7 +7,7 @@ import {
   ModalHeader,
   useToast,
 } from "@chakra-ui/react";
-import { Field, Form, Formik, FormikHelpers, FieldProps } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { createList, updateList } from "../../api/ListApi";
 import Modal from "../common/Modal";
 import * as yup from "yup";
@@ -20,17 +16,17 @@ import { KeyedMutator } from "swr";
 import { GameList, GameListDetails } from "../../types/lists";
 import FormTextField from "../common/FormTextField";
 
-interface Props {
+interface BaseListModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-interface CreateProps extends Props {
+interface CreateProps extends BaseListModalProps {
   mode: "create";
   mutate: KeyedMutator<GameList[]>;
 }
 
-interface EditProps extends Props {
+interface EditProps extends BaseListModalProps {
   mode: "edit";
   listId: number;
   initialName: string;
@@ -38,7 +34,7 @@ interface EditProps extends Props {
   mutate: KeyedMutator<GameListDetails>;
 }
 
-type ModalProps = CreateProps | EditProps;
+type ListModalProps = CreateProps | EditProps;
 
 interface ListForm {
   name: string;
@@ -55,7 +51,7 @@ const listCreateSchema = yup.object().shape({
     .max(350, "Description cannot be longer than 350 characters"),
 });
 
-const ListCreateModal = (props: ModalProps) => {
+const ListCreateModal = (props: ListModalProps) => {
   const { onClose, open, mode, mutate } = props;
   const toast = useToast();
 

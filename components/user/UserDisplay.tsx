@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { BasicUserDetails } from "../../types/user";
+import type { BasicUserDetails } from "../../types/user";
 import UserPopoverBody from "./UserPopover";
 
 interface UserDisplayProps {

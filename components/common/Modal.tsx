@@ -4,11 +4,17 @@ interface ModalProps {
   children: React.ReactNode;
   isOpen: boolean;
   onRequestClose: () => void;
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
 }
 
-const Modal = ({ children, isOpen, onRequestClose }: ModalProps) => {
+const Modal = ({
+  children,
+  isOpen,
+  onRequestClose,
+  size = "md",
+}: ModalProps) => {
   return (
-    <ChakraModal isOpen={isOpen} onClose={onRequestClose}>
+    <ChakraModal isOpen={isOpen} onClose={onRequestClose} size={size}>
       <ModalOverlay />
       {children}
     </ChakraModal>

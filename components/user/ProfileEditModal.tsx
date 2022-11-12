@@ -22,7 +22,7 @@ import { useCallback, useState } from "react";
 import { updateUserProfile } from "../../api/UserApi";
 import type { FormikHelpers } from "formik";
 import type { BasicUserDetails, UserProfileEditForm } from "../../types/user";
-import { KeyedMutator, mutate } from "swr";
+import type { KeyedMutator } from "swr";
 
 interface ProfileEditModalProps {
   open: boolean;

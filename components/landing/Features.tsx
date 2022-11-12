@@ -1,4 +1,4 @@
-import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
 

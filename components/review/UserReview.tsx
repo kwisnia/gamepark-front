@@ -31,7 +31,7 @@ import Rating from "./StarRating";
 import Image from "next/image";
 import { UserActivity } from "../../types/dashboard";
 
-interface Props {
+interface UserReviewProps {
   review: UserReview;
   mutate?:
     | KeyedMutator<UserReview[][]>
@@ -40,7 +40,7 @@ interface Props {
   isUserPage?: boolean;
 }
 
-const UserReview = ({ review, mutate, isUserPage }: Props) => {
+const UserReview = ({ review, mutate, isUserPage }: UserReviewProps) => {
   const { user, loggedOut } = useLoggedInUser();
   const isUserReview = user?.id === review.creator;
 
