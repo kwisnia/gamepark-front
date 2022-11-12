@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import useSWRInfinite from "swr/infinite";
-import { GameDiscussion, GameDiscussionListItem } from "../types/discussion";
+import { GameDiscussionListItem } from "../types/discussion";
 
 const useDiscussions = (gameSlug: string, pageSize: number = 20) => {
   const getKey = useCallback(
@@ -16,7 +16,7 @@ const useDiscussions = (gameSlug: string, pageSize: number = 20) => {
     [gameSlug, pageSize]
   );
 
-  const { data, size, setSize, mutate } =
+  const { data, setSize, mutate } =
     useSWRInfinite<GameDiscussionListItem[]>(getKey);
 
   const fetchNextPage = useCallback(() => {

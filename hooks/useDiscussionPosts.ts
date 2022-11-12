@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import { UserReview } from "../types/review";
+import { useCallback } from "react";
 import useSWRInfinite from "swr/infinite";
 import { DiscussionPost } from "../types/discussion";
 
@@ -21,7 +20,7 @@ const useDiscussionPosts = (
     [gameSlug, pageSize, discussionId]
   );
 
-  const { data, size, setSize, mutate } =
+  const { data, setSize, mutate } =
     useSWRInfinite<DiscussionPost[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
