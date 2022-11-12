@@ -1,6 +1,10 @@
 import { Box, Button, Text } from "@chakra-ui/react";
-import { Field, Form, Formik, FormikHelpers } from "formik";
-import { DiscussionPost, DiscussionPostForm } from "../../types/discussion";
+import { Field, Form, Formik } from "formik";
+import type { FormikHelpers } from "formik";
+import type {
+  DiscussionPost,
+  DiscussionPostForm,
+} from "../../types/discussion";
 import Editor from "../editor/Editor";
 import * as yup from "yup";
 
@@ -40,7 +44,7 @@ const DiscussionReplyForm = ({
         onSubmit={onSubmit}
         validationSchema={replySchema}
       >
-        {({ isSubmitting, setFieldValue, values, errors }) => (
+        {({ isSubmitting, setFieldValue, errors }) => (
           <Form>
             <Field name="body">
               {() => (

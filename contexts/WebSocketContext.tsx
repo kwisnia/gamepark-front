@@ -44,7 +44,7 @@ export const WebSocketProvider = ({ children }: Props) => {
             />
           ),
         });
-        const audio = new Audio("/kkondae.mp3");
+        const audio = new Audio("/message-ding.mp3");
         audio.play();
       } else if (isNewAchievement(data)) {
         toast({

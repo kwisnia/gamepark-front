@@ -1,13 +1,9 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
   Box,
   Button,
   Flex,
   Heading,
-  IconButton,
-  LinkBox,
-  LinkOverlay,
   Text,
   useDisclosure,
   useToast,
@@ -15,12 +11,13 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { KeyedMutator } from "swr";
+import type { KeyedMutator } from "swr";
 import { deleteDiscussion, scoreDiscussion } from "../../api/DiscussionApi";
 import { useLoginModal } from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
-import { GameDiscussion } from "../../types/discussion";
-import { GameListElement, IGDBImageSize } from "../../types/game";
+import type { GameDiscussion } from "../../types/discussion";
+import { IGDBImageSize } from "../../types/game";
+import type { GameListElement } from "../../types/game";
 import { getCoverUrl } from "../../utils/ImageUtils";
 import RemoveConfirmDialog from "../common/RemoveConfirmDialog";
 import OutputEditor from "../editor/OutputEditor";
@@ -95,10 +92,7 @@ const DiscussionMainPost = ({ discussion, game, mutate }: DiscussionProps) => {
         <Flex justifyContent="space-between" flex={10} alignItems="center">
           <Box>
             <Heading>{discussion.title}</Heading>
-            <UserDisplay
-              user={discussion.user}
-              size="md"
-            />
+            <UserDisplay user={discussion.user} size="md" />
           </Box>
           <Box>
             <Flex gap={3}>

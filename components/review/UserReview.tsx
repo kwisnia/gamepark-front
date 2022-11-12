@@ -29,10 +29,14 @@ import { getReadableCompletionStatus } from "../../utils/ReviewUtils";
 import UserDisplay from "../user/UserDisplay";
 import Rating from "./StarRating";
 import Image from "next/image";
+import { UserActivity } from "../../types/dashboard";
 
 interface Props {
   review: UserReview;
-  mutate?: KeyedMutator<UserReview[][]> | KeyedMutator<UserGameInfo>;
+  mutate?:
+    | KeyedMutator<UserReview[][]>
+    | KeyedMutator<UserGameInfo>
+    | KeyedMutator<UserActivity[][]>;
   isUserPage?: boolean;
 }
 

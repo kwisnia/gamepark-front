@@ -1,9 +1,11 @@
-import { Box, useBoolean, useDisclosure, useToast } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { useSpinDelay } from "spin-delay";
 import usePostReplies from "../../hooks/usePostReplies";
-import { DiscussionPost, GameDiscussion } from "../../types/discussion";
+import type { DiscussionPost, GameDiscussion } from "../../types/discussion";
 import DiscussionReplyPost from "./DiscussionReplyPost";
+import DiscussionReplyPostSkeleton from "./DiscussionReplyPostSkeleton";
 
 interface DiscussionPostRepliesContainerProps {
   post: DiscussionPost;
@@ -14,7 +16,7 @@ const DiscussionPostRepliesContainer = ({
   post,
   discussion,
 }: DiscussionPostRepliesContainerProps) => {
-  const { posts, mutate, fetchNextPage } = usePostReplies(
+  const { posts, mutate, fetchNextPage, isLoading } = usePostReplies(
     discussion.game,
     discussion.id,
     post.id
@@ -27,18 +29,30 @@ const DiscussionPostRepliesContainer = ({
     }
   }, [inView, fetchNextPage]);
 
+  const shouldRenderSkeleton = useSpinDelay(isLoading);
+
   const postsFlat = posts?.flat() ?? [];
 
-  return (
-    <Box pl={3} borderLeft="1px">
-      {postsFlat.map((post) => (
+  const replyNodes = shouldRenderSkeleton
+    ? [0, 1, 2].map((i) => (
+        <DiscussionReplyPostSkeleton
+          key={`post-${post.id}-reply-skeleton-${i}`}
+        />
+      ))
+    : postsFlat.map((post) => (
         <DiscussionReplyPost
           key={post.id}
           post={post}
           discussion={discussion}
           mutate={mutate}
+          withActions
         />
-      ))}
+      ));
+
+  return (
+    <Box pl={3} borderLeft="1px">
+      {replyNodes}
+      <Box ref={ref} height={1} />
     </Box>
   );
 };

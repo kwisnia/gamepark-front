@@ -1,13 +1,6 @@
-import {
-  Box,
-  Button,
-  Container,
-  Heading,
-  Stack,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Container, Heading, Stack, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import useSWRImmutable from "swr/immutable";
 import DiscussionMainPost from "../../../../components/discussions/DiscussionMainPost";
 import DiscussionReplyPost from "../../../../components/discussions/DiscussionReplyPost";
@@ -21,10 +14,14 @@ import { FormikHelpers } from "formik";
 import { createDiscussionPost } from "../../../../api/DiscussionApi";
 import invariant from "tiny-invariant";
 import { useInView } from "react-intersection-observer";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { GetServerSideProps } from "next";
 import { getGameShortInfo } from "../../../../api/GamesApi";
 import { GameListElement } from "../../../../types/game";
 import Head from "next/head";
+import { useSpinDelay } from "spin-delay";
+import DiscussionReplyPostSkeleton from "../../../../components/discussions/DiscussionReplyPostSkeleton";
+import DiscussionMainPostSkeleton from "../../../../components/discussions/DiscussionMainPostSkeleton";
+import useLoggedInUser from "../../../../hooks/useLoggedInUser";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug } = query;
@@ -52,6 +49,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
   const router = useRouter();
   const { slug, discussionId } = router.query;
+  const { loggedOut } = useLoggedInUser();
   const {
     data: discussion,
     error,
@@ -66,15 +64,18 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
   const toast = useToast();
   const { ref, inView } = useInView();
 
+  const isLoading = !discussion && !error;
+  const flatPosts = useMemo(() => {
+    return posts?.flat() ?? [];
+  }, [posts]);
+
+  const shouldRenderSkeleton = useSpinDelay(isLoading);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
-
-  const flatPosts = useMemo(() => {
-    return posts?.flat() ?? [];
-  }, [posts]);
 
   const handleSubmit = async (
     values: DiscussionPostForm,
@@ -109,12 +110,16 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
     ? `${discussion.title} - ${gameInfo.name} - Game Park`
     : "Loading...";
 
+  if (error) {
+    router.replace("/404");
+  }
+
   return (
     <Container maxW="container.xl">
       <Head>
         <title>{title}</title>
       </Head>
-      {discussion ? (
+      {discussion && !shouldRenderSkeleton ? (
         <>
           <DiscussionMainPost
             discussion={discussion}
@@ -122,7 +127,7 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
             mutate={mutateDiscussion}
           />
           <Heading>Replies</Heading>
-          <DiscussionReplyForm onSubmit={handleSubmit} />
+          {loggedOut ? null : <DiscussionReplyForm onSubmit={handleSubmit} />}
           <Stack pt={10}>
             {flatPosts.map((post) => (
               <DiscussionReplyPost
@@ -130,13 +135,14 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
                 discussion={discussion}
                 post={post}
                 mutate={mutate}
+                withActions
               />
             ))}
           </Stack>
           <Box h={1} ref={ref} />
         </>
       ) : (
-        <Heading>Loading</Heading>
+        <DiscussionMainPostSkeleton />
       )}
     </Container>
   );

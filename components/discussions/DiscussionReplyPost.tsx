@@ -159,13 +159,13 @@ const DiscussionReplyPost = ({
           userScore={post.userScore}
           onScoreChange={onScoreChange}
         />
-        {isEditing ? (
+        {isEditing && !loggedOut ? (
           <DiscussionReplyForm body={post.body} onSubmit={handleSubmit} />
         ) : (
           <OutputEditor content={post.body} />
         )}
       </Flex>
-      {isReplying ? (
+      {isReplying && !loggedOut ? (
         <DiscussionReplyForm onSubmit={handleReplySubmit} replyTo={post} />
       ) : null}
       <Box>

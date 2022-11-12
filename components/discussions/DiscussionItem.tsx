@@ -17,6 +17,7 @@ import { useLoginModal } from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { scoreDiscussion } from "../../api/DiscussionApi";
 import { KeyedMutator } from "swr";
+import UserDisplay from "../user/UserDisplay";
 
 interface DiscussionItemProps {
   discussion: GameDiscussionListItem;
@@ -78,22 +79,7 @@ const DiscussionItem = ({
         ) : (
           <Box fontSize="sm">
             <Text>created by</Text>
-            <LinkBox as={Flex} gap={2} alignItems="center">
-              <Avatar size="xs" src={discussion.user.avatar ?? ""} />
-              <Heading
-                fontSize={{
-                  base: "md",
-                  md: "lg",
-                }}
-              >
-                <NextLink
-                  href={`/users/${discussion.user.username}`}
-                  legacyBehavior
-                >
-                  <LinkOverlay>{discussion.user.displayName}</LinkOverlay>
-                </NextLink>
-              </Heading>
-            </LinkBox>
+            <UserDisplay size="sm" user={discussion.user} />
           </Box>
         )}
       </Stack>

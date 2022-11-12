@@ -6,25 +6,18 @@ import {
   Heading,
   useToast,
 } from "@chakra-ui/react";
-import {
-  Field,
-  FieldProps,
-  Form,
-  Formik,
-  FormikHelpers,
-  FormikProps,
-} from "formik";
-import { GameDetails } from "../../types/game";
+import { Field, Form, Formik } from "formik";
+import type { FieldProps, FormikHelpers } from "formik";
+import type { GameDetails } from "../../types/game";
 import FormTextField from "../common/FormTextField";
 import Editor from "../editor/Editor";
 import * as yup from "yup";
-import {
+import type {
   DiscussionForm,
-  GameDiscussion,
   GameDiscussionListItem,
 } from "../../types/discussion";
 import { createDiscussion } from "../../api/DiscussionApi";
-import { KeyedMutator, mutate } from "swr";
+import type { KeyedMutator } from "swr";
 
 interface CreateDiscussionFormProps {
   game: GameDetails;
@@ -49,7 +42,6 @@ const CreateDiscussionForm = ({
   ) => {
     try {
       await createDiscussion(game.slug, values);
-      console.log(values);
       toast({
         title: "Discussion created",
         description: "Your discussion has been created successfully",

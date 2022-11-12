@@ -19,17 +19,20 @@ const usePostReplies = (
     [gameSlug, pageSize, discussionId, postId]
   );
 
-  const { data, size, setSize, mutate } =
+  const { data, size, setSize, mutate, error } =
     useSWRInfinite<DiscussionPost[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
 
+  const isLoading = !data && !error;
+
   return {
     posts: data,
     fetchNextPage,
     mutate,
+    isLoading,
   };
 };
 

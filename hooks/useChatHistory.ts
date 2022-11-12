@@ -14,16 +14,19 @@ const useChatHistory = (username: string, pageSize: number = 50) => {
     [username, pageSize]
   );
 
-  const { data, setSize, mutate } = useSWRInfinite<ChatMessage[]>(getKey);
+  const { data, setSize, mutate, error } =
+    useSWRInfinite<ChatMessage[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
+  const isLoading = !data && !error;
 
   return {
     messages: data,
     fetchNextPage,
     mutate,
+    isLoading,
   };
 };
 
