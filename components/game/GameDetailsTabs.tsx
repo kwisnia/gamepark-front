@@ -8,18 +8,16 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { GameDetails } from "../../types/game";
-import Editor from "../editor/Editor";
 import GameDiscussions from "./GameDiscussions";
 import GameInfo from "./GameInfo";
 import GameReviews from "./GameReviews";
 
-interface Props {
+interface GameDetailsTabsProps {
   game: GameDetails;
 }
 
-const GameDetailsTabs = ({ game }: Props) => {
+const GameDetailsTabs = ({ game }: GameDetailsTabsProps) => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const handleTabChange = (index: number) => {

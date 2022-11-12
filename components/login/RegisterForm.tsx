@@ -23,12 +23,21 @@ const registerSchema = yup.object().shape({
     .string()
     .email("Email must be a valid email address")
     .required("Email is required"),
-  username: yup.string().required("Username is required"),
-  displayName: yup.string().required("Display name is required"),
+  username: yup
+    .string()
+    .required("Username is required")
+    .min(3, "Username must be at least 3 characters")
+    .max(30, "Username must be at most 30 characters"),
+  displayName: yup
+    .string()
+    .required("Display name is required")
+    .min(3, "Display name must be at least 3 characters")
+    .max(30, "Display name must be at most 30 characters"),
   password: yup
     .string()
     .required("Password is required")
     .min(8, "Password must be at least 8 characters")
+    .max(50, "Password must be at most 50 characters")
     .test("passwordStrength", function (value) {
       const { path, createError } = this;
       const passwordStrength = zxcvbn(value ?? "");

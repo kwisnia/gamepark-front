@@ -23,12 +23,12 @@ import UserReview from "../review/UserReview";
 import GameMediaCarousel from "./GameMediaCarousel";
 import GameSidebar from "./GameSidebar";
 
-interface Props {
+interface GameInfoProps {
   game: GameDetails;
   changeTab: (index: number) => void;
 }
 
-const GameInfo = ({ game, changeTab }: Props) => {
+const GameInfo = ({ game, changeTab }: GameInfoProps) => {
   const { review, mutate } = useUserGameInfo(game.slug);
   const {
     reviews,

@@ -27,7 +27,7 @@ const loginSchema = yup.object().shape({
     .string()
     .email("Email must be a valid email address")
     .required("Email is required"),
-  password: yup.string().required("Password is required"),
+  password: yup.string().required("Password is required").max(50),
 });
 
 const LoginForm = ({ mutate, onRequestClose }: Props) => {

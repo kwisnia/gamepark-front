@@ -8,17 +8,16 @@ import {
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import Image from "next/image";
-import { useEffect } from "react";
 import { GameDetails, IGDBImageSize } from "../../types/game";
 import { getCoverUrl } from "../../utils/ImageUtils";
 
-interface Props {
+interface GameHeaderProps {
   game: GameDetails;
 }
 
 const EMPTY_DATE_VALUE = "1970-01-01T01:00:00+01:00";
 
-const GameHeader = ({ game }: Props) => {
+const GameHeader = ({ game }: GameHeaderProps) => {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   return (

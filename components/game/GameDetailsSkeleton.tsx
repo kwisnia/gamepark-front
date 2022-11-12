@@ -1,4 +1,4 @@
-import { Container, Flex, Skeleton, Spacer, Stack } from "@chakra-ui/react";
+import { Container, Flex, Skeleton, Stack } from "@chakra-ui/react";
 
 const GameDetailsSkeleton = () => {
   return (

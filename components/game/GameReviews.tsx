@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -6,12 +6,12 @@ import useReviews from "../../hooks/useReviews";
 import { GameDetails } from "../../types/game";
 import UserReview from "../review/UserReview";
 
-interface Props {
+interface GameReviewsProps {
   game: GameDetails;
 }
 
-const GameReviews = ({ game }: Props) => {
-  const { reviews, mutate, fetchNextPage, filters, setFilters } = useReviews(
+const GameReviews = ({ game }: GameReviewsProps) => {
+  const { reviews, mutate, fetchNextPage, setFilters } = useReviews(
     game.slug
   );
   const { ref, inView } = useInView();

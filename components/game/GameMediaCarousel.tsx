@@ -8,11 +8,11 @@ import { getCoverUrl } from "../../utils/ImageUtils";
 import { Center } from "@chakra-ui/react";
 import { A11y, Autoplay, Lazy, Navigation, Pagination } from "swiper";
 
-interface Props {
+interface GameMediaCarouselProps {
   game: GameDetails;
 }
 
-const GameMediaCarousel = ({ game }: Props) => {
+const GameMediaCarousel = ({ game }: GameMediaCarouselProps) => {
   return (
     <Center width="100%" paddingX={10} paddingY={5} userSelect="none">
       <Swiper

@@ -19,7 +19,7 @@ import { removeReview } from "../../api/ReviewApi";
 import { useLoginModal } from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
-import { GameDetails } from "../../types/game";
+import type { GameDetails } from "../../types/game";
 import RemoveConfirmDialog from "../common/RemoveConfirmDialog";
 import ReviewModal from "../review/ReviewModal";
 import Rating from "../review/StarRating";
@@ -115,7 +115,6 @@ const GameSidebar = ({ game }: Props) => {
           ? game.platforms?.map((platform) => platform.name).join(", ")
           : "N/A"}
       </Text>
-      {/* TODO: Add release dates and age ratings and genres */}
       {loggedOut ? (
         <Text color="gray.300" marginTop={5}>
           <Button variant="link" onClick={openLoginModal}>
