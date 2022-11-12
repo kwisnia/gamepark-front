@@ -1,7 +1,11 @@
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import Image from "next/image";
 
-const EmptyState = () => {
+interface EmptyStateProps {
+  message: string;
+}
+
+const EmptyState = ({ message }: EmptyStateProps) => {
   return (
     <Stack alignItems="center">
       <Flex>
@@ -16,7 +20,7 @@ const EmptyState = () => {
         ))}
       </Flex>
       <Text fontWeight="bold" fontSize="xl">
-        There&apos;s nothing here 😥
+        {message}
       </Text>
     </Stack>
   );

@@ -53,7 +53,7 @@ const UserDiscussionsPage: NextPage = () => {
               />
             ))
           ) : (
-            <EmptyState />
+            <EmptyState message="This user has created no discussions 😥" />
           )}
         </Stack>
         <Box h={1} ref={ref} />

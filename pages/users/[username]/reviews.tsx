@@ -70,7 +70,7 @@ const UserReviewPage: NextPage = () => {
             </Flex>
           </SimpleGrid>
         ) : (
-          <EmptyState />
+          <EmptyState message="This user hasn't reviewed any game 😥" />
         )}
         <Box ref={ref} height={1} />
       </UserPageLayout>

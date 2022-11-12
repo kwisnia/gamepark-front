@@ -4,12 +4,12 @@ import {
   FormHelperText,
   FormLabel,
   Select,
-  SelectProps,
 } from "@chakra-ui/react";
+import type { SelectProps } from "@chakra-ui/react";
 import { useField } from "formik";
-import { SelectOption } from "../../types/common";
+import type { SelectOption } from "../../types/common";
 
-interface Props {
+interface FormSelectProps {
   name: string;
   type: "number" | "string";
   label: string;
@@ -24,7 +24,7 @@ const FormSelect = ({
   description,
   options,
   ...rest
-}: Props & SelectProps) => {
+}: FormSelectProps & SelectProps) => {
   const [field, meta, helpers] = useField({
     name,
     type,

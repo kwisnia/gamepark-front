@@ -42,7 +42,7 @@ const UserFollowersPage: NextPage = () => {
             ))}
           </SimpleGrid>
         ) : (
-          <EmptyState />
+          <EmptyState message="This user has no followers" />
         )}
       </UserPageLayout>
     </>

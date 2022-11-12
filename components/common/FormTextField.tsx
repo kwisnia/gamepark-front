@@ -4,12 +4,11 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  InputProps,
 } from "@chakra-ui/react";
-import * as React from "react";
+import type { InputProps } from "@chakra-ui/react";
 import { useField } from "formik";
 
-interface Props {
+interface FormTextFieldProps {
   name: string;
   label: string;
   description?: string;
@@ -20,7 +19,7 @@ const FormTextField = ({
   name,
   description,
   ...rest
-}: Props & InputProps) => {
+}: FormTextFieldProps & InputProps) => {
   const [field, meta] = useField(name);
   return (
     <FormControl isInvalid={Boolean(meta.error && meta.touched)}>

@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Progress, VStack } from "@chakra-ui/react";
+import { Box, Progress } from "@chakra-ui/react";
 import { useNavigationProgress } from "../../contexts/NavigationProgressContext";
 
 const NavigationProgressBar = () => {

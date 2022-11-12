@@ -3,17 +3,16 @@ import {
   FormErrorMessage,
   FormLabel,
   Textarea,
-  TextareaProps,
 } from "@chakra-ui/react";
-import * as React from "react";
+import type { TextareaProps } from "@chakra-ui/react";
 import { useField } from "formik";
 
-interface Props {
+interface FormTextAreaProps {
   name: string;
   label: string;
 }
 
-const FormTextArea = ({ label, name, ...rest }: Props & TextareaProps) => {
+const FormTextArea = ({ label, name, ...rest }: FormTextAreaProps & TextareaProps) => {
   const [field, meta] = useField(name);
 
   return (
