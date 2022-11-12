@@ -14,7 +14,7 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { useDebouncedCallback } from "use-debounce";
 import useUsers from "../../hooks/useUsers";
-import { BasicUserDetails } from "../../types/user";
+import type { BasicUserDetails } from "../../types/user";
 
 interface UserAutocompleteProps {
   onSelect: (user: BasicUserDetails) => void;

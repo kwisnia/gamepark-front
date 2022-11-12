@@ -6546,6 +6546,11 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.12.tgz#69077835abe2710b65f03969898b6637b505a779"
   integrity sha512-rr+VVSXtRhO4OHbXUiAF7xW3Bo9DuuF6C5jH+q/x15j2jniycgKbxU09Hr0WqlSLUs4i4ltHGXqTe7VHclYWyA==
 
+spin-delay@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/spin-delay/-/spin-delay-1.2.0.tgz#b17ca116c86c7c42afd9df09de6cd64ca82844e0"
+  integrity sha512-PkZl5FHWOMrwQgoWejG1hBkIlVx4KbdL/37RPr5/pGq5+NWcGx7NNDukFct2yr8yRZuvwEompNR/in9nWj4sTw==
+
 ssr-window@^4.0.0, ssr-window@^4.0.2:
   version "4.0.2"
   resolved "https://registry.npmjs.org/ssr-window/-/ssr-window-4.0.2.tgz"

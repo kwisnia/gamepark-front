@@ -4,7 +4,6 @@ import {
   Button,
   Flex,
   Heading,
-  Input,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -15,19 +14,26 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSpinDelay } from "spin-delay";
 import useSWR from "swr";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
-import { BasicUserDetails } from "../../types/user";
+import type { BasicUserDetails } from "../../types/user";
 import ChatBox from "./ChatBox";
 import UserAutocomplete from "./UserAutocomplete";
 
 const ChatWindow = () => {
   const { user } = useLoggedInUser();
-  const { data: users, mutate } = useSWR<BasicUserDetails[]>("/chat/history");
+  const {
+    data: users,
+    mutate,
+    error,
+  } = useSWR<BasicUserDetails[]>("/chat/history");
   const [selectedUser, setSelectedUser] = useState<BasicUserDetails | null>(
     users?.[0] ?? null
   );
+  const showLoading = useSpinDelay(!error && !users);
+  console.log(showLoading);
 
   useEffect(() => {
     mutate();

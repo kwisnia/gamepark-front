@@ -38,6 +38,7 @@
     "react-icons": "^4.6.0",
     "react-intersection-observer": "^9.4.0",
     "sharp": "^0.31.1",
+    "spin-delay": "^1.2.0",
     "swiper": "^8.4.4",
     "swr": "^1.3.0",
     "tiny-invariant": "^1.3.1",
