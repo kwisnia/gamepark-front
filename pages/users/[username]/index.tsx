@@ -1,20 +1,8 @@
-import {
-  Box,
-  Container,
-  Flex,
-  Heading,
-  HStack,
-  Skeleton,
-  Text,
-} from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import UserPageLayout from "../../../components/user/UserPageLayout";
-import UserProfileHeader from "../../../components/user/UserProfileHeader";
 import useUserDetails from "../../../hooks/useUserDetails";
-import { BasicUserDetails } from "../../../types/user";
 
 const UserPage = () => {
   const router = useRouter();

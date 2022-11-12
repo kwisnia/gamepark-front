@@ -1,5 +1,6 @@
 import { Box, Container, Heading, Stack, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import DiscussionActivity from "../components/dashboard/DiscussionActivity";
@@ -21,6 +22,9 @@ const DashboardPage: NextPage = () => {
 
   return (
     <Container maxW="container.xl">
+      <Head>
+        <title>Dashboard - GamePark</title>
+      </Head>
       <Stack>
         <Heading size="3xl">Hello, {user?.displayName}</Heading>
         <Heading>Latest updates from people you follow</Heading>

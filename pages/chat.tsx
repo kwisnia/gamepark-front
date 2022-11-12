@@ -1,8 +1,6 @@
-import { Box, Container } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { BsArrowReturnLeft } from "react-icons/bs";
 import ChatWindow from "../components/chat/ChatWindow";
-import { useWebSocket } from "../contexts/WebSocketContext";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 
 const ChatPage = () => {

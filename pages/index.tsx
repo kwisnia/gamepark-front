@@ -6,19 +6,17 @@ import {
   Container,
   Flex,
   Heading,
-  SimpleGrid,
   SlideFade,
   Stack,
-  StackDivider,
   Text,
 } from "@chakra-ui/react";
-import { motion, MotionConfig } from "framer-motion";
+import { motion } from "framer-motion";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import AppFeatures from "../components/landing/Features";
-import { useLoginModal } from "../contexts/LoginModalContext";
+import { LoginModalTypes, useLoginModal } from "../contexts/LoginModalContext";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 import styles from "../styles/Home.module.css";
 
@@ -109,7 +107,7 @@ const Home: NextPage = () => {
               size="lg"
               mt={8}
               onClick={() => {
-                setFormType("Register");
+                setFormType(LoginModalTypes.Register);
                 openModal();
               }}
             >

@@ -1,7 +1,6 @@
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";

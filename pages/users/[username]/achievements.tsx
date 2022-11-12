@@ -5,7 +5,7 @@ import UserPageLayout from "../../../components/user/UserPageLayout";
 import useUserDetails from "../../../hooks/useUserDetails";
 import useSWRImmutable from "swr/immutable";
 import { Flex } from "@chakra-ui/react";
-import { Achievement } from "../../../types/achievements";
+import type { Achievement } from "../../../types/achievements";
 import AchievementBadge from "../../../components/user/AchievementBadge";
 
 const UserAchievementsPage: NextPage = () => {

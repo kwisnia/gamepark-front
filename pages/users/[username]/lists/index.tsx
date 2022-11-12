@@ -1,6 +1,5 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Button,
   Flex,
   Heading,
@@ -12,7 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import ListCreateModal from "../../../../components/user/ListCreateModal";
 import useLoggedInUser from "../../../../hooks/useLoggedInUser";
@@ -31,11 +30,7 @@ const UserListPage = () => {
     mutate: listsMutate,
     error,
   } = useSWR<GameList[]>(username ? `/${username}/lists` : null);
-  const {
-    user,
-    loading,
-    mutate: userMutate,
-  } = useUserDetails(username as string);
+  const { user, loading, mutate } = useUserDetails(username as string);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const { user: loggedInUser } = useLoggedInUser();
   const toast = useToast();
