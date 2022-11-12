@@ -3,7 +3,7 @@ import { Select } from "chakra-react-select";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import useReviews from "../../hooks/useReviews";
-import { GameDetails } from "../../types/game";
+import type { GameDetails } from "../../types/game";
 import UserReview from "../review/UserReview";
 
 interface GameReviewsProps {

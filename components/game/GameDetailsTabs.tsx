@@ -8,7 +8,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { GameDetails } from "../../types/game";
+import type { GameDetails } from "../../types/game";
 import GameDiscussions from "./GameDiscussions";
 import GameInfo from "./GameInfo";
 import GameReviews from "./GameReviews";

@@ -8,7 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import Image from "next/image";
-import { GameDetails, IGDBImageSize } from "../../types/game";
+import { IGDBImageSize } from "../../types/game";
+import type { GameDetails } from "../../types/game";
 import { getCoverUrl } from "../../utils/ImageUtils";
 
 interface GameHeaderProps {

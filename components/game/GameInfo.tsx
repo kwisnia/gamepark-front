@@ -6,10 +6,8 @@ import {
   AccordionPanel,
   Box,
   Button,
-  Container,
   Flex,
   Heading,
-  HStack,
   SimpleGrid,
   Stack,
   Text,
@@ -17,7 +15,7 @@ import {
 import { useEffect } from "react";
 import useReviews from "../../hooks/useReviews";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
-import { GameDetails } from "../../types/game";
+import type { GameDetails } from "../../types/game";
 import GameListElement from "../GameListElement";
 import UserReview from "../review/UserReview";
 import GameMediaCarousel from "./GameMediaCarousel";

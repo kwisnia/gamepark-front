@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import useDiscussions from "../../hooks/useDiscussions";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
-import { GameDetails } from "../../types/game";
+import type { GameDetails } from "../../types/game";
 import CreateDiscussionForm from "../discussions/CreateDiscussionForm";
 import DiscussionItem from "../discussions/DiscussionItem";
 

@@ -8,7 +8,7 @@ import {
   ModalHeader,
   useToast,
 } from "@chakra-ui/react";
-import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik";
+import { Field, Form, Formik, FormikHelpers } from "formik";
 import FormCheckbox from "../common/FormCheckbox";
 import FormTextArea from "../common/FormTextArea";
 import FormTextField from "../common/FormTextField";
@@ -19,12 +19,10 @@ import FormSelect from "../common/FormSelect";
 import { SelectOption } from "../../types/common";
 import { GameCompletionStatus, ReviewForm } from "../../types/review";
 import { submitReview } from "../../api/ReviewApi";
-import { KeyedMutator, mutate } from "swr";
+import { KeyedMutator } from "swr";
 import { UserGameInfo } from "../../hooks/useUserGameInfo";
 import Rating from "./StarRating";
 import { StarIcon } from "@chakra-ui/icons";
-import { AiFillStar } from "react-icons/ai";
-import { BsStarFill } from "react-icons/bs";
 
 interface Props {
   open: boolean;
