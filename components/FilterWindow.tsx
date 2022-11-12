@@ -11,6 +11,7 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
+import { SortDirection } from "../types/game";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 import { BsFilter } from "react-icons/bs";
 
@@ -28,11 +29,6 @@ const sortOptions = [
   { value: "name", label: "Name" },
   { value: "first_release_date", label: "Release Date" },
 ];
-
-enum SortDirection {
-  Ascending = "asc",
-  Descending = "desc",
-}
 
 interface FilterSortWindowProps {
   filter: number[];

@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
-import { GameListElement } from "../types/game";
+import { GameListElement, SortDirection } from "../types/game";
 import useSWRInfinite from "swr/infinite";
 
 const useGames = (pageSize: number = 50) => {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<number[]>([]);
   const [sort, setSort] = useState("aggregated_rating");
-  const [order, setOrder] = useState<"asc" | "desc">("desc");
+  const [order, setOrder] = useState<SortDirection>(SortDirection.Descending);
 
   const getKey = useCallback(
     (pageIndex: number, previousPageData: GameListElement[] | undefined) => {

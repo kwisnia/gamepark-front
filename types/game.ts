@@ -137,3 +137,8 @@ export enum IGDBImageSize {
   HD = "720p",
   FullHD = "1080p",
 }
+
+export enum SortDirection {
+  Ascending = "asc",
+  Descending = "desc",
+}

@@ -23,7 +23,6 @@ const GamesList: NextPage = () => {
     fetchNextPage,
     filters,
     setFilters,
-    search,
     setSearch,
     sort,
     setSort,

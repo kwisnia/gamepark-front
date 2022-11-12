@@ -1,14 +1,13 @@
 import { Box } from "@chakra-ui/react";
-import { GetStaticPaths, GetStaticProps } from "next";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { getGame } from "../../../api/GamesApi";
 import GameHeader from "../../../components/game/GameHeader";
 import GameDetailsTab from "../../../components/game/GameDetailsTabs";
-import { GameDetails } from "../../../types/game";
+import type { GameDetails } from "../../../types/game";
 import Image from "next/image";
 import { getRandomImage } from "../../../utils/ImageUtils";
 import styles from "styles/GamePage.module.css";
-import useLoggedInUser from "../../../hooks/useLoggedInUser";
 import { useMemo } from "react";
 import Head from "next/head";
 import GameDetailsSkeleton from "../../../components/game/GameDetailsSkeleton";
@@ -58,6 +57,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         game,
       },
       notFound: !game,
+      revalidate: 60 * 60 * 24, // 24 hours
     };
   }
   return {

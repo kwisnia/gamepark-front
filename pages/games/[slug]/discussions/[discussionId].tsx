@@ -6,20 +6,19 @@ import DiscussionMainPost from "../../../../components/discussions/DiscussionMai
 import DiscussionReplyPost from "../../../../components/discussions/DiscussionReplyPost";
 import DiscussionReplyForm from "../../../../components/discussions/DiscussionReplyForm";
 import useDiscussionPosts from "../../../../hooks/useDiscussionPosts";
-import {
+import type {
   DiscussionPostForm,
   GameDiscussion,
 } from "../../../../types/discussion";
-import { FormikHelpers } from "formik";
+import type { FormikHelpers } from "formik";
 import { createDiscussionPost } from "../../../../api/DiscussionApi";
 import invariant from "tiny-invariant";
 import { useInView } from "react-intersection-observer";
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { getGameShortInfo } from "../../../../api/GamesApi";
 import { GameListElement } from "../../../../types/game";
 import Head from "next/head";
 import { useSpinDelay } from "spin-delay";
-import DiscussionReplyPostSkeleton from "../../../../components/discussions/DiscussionReplyPostSkeleton";
 import DiscussionMainPostSkeleton from "../../../../components/discussions/DiscussionMainPostSkeleton";
 import useLoggedInUser from "../../../../hooks/useLoggedInUser";
 
