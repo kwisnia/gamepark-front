@@ -1,5 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { InputGroup, InputLeftElement, Skeleton, Text } from "@chakra-ui/react";
+import { InputGroup, InputLeftElement, Text } from "@chakra-ui/react";
 import {
   AutoComplete,
   AutoCompleteInput,
@@ -8,7 +8,7 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import useGames from "../hooks/useGames";
 

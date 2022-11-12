@@ -9,10 +9,8 @@ import {
   PopoverContent,
   PopoverTrigger,
   Text,
-  useColorMode,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 import { BsFilter } from "react-icons/bs";
 
@@ -31,13 +29,18 @@ const sortOptions = [
   { value: "first_release_date", label: "Release Date" },
 ];
 
+enum SortDirection {
+  Ascending = "asc",
+  Descending = "desc",
+}
+
 interface FilterSortWindowProps {
   filter: number[];
   setFilter: (value: number[]) => void;
   sort: string;
   setSort: (value: string) => void;
-  order: "asc" | "desc";
-  setOrder: (value: "asc" | "desc") => void;
+  order: SortDirection;
+  setOrder: (value: SortDirection) => void;
 }
 
 const FilterSortWindow = ({
@@ -50,9 +53,9 @@ const FilterSortWindow = ({
 
   const changeSortOrder = () => {
     if (order === "asc") {
-      setOrder("desc");
+      setOrder(SortDirection.Descending);
     } else {
-      setOrder("asc");
+      setOrder(SortDirection.Ascending);
     }
   };
 

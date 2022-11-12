@@ -7,7 +7,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { login } from "../../api/UserApi";
-import { useLoginModal } from "../../contexts/LoginModalContext";
+import {
+  LoginModalTypes,
+  useLoginModal,
+} from "../../contexts/LoginModalContext";
 import * as yup from "yup";
 import { Form, Formik, FormikHelpers } from "formik";
 import FormTextField from "../common/FormTextField";
@@ -75,7 +78,7 @@ const LoginForm = ({ mutate, onRequestClose }: LoginFormProps) => {
                 <Button
                   variant="link"
                   onClick={() => {
-                    setFormType("Register");
+                    setFormType(LoginModalTypes.Register);
                   }}
                 >
                   Sign up!

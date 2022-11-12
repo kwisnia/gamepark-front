@@ -1,5 +1,5 @@
 import { chakra, Flex } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { LoginModalProvider } from "../contexts/LoginModalContext";
 import Header from "./Header";
 import Footer from "./Footer";

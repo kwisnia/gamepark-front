@@ -16,7 +16,10 @@ import {
 import { useEffect, useState } from "react";
 import { addToList } from "../../api/ListApi";
 import { removeReview } from "../../api/ReviewApi";
-import { useLoginModal } from "../../contexts/LoginModalContext";
+import {
+  LoginModalTypes,
+  useLoginModal,
+} from "../../contexts/LoginModalContext";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import type { GameDetails } from "../../types/game";
@@ -33,13 +36,13 @@ const GameSidebar = ({ game }: Props) => {
   const [isRemoveReviewDialogOpen, setIsRemoveReviewDialogOpen] =
     useState(false);
   const { loggedOut, user } = useLoggedInUser();
-  const { lists, review, mutate, loading } = useUserGameInfo(game.slug);
+  const { lists, review, mutate } = useUserGameInfo(game.slug);
   const { openModal, setFormType } = useLoginModal();
   const [rating, setRating] = useState(review?.rating ?? 0);
   const toast = useToast();
 
   const openLoginModal = () => {
-    setFormType("Login");
+    setFormType(LoginModalTypes.Login);
     openModal();
   };
 

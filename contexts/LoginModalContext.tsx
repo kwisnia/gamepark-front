@@ -4,10 +4,15 @@ import invariant from "tiny-invariant";
 import LoginModal from "../components/login/LoginModal";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 
+export enum LoginModalTypes {
+  Login = "Login",
+  Register = "Register",
+}
+
 interface LoginModalContextData {
   openModal: () => void;
   closeModal: () => void;
-  setFormType: (formType: "Login" | "Register") => void;
+  setFormType: (formType: LoginModalTypes) => void;
 }
 
 interface Props {
@@ -20,7 +25,9 @@ export const LoginModalContext = createContext<
 
 export const LoginModalProvider = ({ children }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [formType, setFormType] = useState<"Login" | "Register">("Login");
+  const [formType, setFormType] = useState<LoginModalTypes>(
+    LoginModalTypes.Login
+  );
   const { mutate } = useLoggedInUser();
 
   return (

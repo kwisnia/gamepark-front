@@ -9,8 +9,8 @@ import {
   useDisclosure,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useLoginModal } from "../contexts/LoginModalContext";
+import { LoginModalTypes } from "../contexts/LoginModalContext";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 import { AiFillHome } from "react-icons/ai";
 import { GiConsoleController } from "react-icons/gi";
@@ -20,7 +20,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import MobileHeaderMenu from "./header/MobileHeaderMenu";
 import GameAutocomplete from "./GameAutocomplete";
-import { ChatIcon } from "@chakra-ui/icons";
 import { BsChatRightFill } from "react-icons/bs";
 
 const Header = () => {
@@ -31,7 +30,7 @@ const Header = () => {
   const bg = useColorModeValue("white", "gray.800");
   const { slug } = router.query;
 
-  const openForm = (type: "Login" | "Register") => {
+  const openForm = (type: LoginModalTypes) => {
     setFormType(type);
     openModal();
   };
@@ -107,12 +106,15 @@ const Header = () => {
               </Center>
             ) : (
               <Flex gap={5}>
-                <Button variant="link" onClick={() => openForm("Login")}>
+                <Button
+                  variant="link"
+                  onClick={() => openForm(LoginModalTypes.Login)}
+                >
                   Sign in
                 </Button>
                 <Button
                   colorScheme={"green"}
-                  onClick={() => openForm("Register")}
+                  onClick={() => openForm(LoginModalTypes.Login)}
                   display={{
                     base: "none",
                     md: "flex",
