@@ -2,19 +2,22 @@ import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+import { useSpinDelay } from "spin-delay";
 import useReviews from "../../hooks/useReviews";
 import type { GameDetails } from "../../types/game";
 import UserReview from "../review/UserReview";
+import UserReviewSkeleton from "../review/UserReviewSkeleton";
 
 interface GameReviewsProps {
   game: GameDetails;
 }
 
 const GameReviews = ({ game }: GameReviewsProps) => {
-  const { reviews, mutate, fetchNextPage, setFilters } = useReviews(
+  const { reviews, mutate, fetchNextPage, setFilters, isLoading } = useReviews(
     game.slug
   );
   const { ref, inView } = useInView();
+  const shouldRenderSkeleton = useSpinDelay(isLoading);
 
   const reviewsFlat = useMemo(() => reviews?.flat() ?? [], [reviews]);
   const half = Math.ceil(reviewsFlat.length / 2);
@@ -60,16 +63,31 @@ const GameReviews = ({ game }: GameReviewsProps) => {
         justifyContent="center"
         gap={10}
       >
-        <Flex direction="column" gap={5}>
-          {reviewsFlat.slice(0, half).map((review) => (
-            <UserReview key={review.id} review={review} mutate={mutate} />
-          ))}
-        </Flex>
-        <Flex direction="column" gap={5}>
-          {reviewsFlat.slice(half).map((review) => (
-            <UserReview key={review.id} review={review} mutate={mutate} />
-          ))}
-        </Flex>
+        {shouldRenderSkeleton ? (
+          <>
+            <Flex direction="column" gap={5}>
+              <UserReviewSkeleton />
+              <UserReviewSkeleton />
+            </Flex>
+            <Flex direction="column" gap={5}>
+              <UserReviewSkeleton />
+              <UserReviewSkeleton />
+            </Flex>
+          </>
+        ) : (
+          <>
+            <Flex direction="column" gap={5}>
+              {reviewsFlat.slice(0, half).map((review) => (
+                <UserReview key={review.id} review={review} mutate={mutate} />
+              ))}
+            </Flex>
+            <Flex direction="column" gap={5}>
+              {reviewsFlat.slice(half).map((review) => (
+                <UserReview key={review.id} review={review} mutate={mutate} />
+              ))}
+            </Flex>
+          </>
+        )}
       </SimpleGrid>
       <Box ref={ref} height={1} />
     </Box>

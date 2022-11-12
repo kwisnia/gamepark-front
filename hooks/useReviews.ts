@@ -15,11 +15,12 @@ const useReviews = (gameSlug: string, pageSize: number = 20) => {
     [filters, gameSlug, pageSize]
   );
 
-  const { data, setSize, mutate } = useSWRInfinite<UserReview[]>(getKey);
+  const { data, setSize, mutate, error } = useSWRInfinite<UserReview[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
+  const isLoading = !data && !error;
 
   return {
     reviews: data,
@@ -27,6 +28,7 @@ const useReviews = (gameSlug: string, pageSize: number = 20) => {
     filters,
     setFilters,
     mutate,
+    isLoading,
   };
 };
 

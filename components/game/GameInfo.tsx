@@ -13,11 +13,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { useSpinDelay } from "spin-delay";
 import useReviews from "../../hooks/useReviews";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import type { GameDetails } from "../../types/game";
 import GameListElement from "../GameListElement";
 import UserReview from "../review/UserReview";
+import UserReviewSkeleton from "../review/UserReviewSkeleton";
 import GameMediaCarousel from "./GameMediaCarousel";
 import GameSidebar from "./GameSidebar";
 
@@ -32,7 +34,9 @@ const GameInfo = ({ game, changeTab }: GameInfoProps) => {
     reviews,
     setFilters,
     mutate: reviewsMutate,
+    isLoading,
   } = useReviews(game.slug, 3);
+  const shouldRenderSkeleton = useSpinDelay(isLoading);
 
   useEffect(() => {
     setFilters(game.platforms?.map((p) => p.id) ?? []);
@@ -75,7 +79,7 @@ const GameInfo = ({ game, changeTab }: GameInfoProps) => {
           </Heading>
 
           {review ? <UserReview review={review} mutate={mutate} /> : null}
-          {reviews?.length ? (
+          {!shouldRenderSkeleton && reviews?.length ? (
             <>
               {reviews.map((reviewPage) =>
                 reviewPage
@@ -92,7 +96,11 @@ const GameInfo = ({ game, changeTab }: GameInfoProps) => {
               )}
               <Button onClick={() => changeTab(2)}>See all reviews</Button>
             </>
-          ) : null}
+          ) : (
+            [...Array(3)].map((_, i) => (
+              <UserReviewSkeleton key={`game-info-review-skeleton-${i}`} />
+            ))
+          )}
         </Stack>
         {game.similarGames ? (
           <Accordion allowToggle mt={5}>

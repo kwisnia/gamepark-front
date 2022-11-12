@@ -1,6 +1,5 @@
 import { StarIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
   Box,
   Button,
   Center,
@@ -8,8 +7,6 @@ import {
   Flex,
   Heading,
   Icon,
-  LinkBox,
-  LinkOverlay,
   Stack,
   Text,
   Tooltip,
@@ -18,12 +15,12 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { KeyedMutator } from "swr";
+import type { KeyedMutator } from "swr";
 import { markHelpful, unmarkHelpful } from "../../api/ReviewApi";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
-import { UserGameInfo } from "../../hooks/useUserGameInfo";
+import type { UserGameInfo } from "../../hooks/useUserGameInfo";
 import { IGDBImageSize } from "../../types/game";
-import { UserReview } from "../../types/review";
+import type { UserReview as UserReviewType } from "../../types/review";
 import { getCoverUrl } from "../../utils/ImageUtils";
 import { getReadableCompletionStatus } from "../../utils/ReviewUtils";
 import UserDisplay from "../user/UserDisplay";
@@ -32,9 +29,9 @@ import Image from "next/image";
 import { UserActivity } from "../../types/dashboard";
 
 interface UserReviewProps {
-  review: UserReview;
+  review: UserReviewType;
   mutate?:
-    | KeyedMutator<UserReview[][]>
+    | KeyedMutator<UserReviewType[][]>
     | KeyedMutator<UserGameInfo>
     | KeyedMutator<UserActivity[][]>;
   isUserPage?: boolean;

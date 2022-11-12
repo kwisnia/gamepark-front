@@ -1,11 +1,13 @@
 import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { useSpinDelay } from "spin-delay";
 import useDiscussions from "../../hooks/useDiscussions";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import type { GameDetails } from "../../types/game";
 import CreateDiscussionForm from "../discussions/CreateDiscussionForm";
 import DiscussionItem from "../discussions/DiscussionItem";
+import DiscussionItemSkeleton from "../discussions/DiscussionItemSkeleton";
 
 interface DiscussionsProps {
   game: GameDetails;
@@ -13,9 +15,12 @@ interface DiscussionsProps {
 
 const GameDiscussions = ({ game }: DiscussionsProps) => {
   const { loggedOut } = useLoggedInUser();
-  const { discussions, fetchNextPage, mutate } = useDiscussions(game.slug);
+  const { discussions, fetchNextPage, mutate, isLoading } = useDiscussions(
+    game.slug
+  );
   const [inCreationMode, setInCreationMode] = useState(false);
   const { ref, inView } = useInView();
+  const shouldRenderSkeleton = useSpinDelay(isLoading);
 
   const discussionsFlat = useMemo(() => {
     return discussions?.flat() ?? [];
@@ -45,13 +50,19 @@ const GameDiscussions = ({ game }: DiscussionsProps) => {
             </Flex>
           )}
           <Stack direction="column" spacing={2}>
-            {discussionsFlat.map((discussion) => (
-              <DiscussionItem
-                key={discussion.id}
-                discussion={discussion}
-                mutate={mutate}
-              />
-            ))}
+            {shouldRenderSkeleton
+              ? [...Array(3)].map((_, i) => (
+                  <DiscussionItemSkeleton
+                    key={`discussion-item-skeleton-${i}`}
+                  />
+                ))
+              : discussionsFlat.map((discussion) => (
+                  <DiscussionItem
+                    key={`discussion-item-${discussion.id}`}
+                    discussion={discussion}
+                    mutate={mutate}
+                  />
+                ))}
           </Stack>
           <Box h={1} ref={ref} />
         </Box>

@@ -16,17 +16,20 @@ const useDiscussions = (gameSlug: string, pageSize: number = 20) => {
     [gameSlug, pageSize]
   );
 
-  const { data, setSize, mutate } =
+  const { data, setSize, mutate, error } =
     useSWRInfinite<GameDiscussionListItem[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
 
+  const isLoading = !data && !error;
+
   return {
     discussions: data,
     fetchNextPage,
     mutate,
+    isLoading,
   };
 };
 
