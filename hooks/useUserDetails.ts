@@ -6,12 +6,13 @@ const useUserDetails = (user: string) => {
     user ? `/${user}/details` : null
   );
 
-  const loading = !data && !error;
+  const isLoading = !data && !error;
 
   return {
-    loading,
+    isLoading,
     user: data,
     mutate,
+    error,
   };
 };
 

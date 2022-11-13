@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import useUserDetails from "../../hooks/useUserDetails";
 import UserProfileHeader from "./UserProfileHeader";
+import UserProfileHeaderSkeleton from "./UserProfileHeaderSkeleton";
 
 interface UserLayoutPageProps {
   children: ReactNode;
@@ -14,7 +15,7 @@ const UserPageLayout = ({ children }: UserLayoutPageProps) => {
 
   const { username } = router.query;
 
-  const { user, mutate } = useUserDetails(username as string);
+  const { user, mutate, isLoading } = useUserDetails(username as string);
 
   const tabsData = [
     {
@@ -57,10 +58,10 @@ const UserPageLayout = ({ children }: UserLayoutPageProps) => {
   return (
     <>
       <Container maxW="container.xl">
-        {user ? (
+        {!isLoading && user ? (
           <UserProfileHeader user={user} mutate={mutate} />
         ) : (
-          <Skeleton />
+          <UserProfileHeaderSkeleton />
         )}
         <Box as="nav" aria-label="Component navigation" mt="8">
           <Stack
