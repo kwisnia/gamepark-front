@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Stack } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSpinDelay } from "spin-delay";
 import useDiscussions from "../../hooks/useDiscussions";
