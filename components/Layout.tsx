@@ -32,7 +32,12 @@ const Layout = ({ children }: LayoutProps) => {
     <LoginModalProvider>
       <Flex flexDirection="column" minHeight="100vh" width="full">
         <Header />
-        <chakra.main flex={1} className="bg-gray-900">
+        <chakra.main
+          flex={1}
+          position="relative"
+          display="flex"
+          className="bg-gray-900 main-container"
+        >
           {children}
         </chakra.main>
         <Footer />

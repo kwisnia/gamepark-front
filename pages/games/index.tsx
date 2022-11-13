@@ -46,8 +46,8 @@ const GamesList: NextPage = () => {
 
   return (
     <Box
-      margin="auto"
-      width={{
+      marginX="auto"
+      maxWidth={{
         base: "100%",
         md: "80%",
       }}
