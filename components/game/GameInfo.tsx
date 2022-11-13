@@ -17,6 +17,7 @@ import { useSpinDelay } from "spin-delay";
 import useReviews from "../../hooks/useReviews";
 import useUserGameInfo from "../../hooks/useUserGameInfo";
 import type { GameDetails } from "../../types/game";
+import EmptyState from "../common/EmptyState";
 import GameListElement from "../GameListElement";
 import UserReview from "../review/UserReview";
 import UserReviewSkeleton from "../review/UserReviewSkeleton";
@@ -32,15 +33,11 @@ const GameInfo = ({ game, changeTab }: GameInfoProps) => {
   const { review, mutate } = useUserGameInfo(game.slug);
   const {
     reviews,
-    setFilters,
     mutate: reviewsMutate,
-    isLoading,
+    isLoadingInitialData,
+    isEmpty,
   } = useReviews(game.slug, 3);
-  const shouldRenderSkeleton = useSpinDelay(isLoading);
-
-  useEffect(() => {
-    setFilters(game.platforms?.map((p) => p.id) ?? []);
-  }, [game, setFilters]);
+  const shouldRenderSkeleton = useSpinDelay(isLoadingInitialData);
 
   return (
     <Flex
@@ -79,27 +76,26 @@ const GameInfo = ({ game, changeTab }: GameInfoProps) => {
           </Heading>
 
           {review ? <UserReview review={review} mutate={mutate} /> : null}
-          {!shouldRenderSkeleton && reviews?.length ? (
+          {shouldRenderSkeleton
+            ? [...Array(3)].map((_, i) => (
+                <UserReviewSkeleton key={`game-info-review-skeleton-${i}`} />
+              ))
+            : null}
+          {isEmpty ? (
+            <EmptyState message="No one has reviewed this game yet 😥" />
+          ) : (
             <>
-              {reviews.map((reviewPage) =>
-                reviewPage
-                  .filter(
-                    (gameReview) => gameReview.creator !== review?.creator
-                  )
-                  .map((review) => (
-                    <UserReview
-                      key={review.id}
-                      review={review}
-                      mutate={reviewsMutate}
-                    />
-                  ))
-              )}
+              {reviews
+                .filter((gameReview) => gameReview.creator !== review?.creator)
+                .map((review) => (
+                  <UserReview
+                    key={review.id}
+                    review={review}
+                    mutate={reviewsMutate}
+                  />
+                ))}
               <Button onClick={() => changeTab(2)}>See all reviews</Button>
             </>
-          ) : (
-            [...Array(3)].map((_, i) => (
-              <UserReviewSkeleton key={`game-info-review-skeleton-${i}`} />
-            ))
           )}
         </Stack>
         {game.similarGames ? (

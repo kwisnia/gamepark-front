@@ -30,10 +30,6 @@ const GameDiscussions = ({ game }: DiscussionsProps) => {
   const shouldRenderSkeleton =
     useSpinDelay(isLoadingInitialData) || isLoadingMore;
 
-  const discussionsFlat = useMemo(() => {
-    return discussions?.flat() ?? [];
-  }, [discussions]);
-
   useEffect(() => {
     if (inView && !isReachingEnd) {
       fetchNextPage();
@@ -58,18 +54,17 @@ const GameDiscussions = ({ game }: DiscussionsProps) => {
             </Flex>
           )}
           <Stack direction="column" spacing={2}>
-            {!isLoadingInitialData
-              ? discussionsFlat.map((discussion) => (
-                  <DiscussionItem
-                    key={`discussion-item-${discussion.id}`}
-                    discussion={discussion}
-                    mutate={mutate}
-                  />
-                ))
-              : null}
             {isEmpty ? (
               <EmptyState message="No discussions about this game yet 😥" />
-            ) : null}
+            ) : (
+              discussions.map((discussion) => (
+                <DiscussionItem
+                  key={`discussion-item-${discussion.id}`}
+                  discussion={discussion}
+                  mutate={mutate}
+                />
+              ))
+            )}
             {shouldRenderSkeleton
               ? [...Array(3)].map((_, i) => (
                   <DiscussionItemSkeleton

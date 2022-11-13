@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { useSpinDelay } from "spin-delay";
 import useReviews from "../../hooks/useReviews";
 import type { GameDetails } from "../../types/game";
+import EmptyState from "../common/EmptyState";
 import UserReview from "../review/UserReview";
 import UserReviewSkeleton from "../review/UserReviewSkeleton";
 
@@ -13,14 +14,21 @@ interface GameReviewsProps {
 }
 
 const GameReviews = ({ game }: GameReviewsProps) => {
-  const { reviews, mutate, fetchNextPage, setFilters, isLoading } = useReviews(
-    game.slug
-  );
+  const {
+    reviews,
+    mutate,
+    fetchNextPage,
+    setFilters,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
+  } = useReviews(game.slug);
   const { ref, inView } = useInView();
-  const shouldRenderSkeleton = useSpinDelay(isLoading);
+  const shouldRenderSkeleton =
+    useSpinDelay(isLoadingInitialData) || isLoadingMore;
 
-  const reviewsFlat = useMemo(() => reviews?.flat() ?? [], [reviews]);
-  const half = Math.ceil(reviewsFlat.length / 2);
+  const half = Math.ceil(reviews.length / 2);
 
   const platforms = useMemo(
     () =>
@@ -32,10 +40,10 @@ const GameReviews = ({ game }: GameReviewsProps) => {
   );
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !isReachingEnd) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, fetchNextPage, isReachingEnd]);
 
   return (
     <Box>
@@ -63,32 +71,42 @@ const GameReviews = ({ game }: GameReviewsProps) => {
         justifyContent="center"
         gap={10}
       >
-        {shouldRenderSkeleton ? (
-          <>
-            <Flex direction="column" gap={5}>
-              <UserReviewSkeleton />
-              <UserReviewSkeleton />
-            </Flex>
-            <Flex direction="column" gap={5}>
-              <UserReviewSkeleton />
-              <UserReviewSkeleton />
-            </Flex>
-          </>
-        ) : (
-          <>
-            <Flex direction="column" gap={5}>
-              {reviewsFlat.slice(0, half).map((review) => (
-                <UserReview key={review.id} review={review} mutate={mutate} />
-              ))}
-            </Flex>
-            <Flex direction="column" gap={5}>
-              {reviewsFlat.slice(half).map((review) => (
-                <UserReview key={review.id} review={review} mutate={mutate} />
-              ))}
-            </Flex>
-          </>
-        )}
+        <>
+          <Flex direction="column" gap={5}>
+            {reviews.slice(0, half).map((review) => (
+              <UserReview
+                key={`review-${review.id}`}
+                review={review}
+                mutate={mutate}
+              />
+            ))}
+            {shouldRenderSkeleton ? (
+              <>
+                <UserReviewSkeleton />
+                <UserReviewSkeleton />
+              </>
+            ) : null}
+          </Flex>
+          <Flex direction="column" gap={5}>
+            {reviews.slice(half).map((review) => (
+              <UserReview
+                key={`review-${review.id}`}
+                review={review}
+                mutate={mutate}
+              />
+            ))}
+            {shouldRenderSkeleton ? (
+              <>
+                <UserReviewSkeleton />
+                <UserReviewSkeleton />
+              </>
+            ) : null}
+          </Flex>
+        </>
       </SimpleGrid>
+      {isEmpty ? (
+        <EmptyState message="No reviews were found matching the criteria 😥" />
+      ) : null}
       <Box ref={ref} height={1} />
     </Box>
   );

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { UserReview } from "../types/review";
 import useSWRInfinite from "swr/infinite";
 
@@ -15,20 +15,32 @@ const useReviews = (gameSlug: string, pageSize: number = 20) => {
     [filters, gameSlug, pageSize]
   );
 
-  const { data, setSize, mutate, error } = useSWRInfinite<UserReview[]>(getKey);
+  const { data, size, setSize, mutate, error } =
+    useSWRInfinite<UserReview[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
-  const isLoading = !data && !error;
+
+  const reviews = useMemo(() => data?.flat() ?? [], [data]);
+
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore =
+    size > 0 && data && typeof data[size - 1] === "undefined";
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
 
   return {
-    reviews: data,
+    reviews,
     fetchNextPage,
     filters,
     setFilters,
     mutate,
-    isLoading,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
   };
 };
 

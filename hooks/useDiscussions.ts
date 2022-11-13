@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { GameDiscussionListItem } from "../types/discussion";
 
@@ -30,8 +30,10 @@ const useDiscussions = (gameSlug: string, pageSize: number = 20) => {
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < pageSize);
 
+  const discussions = useMemo(() => data?.flat() ?? [], [data]);
+
   return {
-    discussions: data,
+    discussions,
     fetchNextPage,
     mutate,
     isLoadingInitialData,
