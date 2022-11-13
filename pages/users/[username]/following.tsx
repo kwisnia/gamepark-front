@@ -1,11 +1,14 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { useSpinDelay } from "spin-delay";
 import EmptyState from "../../../components/common/EmptyState";
 import UserPageLayout from "../../../components/user/UserPageLayout";
 import UserProfileOverview from "../../../components/user/UserProfileOverview";
+import UserProfileOverviewSkeleton from "../../../components/user/UserProfileOverviewSkeleton";
 import useUserDetails from "../../../hooks/useUserDetails";
 import useUserFollowing from "../../../hooks/useUserFollowing";
 
@@ -15,20 +18,36 @@ const UserFollowingPage: NextPage = () => {
   const { username } = router.query;
 
   const { user } = useUserDetails(username as string);
-  const { following } = useUserFollowing(username as string);
+  const { inView, ref } = useInView();
+  const {
+    following,
+    fetchNextPage,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
+  } = useUserFollowing(user?.username as string);
+
+  const shouldDisplaySkeleton =
+    useSpinDelay(isLoadingInitialData) || isLoadingMore;
 
   const title = user
     ? `${user?.displayName}'s followed profiles - GamePark`
     : "Loading...";
 
-  const followingFlat = useMemo(() => following?.flat() ?? [], [following]);
+  useEffect(() => {
+    if (inView && !isReachingEnd) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, isReachingEnd]);
+
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
       <UserPageLayout>
-        {followingFlat.length > 0 ? (
+        {!isLoadingInitialData ? (
           <SimpleGrid
             columns={{
               base: 1,
@@ -37,13 +56,29 @@ const UserFollowingPage: NextPage = () => {
             }}
             spacing={4}
           >
-            {followingFlat.map((user) => (
+            {following.map((user) => (
               <UserProfileOverview key={user.id} user={user} />
             ))}
           </SimpleGrid>
-        ) : (
-          <EmptyState message="This user doesn't follow anybody" />
-        )}
+        ) : null}
+        {shouldDisplaySkeleton ? (
+          <SimpleGrid
+            columns={{
+              base: 1,
+              md: 2,
+              lg: 3,
+            }}
+            spacing={4}
+          >
+            {[...Array(6)].map((_, index) => (
+              <UserProfileOverviewSkeleton key={`follow-skeleton-${index}`} />
+            ))}
+          </SimpleGrid>
+        ) : null}
+        {isEmpty && !isLoadingInitialData ? (
+          <EmptyState message="This user is not following anyone" />
+        ) : null}
+        <Box h={1} ref={ref} />
       </UserPageLayout>
     </>
   );

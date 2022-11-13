@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import useSWRInfinite from "swr/infinite";
 import { BasicUserDetails } from "../types/user";
 
-const useUserFollowers = (username: string, pageSize: number = 50) => {
+const useUserFollowers = (username?: string, pageSize: number = 50) => {
   const getKey = useCallback(
     (pageIndex: number, previousPageData: BasicUserDetails[] | undefined) => {
       if (!username) return null;
@@ -14,16 +14,29 @@ const useUserFollowers = (username: string, pageSize: number = 50) => {
     [username, pageSize]
   );
 
-  const { data, setSize, mutate } = useSWRInfinite<BasicUserDetails[]>(getKey);
+  const { data, size, setSize, mutate, error } =
+    useSWRInfinite<BasicUserDetails[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
+  const followers = data?.flat() ?? [];
+
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore =
+    size > 0 && data && typeof data[size - 1] === "undefined";
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
 
   return {
-    followers: data,
+    followers,
     fetchNextPage,
     mutate,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
   };
 };
 

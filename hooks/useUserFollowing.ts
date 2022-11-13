@@ -14,16 +14,29 @@ const useUserFollowing = (username: string, pageSize: number = 50) => {
     [username, pageSize]
   );
 
-  const { data, setSize, mutate } = useSWRInfinite<BasicUserDetails[]>(getKey);
+  const { data, size, setSize, mutate, error } =
+    useSWRInfinite<BasicUserDetails[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
+  const following = data?.flat() ?? [];
+
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore =
+    size > 0 && data && typeof data[size - 1] === "undefined";
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
 
   return {
-    following: data,
+    following,
     fetchNextPage,
     mutate,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
   };
 };
 
