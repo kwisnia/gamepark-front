@@ -17,7 +17,8 @@ const NotFoundPage: NextPage = () => {
         alt="404 mario"
         width={1920}
         height={900}
-        className="w-full"
+        className="w-full h-auto"
+        priority
       />
       <Center flex={8} flexDirection="column">
         <Heading
@@ -38,7 +39,8 @@ const NotFoundPage: NextPage = () => {
         alt="404 mario"
         width={1920}
         height={900}
-        className="w-full"
+        className="w-full h-auto"
+        priority
       />
     </Center>
   );
