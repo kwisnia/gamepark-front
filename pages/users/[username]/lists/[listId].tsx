@@ -2,12 +2,14 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
   IconButton,
   LinkBox,
   LinkOverlay,
   List,
   ListItem,
+  Skeleton,
   Text,
   useToast,
 } from "@chakra-ui/react";
@@ -26,6 +28,7 @@ import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import UserPageLayout from "../../../../components/user/UserPageLayout";
+import EmptyState from "../../../../components/common/EmptyState";
 
 const DetailedListPage = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -38,7 +41,9 @@ const DetailedListPage = () => {
   );
   const toast = useToast();
 
+  const isLoading = !data && !error;
   const isOwner = user?.id === loggedInUser?.id;
+  const isEmpty = data?.games.length === 0;
   const title =
     data && user
       ? `${data.name} by ${user.displayName} - GamePark`
@@ -61,16 +66,49 @@ const DetailedListPage = () => {
         <title>{title}</title>
       </Head>
       <UserPageLayout>
-        <Heading>{data?.name}</Heading>
-        <Text>{data?.description}</Text>
+        <Skeleton isLoaded={!isLoading} maxW="50%">
+          <Heading>{data?.name}</Heading>
+        </Skeleton>
+        <Skeleton isLoaded={!isLoading}>
+          <Text>{data?.description}</Text>
+        </Skeleton>
         {user?.username === loggedInUser?.username ? (
           <Button onClick={() => setEditModalOpen(true)}>Edit</Button>
         ) : null}
         <List>
+          {isLoading
+            ? [...Array(3)].map((_, i) => (
+                <ListItem
+                  key={i}
+                  bg="gray.700"
+                  rounded="md"
+                  padding={5}
+                  marginY={2}
+                  display="flex"
+                  alignItems="center"
+                  height="full"
+                  width="full"
+                  gap={5}
+                >
+                  <Skeleton height="142px" width="100px" flex={1} />
+                  <Flex
+                    height={8}
+                    width="50%"
+                    flex={10}
+                    justifyContent="center"
+                  >
+                    <Skeleton height="100%" width="50%" />
+                  </Flex>
+                </ListItem>
+              ))
+            : null}
+          {isEmpty && !isLoading ? (
+            <EmptyState message="This list is empty 😥" />
+          ) : null}
           {data?.games.map((game) => (
             <ListItem
               key={game.slug}
-              bg="gray.500"
+              bg="gray.700"
               rounded="md"
               padding={5}
               marginY={2}
@@ -98,7 +136,7 @@ const DetailedListPage = () => {
                   flex={8}
                   textAlign="center"
                 >
-                  <Link href={`/games/${game.slug}`} legacyBehavior>
+                  <Link href={`/games/${game.slug}`} legacyBehavior passHref>
                     <LinkOverlay>{game.name}</LinkOverlay>
                   </Link>
                 </Heading>
