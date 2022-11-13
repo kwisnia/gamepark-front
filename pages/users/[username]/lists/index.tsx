@@ -9,6 +9,7 @@ import {
   LinkOverlay,
   List,
   ListItem,
+  SimpleGrid,
   Skeleton,
   Text,
   useToast,
@@ -86,57 +87,61 @@ const UserListPage = () => {
           mode="create"
           mutate={listsMutate}
         />
-        <List>
+        <SimpleGrid
+          columns={{
+            base: 1,
+            md: 2,
+          }}
+          gap={3}
+        >
           {isLoadingLists
             ? [...Array(3)].map((_, i) => (
-                <ListItem key={`list-skeleton-${i}`}>
-                  <Box
-                    bg="gray.700"
-                    rounded="md"
-                    padding={5}
-                    marginY={2}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Skeleton height="20px" width={`${Math.random() * 50}%`} />
-                  </Box>
-                </ListItem>
+                <Box
+                  bg="gray.700"
+                  rounded="md"
+                  padding={5}
+                  marginY={2}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  key={`list-skeleton-${i}`}
+                >
+                  <Skeleton height="20px" width={`${Math.random() * 50}%`} />
+                </Box>
               ))
             : data?.map((gameList) => (
-                <ListItem key={gameList.id}>
-                  <LinkBox
-                    bg="gray.700"
-                    rounded="md"
-                    padding={5}
-                    marginY={2}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Heading key={gameList.id} size="md">
-                      <Link
-                        href={`/users/${username}/lists/${gameList.id}`}
-                        legacyBehavior
-                        passHref
-                      >
-                        <LinkOverlay>{gameList.name}</LinkOverlay>
-                      </Link>
-                    </Heading>
-                    {isOwner ? (
-                      <Flex>
-                        <IconButton
-                          aria-label="Delete list"
-                          icon={<DeleteIcon />}
-                          colorScheme="red"
-                          onClick={() => removeList(gameList.id)}
-                        />
-                      </Flex>
-                    ) : null}
-                  </LinkBox>
-                </ListItem>
+                <LinkBox
+                  key={gameList.id}
+                  bg="gray.700"
+                  rounded="md"
+                  padding={5}
+                  marginY={2}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Heading key={gameList.id} size="md">
+                    <Link
+                      href={`/users/${username}/lists/${gameList.id}`}
+                      legacyBehavior
+                      passHref
+                    >
+                      <LinkOverlay>{gameList.name}</LinkOverlay>
+                    </Link>
+                  </Heading>
+                  {isOwner ? (
+                    <Flex>
+                      <IconButton
+                        aria-label="Delete list"
+                        icon={<DeleteIcon />}
+                        colorScheme="red"
+                        onClick={() => removeList(gameList.id)}
+                      />
+                    </Flex>
+                  ) : null}
+                </LinkBox>
               ))}
-        </List>
+        </SimpleGrid>
       </UserPageLayout>
     </>
   );

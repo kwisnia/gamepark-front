@@ -11,6 +11,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { useSpinDelay } from "spin-delay";
 import { useDebouncedCallback } from "use-debounce";
 import FilterSortWindow from "../../components/FilterWindow";
 import GameListElement from "../../components/GameListElement";
@@ -28,14 +29,19 @@ const GamesList: NextPage = () => {
     setSort,
     order,
     setOrder,
+    isLoadingInitialData,
+    isLoadingMore,
+    isReachingEnd,
   } = useGames();
   const { ref, inView } = useInView();
+  const shouldRenderSkeletons =
+    useSpinDelay(isLoadingInitialData) || isLoadingMore;
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !isReachingEnd) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, fetchNextPage, isReachingEnd]);
 
   const handleSearchChange = useDebouncedCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,20 +98,21 @@ const GamesList: NextPage = () => {
         columnGap={8}
         justifyItems="center"
       >
-        {games ? (
-          <>
-            {games.map((games) =>
-              games.map((game) => (
-                <GameListElement key={game.slug} game={game} />
-              ))
-            )}
-            <div ref={ref} className="h-1" />
-          </>
-        ) : (
-          [0, 1, 2, 3, 4].map((number) => (
-            <GameListSkeleton key={`skeleton-${number}`} />
+        {games?.map((games, index) =>
+          games.map((game) => (
+            <GameListElement
+              key={game.slug}
+              game={game}
+              priority={index === 0}
+            />
           ))
         )}
+        {shouldRenderSkeletons
+          ? [...Array(10)].map((_, i) => (
+              <GameListSkeleton key={`games-skeleton-${i}`} />
+            ))
+          : null}
+        <Box h={1} ref={ref} />
       </SimpleGrid>
     </Box>
   );

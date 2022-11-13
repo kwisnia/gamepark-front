@@ -5,11 +5,12 @@ import { useState } from "react";
 import { GameListElement, IGDBImageSize } from "../types/game";
 import { getCoverUrl } from "../utils/ImageUtils";
 
-interface Props {
+interface GameListElementProps {
   game: GameListElement;
+  priority?: boolean;
 }
 
-const GameListElement = ({ game }: Props) => {
+const GameListElement = ({ game, priority }: GameListElementProps) => {
   const [hover, setHover] = useState(false);
   const { name, slug, cover } = game;
 
@@ -26,7 +27,7 @@ const GameListElement = ({ game }: Props) => {
           alt={name}
           className="object-cover rounded-lg"
           fill
-          priority
+          priority={priority}
           sizes="(max-width: 768px) 100vw, 264px"
         />
       ) : (

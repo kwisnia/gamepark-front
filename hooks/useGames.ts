@@ -18,13 +18,23 @@ const useGames = (pageSize: number = 50) => {
     [search, filters, sort, order, pageSize]
   );
 
-  const { data, setSize } = useSWRInfinite<GameListElement[]>(getKey, {
-    revalidateFirstPage: false,
-  });
+  const { data, size, setSize, error } = useSWRInfinite<GameListElement[]>(
+    getKey,
+    {
+      revalidateFirstPage: false,
+    }
+  );
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
+
+  const isLoadingInitialData = !data && !error;
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
+  const isLoadingMore =
+    size > 0 && data && typeof data[size - 1] === "undefined" && !isReachingEnd;
 
   return {
     games: data,
@@ -37,6 +47,10 @@ const useGames = (pageSize: number = 50) => {
     setSort,
     order,
     setOrder,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
   };
 };
 
