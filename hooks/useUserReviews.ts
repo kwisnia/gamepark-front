@@ -23,11 +23,11 @@ const useUserReviews = (username?: string, pageSize: number = 20) => {
   }, [setSize]);
 
   const isLoadingInitialData = !data && !error;
-  const isLoadingMore =
-    size > 0 && data && typeof data[size - 1] === "undefined";
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < pageSize);
+  const isLoadingMore =
+    size > 0 && data && typeof data[size - 1] === "undefined" && !isReachingEnd;
 
   return {
     reviews,
