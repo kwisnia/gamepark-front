@@ -16,20 +16,28 @@ const useDiscussions = (gameSlug: string, pageSize: number = 20) => {
     [gameSlug, pageSize]
   );
 
-  const { data, setSize, mutate, error } =
+  const { data, size, setSize, mutate, error } =
     useSWRInfinite<GameDiscussionListItem[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
 
-  const isLoading = !data && !error;
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore =
+    size > 0 && data && typeof data[size - 1] === "undefined";
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
 
   return {
     discussions: data,
     fetchNextPage,
     mutate,
-    isLoading,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
   };
 };
 

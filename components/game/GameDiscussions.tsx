@@ -5,6 +5,7 @@ import { useSpinDelay } from "spin-delay";
 import useDiscussions from "../../hooks/useDiscussions";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import type { GameDetails } from "../../types/game";
+import EmptyState from "../common/EmptyState";
 import CreateDiscussionForm from "../discussions/CreateDiscussionForm";
 import DiscussionItem from "../discussions/DiscussionItem";
 import DiscussionItemSkeleton from "../discussions/DiscussionItemSkeleton";
@@ -15,22 +16,29 @@ interface DiscussionsProps {
 
 const GameDiscussions = ({ game }: DiscussionsProps) => {
   const { loggedOut } = useLoggedInUser();
-  const { discussions, fetchNextPage, mutate, isLoading } = useDiscussions(
-    game.slug
-  );
+  const {
+    discussions,
+    fetchNextPage,
+    mutate,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
+  } = useDiscussions(game.slug);
   const [inCreationMode, setInCreationMode] = useState(false);
   const { ref, inView } = useInView();
-  const shouldRenderSkeleton = useSpinDelay(isLoading);
+  const shouldRenderSkeleton =
+    useSpinDelay(isLoadingInitialData) || isLoadingMore;
 
   const discussionsFlat = useMemo(() => {
     return discussions?.flat() ?? [];
   }, [discussions]);
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !isReachingEnd) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, fetchNextPage, isReachingEnd]);
 
   return (
     <Box>
@@ -50,19 +58,25 @@ const GameDiscussions = ({ game }: DiscussionsProps) => {
             </Flex>
           )}
           <Stack direction="column" spacing={2}>
+            {!isLoadingInitialData
+              ? discussionsFlat.map((discussion) => (
+                  <DiscussionItem
+                    key={`discussion-item-${discussion.id}`}
+                    discussion={discussion}
+                    mutate={mutate}
+                  />
+                ))
+              : null}
+            {isEmpty ? (
+              <EmptyState message="No discussions about this game yet 😥" />
+            ) : null}
             {shouldRenderSkeleton
               ? [...Array(3)].map((_, i) => (
                   <DiscussionItemSkeleton
                     key={`discussion-item-skeleton-${i}`}
                   />
                 ))
-              : discussionsFlat.map((discussion) => (
-                  <DiscussionItem
-                    key={`discussion-item-${discussion.id}`}
-                    discussion={discussion}
-                    mutate={mutate}
-                  />
-                ))}
+              : null}
           </Stack>
           <Box h={1} ref={ref} />
         </Box>
