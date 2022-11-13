@@ -1,15 +1,10 @@
 import {
   Avatar,
-  Button,
   Flex,
   Heading,
   Stack,
   Text,
-  useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import useSWR, { KeyedMutator } from "swr";
-import { followUser, unfollowUser } from "../../api/UserApi";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
 import { BasicUserDetails } from "../../types/user";
 import FollowButton from "./FollowButton";

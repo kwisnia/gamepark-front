@@ -21,6 +21,7 @@ import Head from "next/head";
 import { useSpinDelay } from "spin-delay";
 import DiscussionMainPostSkeleton from "../../../../components/discussions/DiscussionMainPostSkeleton";
 import useLoggedInUser from "../../../../hooks/useLoggedInUser";
+import DiscussionReplyPostSkeleton from "../../../../components/discussions/DiscussionReplyPostSkeleton";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug } = query;
@@ -56,25 +57,32 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
   } = useSWRImmutable<GameDiscussion>(
     slug && discussionId ? `/games/${slug}/discussions/${discussionId}` : null
   );
-  const { posts, mutate, fetchNextPage } = useDiscussionPosts(
-    slug as string,
-    Number(discussionId)
-  );
+  const {
+    posts,
+    mutate,
+    fetchNextPage,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
+  } = useDiscussionPosts(slug as string, Number(discussionId));
   const toast = useToast();
   const { ref, inView } = useInView();
 
-  const isLoading = !discussion && !error;
+  const isLoadingDiscussion = !discussion && !error;
   const flatPosts = useMemo(() => {
     return posts?.flat() ?? [];
   }, [posts]);
 
-  const shouldRenderSkeleton = useSpinDelay(isLoading);
+  const shouldRenderDiscussionSkeleton = useSpinDelay(isLoadingDiscussion);
+  const shouldRenderRepliesSkeleton =
+    useSpinDelay(isLoadingInitialData) || isLoadingMore;
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !isReachingEnd) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, fetchNextPage, isReachingEnd]);
 
   const handleSubmit = async (
     values: DiscussionPostForm,
@@ -118,7 +126,7 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
       <Head>
         <title>{title}</title>
       </Head>
-      {discussion && !shouldRenderSkeleton ? (
+      {discussion && !shouldRenderDiscussionSkeleton ? (
         <>
           <DiscussionMainPost
             discussion={discussion}
@@ -137,6 +145,11 @@ const DiscussionPage = ({ gameInfo }: { gameInfo: GameListElement }) => {
                 withActions
               />
             ))}
+            {shouldRenderRepliesSkeleton
+              ? [...Array(3)].map((_, i) => (
+                  <DiscussionReplyPostSkeleton key={`reply-skeleton-${i}`} />
+                ))
+              : null}
           </Stack>
           <Box h={1} ref={ref} />
         </>

@@ -28,7 +28,7 @@ const UserDisplay = ({ user, size }: UserDisplayProps) => {
             <Avatar size={size} src={user.avatar ?? ""} />
             <Heading fontSize={size}>
               <LinkOverlay>
-                <Link href={`/users/${user.username}`} passHref>
+                <Link href={`/users/${user.username}`} legacyBehavior>
                   {user.displayName}
                 </Link>
               </LinkOverlay>

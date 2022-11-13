@@ -16,30 +16,28 @@ const DiscussionPostRepliesContainer = ({
   post,
   discussion,
 }: DiscussionPostRepliesContainerProps) => {
-  const { posts, mutate, fetchNextPage, isLoading } = usePostReplies(
-    discussion.game,
-    discussion.id,
-    post.id
-  );
+  const {
+    posts,
+    mutate,
+    fetchNextPage,
+    isLoadingInitialData,
+    isLoadingMore,
+    isReachingEnd,
+  } = usePostReplies(discussion.game, discussion.id, post.id);
   const { ref, inView } = useInView();
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !isReachingEnd) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, fetchNextPage, isReachingEnd]);
 
-  const shouldRenderSkeleton = useSpinDelay(isLoading);
+  const shouldRenderSkeleton =
+    useSpinDelay(isLoadingInitialData) || isLoadingMore;
 
-  const postsFlat = posts?.flat() ?? [];
-
-  const replyNodes = shouldRenderSkeleton
-    ? [0, 1, 2].map((i) => (
-        <DiscussionReplyPostSkeleton
-          key={`post-${post.id}-reply-skeleton-${i}`}
-        />
-      ))
-    : postsFlat.map((post) => (
+  return (
+    <Box pl={3} borderLeft="1px">
+      {posts.map((post) => (
         <DiscussionReplyPost
           key={post.id}
           post={post}
@@ -47,11 +45,14 @@ const DiscussionPostRepliesContainer = ({
           mutate={mutate}
           withActions
         />
-      ));
-
-  return (
-    <Box pl={3} borderLeft="1px">
-      {replyNodes}
+      ))}
+      {shouldRenderSkeleton
+        ? Array(3).map((_, i) => (
+            <DiscussionReplyPostSkeleton
+              key={`post-${post.id}-reply-skeleton-${i}`}
+            />
+          ))
+        : null}
       <Box ref={ref} height={1} />
     </Box>
   );

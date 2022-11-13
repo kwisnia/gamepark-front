@@ -104,7 +104,7 @@ const GameReviews = ({ game }: GameReviewsProps) => {
           </Flex>
         </>
       </SimpleGrid>
-      {isEmpty ? (
+      {isEmpty && !isLoadingInitialData ? (
         <EmptyState message="No reviews were found matching the criteria 😥" />
       ) : null}
       <Box ref={ref} height={1} />

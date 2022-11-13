@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { UserReview } from "../types/review";
 import useSWRInfinite from "swr/infinite";
 
@@ -17,6 +17,10 @@ const useReviews = (gameSlug: string, pageSize: number = 20) => {
 
   const { data, size, setSize, mutate, error } =
     useSWRInfinite<UserReview[]>(getKey);
+
+  useEffect(() => {
+    setSize(0);
+  }, [filters, setSize]);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
