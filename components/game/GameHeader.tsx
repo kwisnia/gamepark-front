@@ -42,6 +42,7 @@ const GameHeader = ({ game }: GameHeaderProps) => {
           width={264}
           height={374}
           className="rounded-lg select-none m-auto"
+          priority
         />
         <Flex
           flex={8}

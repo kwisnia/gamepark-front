@@ -38,6 +38,7 @@ const GamePage = ({ game }: Props) => {
           width={1920}
           height={1080}
           className={`w-full -translate-y-96 absolute z-0 opacity-30 ${styles["game-header-image"]} select-none`}
+          priority
         />
       ) : null}
       <GameHeader game={game} />

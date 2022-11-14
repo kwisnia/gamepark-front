@@ -17,6 +17,5 @@ const nextConfig = {
     return config;
   },
 };
-const { withPlaiceholder } = require("@plaiceholder/next");
 
-module.exports = withPlaiceholder(nextConfig);
+module.exports = nextConfig;

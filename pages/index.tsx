@@ -42,6 +42,7 @@ const Home: NextPage = () => {
         height={1080}
         alt="GamePark"
         className={`opacity-20 ${styles["game-header-image"]} absolute w-full`}
+        priority
       />
       <Container
         maxW="container.xl"
