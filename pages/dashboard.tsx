@@ -1,13 +1,4 @@
-import {
-  Box,
-  Container,
-  Flex,
-  Heading,
-  Skeleton,
-  SkeletonCircle,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Container, Heading, Stack, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -15,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSpinDelay } from "spin-delay";
+import ErrorState from "../components/common/ErrorState";
 import ActivitySkeleton from "../components/dashboard/ActivitySkeleton";
 import DiscussionActivity from "../components/dashboard/DiscussionActivity";
 import PostActivity from "../components/dashboard/PostActivity";
@@ -38,12 +30,11 @@ const DashboardPage: NextPage = () => {
     isLoadingMore,
     isEmpty,
     isReachingEnd,
+    error,
   } = useFollowedActivities(user?.username);
   const { ref, inView } = useInView();
   const shouldDisplaySkeleton =
     useSpinDelay(isLoadingInitialData) || isLoadingMore;
-
-  console.log(isLoadingInitialData, isLoadingMore, shouldDisplaySkeleton);
 
   useEffect(() => {
     if (inView && !isReachingEnd) {
@@ -97,6 +88,7 @@ const DashboardPage: NextPage = () => {
             />
           </Box>
         ) : null}
+        {error ? <ErrorState /> : null}
       </Stack>
     </Container>
   );

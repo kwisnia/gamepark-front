@@ -38,6 +38,7 @@ const useFollowedActivities = (username?: string, pageSize: number = 25) => {
     isLoadingMore,
     isEmpty,
     isReachingEnd,
+    error,
   };
 };
 
