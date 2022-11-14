@@ -21,15 +21,12 @@ interface LoginFormProps {
 }
 
 interface LoginForm {
-  email: string;
+  username: string;
   password: string;
 }
 
 const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Email must be a valid email address")
-    .required("Email is required"),
+  username: yup.string().required("Username is required"),
   password: yup.string().required("Password is required").max(50),
 });
 
@@ -42,7 +39,7 @@ const LoginForm = ({ mutate, onRequestClose }: LoginFormProps) => {
     { setSubmitting }: FormikHelpers<LoginForm>
   ) => {
     try {
-      await login(values.email, values.password);
+      await login(values.username, values.password);
       mutate();
       onRequestClose();
     } catch (error) {
@@ -50,7 +47,7 @@ const LoginForm = ({ mutate, onRequestClose }: LoginFormProps) => {
         toast({
           id: "login-error",
           title: "Login failed",
-          description: "Invalid email or password",
+          description: "Invalid username or password",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -64,14 +61,14 @@ const LoginForm = ({ mutate, onRequestClose }: LoginFormProps) => {
   return (
     <>
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ username: "", password: "" }}
         validationSchema={loginSchema}
         onSubmit={submitLogin}
       >
         {({ isSubmitting }) => (
           <Form>
             <ModalBody>
-              <FormTextField label="Email" name="email" />
+              <FormTextField label="Username" name="username" />
               <FormTextField type="password" label="Password" name="password" />
               <Center>
                 <Text paddingRight={1}>Don&apos;t have an account? </Text>

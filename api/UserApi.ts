@@ -2,8 +2,8 @@ import invariant from "tiny-invariant";
 import { axiosClient } from "../constants";
 import { UserDetails, UserProfileEditForm } from "../types/user";
 
-export const login = async (email: string, password: string) => {
-  const response = await axiosClient.post("/login", { email, password });
+export const login = async (username: string, password: string) => {
+  const response = await axiosClient.post("/login", { username, password });
   axiosClient.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${response.headers.authorization}`;
@@ -12,15 +12,13 @@ export const login = async (email: string, password: string) => {
 };
 
 export const register = async (
-  email: string,
-  password: string,
   username: string,
+  password: string,
   displayName: string
 ) => {
   const response = await axiosClient.post("/register", {
-    email,
-    password,
     username,
+    password,
     displayName,
   });
   invariant(response.headers.authorization, "No authorization header");

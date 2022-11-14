@@ -11,7 +11,6 @@ interface RegisterFormProps {
 }
 
 interface RegisterForm {
-  email: string;
   username: string;
   displayName: string;
   password: string;
@@ -19,10 +18,6 @@ interface RegisterForm {
 }
 
 const registerSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Email must be a valid email address")
-    .required("Email is required"),
   username: yup
     .string()
     .required("Username is required")
@@ -58,12 +53,7 @@ const RegisterForm = ({ mutate, onRequestClose }: RegisterFormProps) => {
     { setSubmitting }: FormikHelpers<RegisterForm>
   ) => {
     try {
-      await register(
-        values.email,
-        values.password,
-        values.username,
-        values.displayName
-      );
+      await register(values.username, values.password, values.displayName);
       mutate();
       onRequestClose();
     } catch (error) {
@@ -71,7 +61,7 @@ const RegisterForm = ({ mutate, onRequestClose }: RegisterFormProps) => {
         toast({
           id: "register-error",
           title: "Registration failed",
-          description: "Invalid email",
+          description: "Invalid username",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -86,7 +76,6 @@ const RegisterForm = ({ mutate, onRequestClose }: RegisterFormProps) => {
     <>
       <Formik
         initialValues={{
-          email: "",
           username: "",
           displayName: "",
           password: "",
@@ -108,7 +97,7 @@ const RegisterForm = ({ mutate, onRequestClose }: RegisterFormProps) => {
                 name="displayName"
                 description="Name that will be displayed to other users"
               />
-              <FormTextField label="Email" name="email" />
+              <FormTextField label="Username" name="username" />
               <FormTextField label="Password" name="password" type="password" />
               <FormTextField
                 label="Confirm password"

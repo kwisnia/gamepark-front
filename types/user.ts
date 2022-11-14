@@ -1,7 +1,6 @@
 import { GameList } from "./lists";
 
 export interface UserDetails {
-  email: string;
   username: string;
   id: number;
   avatar: string | null;
@@ -21,7 +20,7 @@ export interface UserDetails {
   userScore: number;
 }
 
-export type BasicUserDetails = Omit<UserDetails, "email" | "lists">;
+export type BasicUserDetails = Omit<UserDetails, "lists">;
 
 export interface UserProfileEditForm {
   displayName: string;
