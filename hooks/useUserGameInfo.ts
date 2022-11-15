@@ -21,7 +21,7 @@ const useUserGameInfo = (game: string) => {
     }
   }, [user, loggedOut, mutate]);
 
-  const isLoading = !data && !error;
+  const isLoading = data === undefined && !error;
 
   return {
     lists: data?.lists,

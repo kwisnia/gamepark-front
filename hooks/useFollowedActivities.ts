@@ -21,8 +21,6 @@ const useFollowedActivities = (username?: string, pageSize: number = 25) => {
 
   const activities = data?.flat() ?? [];
 
-  console.log(data, typeof data?.[size - 1], size);
-
   const isLoadingInitialData = !data && !error;
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =

@@ -35,7 +35,6 @@ export const NavigationProgressProvider = ({
   useEffect(() => {
     if (isOn) {
       let timeout: NodeJS.Timeout;
-
       if (value < 20) {
         step.current = 5;
       } else if (value < 40) {

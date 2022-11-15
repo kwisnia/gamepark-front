@@ -32,8 +32,6 @@ const ChatWindow = () => {
   const [selectedUser, setSelectedUser] = useState<BasicUserDetails | null>(
     users?.[0] ?? null
   );
-  const showLoading = useSpinDelay(!error && !users);
-  console.log(showLoading);
 
   useEffect(() => {
     mutate();

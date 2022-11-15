@@ -33,7 +33,6 @@ export const WebSocketProvider = ({ children }: Props) => {
 
   const socketMessageHandler = useCallback(
     (event: MessageEvent<string>) => {
-      console.log(event);
       const data: SocketMessage = JSON.parse(event.data);
       if (isChatMessage(data) && router.pathname !== "/chat") {
         toast({

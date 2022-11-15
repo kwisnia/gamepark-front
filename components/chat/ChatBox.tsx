@@ -58,7 +58,6 @@ const ChatBox = ({ user }: ChatBoxProps) => {
   const socketMessageHandler = useCallback(
     (event: MessageEvent) => {
       const data = JSON.parse(event.data);
-      console.log(data);
       if (
         data.messageType === "chatMessage" ||
         data.messageType === "successfulMessageSend"
@@ -97,13 +96,11 @@ const ChatBox = ({ user }: ChatBoxProps) => {
   }, [inView, fetchNextPage]);
 
   const onPaste = async (event: React.ClipboardEvent<HTMLInputElement>) => {
-    console.log("onPaste");
     const items = event.clipboardData?.items;
     if (items) {
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.indexOf("image") !== -1) {
           const blob = items[i].getAsFile();
-          console.log(blob);
           if (!blob) {
             continue;
           }

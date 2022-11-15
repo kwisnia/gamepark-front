@@ -15,7 +15,11 @@ const Layout = ({ children }: LayoutProps) => {
   const { start, done } = useNavigationProgress();
 
   useEffect(() => {
-    const handleStart = (url: string) => url !== router.asPath && start();
+    const handleStart = (url: string) => {
+      if (url !== router.asPath) {
+        start();
+      }
+    };
     const handleComplete = () => done();
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleComplete);
