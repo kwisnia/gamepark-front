@@ -71,7 +71,9 @@ export const WebSocketProvider = ({ children }: Props) => {
     console.log("New socket time");
     const authToken = localStorage.getItem("gaming-token");
     const newSocket = new WebSocket(
-      `ws://${API_URL}/ws?authorization=${encodeURIComponent(
+      `ws${
+        process.env.NODE_ENV === "production" ? "s" : ""
+      }://${API_URL}/ws?authorization=${encodeURIComponent(
         "Bearer " + authToken
       )}`
     );
