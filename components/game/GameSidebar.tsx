@@ -51,6 +51,8 @@ const GameSidebar = ({ game }: Props) => {
     setRating(review?.rating ?? 0);
   }, [review]);
 
+  console.log(lists);
+
   const listsWithoutGame = user?.lists?.filter(
     (list) =>
       !lists || lists.some((gameList) => gameList.id === list.id) === false
@@ -147,6 +149,11 @@ const GameSidebar = ({ game }: Props) => {
                   {list.name}
                 </MenuItem>
               ))}
+              {listsWithoutGame?.length === 0 ? (
+                <MenuItem disabled>
+                  You don&apos;t have any lists without this game
+                </MenuItem>
+              ) : null}
             </MenuList>
           </Menu>
           <Text color="gray.500" fontWeight="bold" marginTop={5}>

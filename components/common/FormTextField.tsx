@@ -24,8 +24,8 @@ const FormTextField = ({
   return (
     <FormControl isInvalid={Boolean(meta.error && meta.touched)}>
       <FormLabel htmlFor={name}>{label}</FormLabel>
-      <Input {...field} {...rest} id={name} placeholder={label} />
       <FormHelperText>{description}</FormHelperText>
+      <Input {...field} {...rest} id={name} placeholder={label} />
       <FormErrorMessage>{meta.error}</FormErrorMessage>
     </FormControl>
   );

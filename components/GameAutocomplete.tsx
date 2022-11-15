@@ -35,6 +35,7 @@ const GameAutocomplete = () => {
       onSelectOption={(option) => {
         router.push(`/games/${option.item.value}`);
       }}
+      className="z-10"
     >
       <InputGroup>
         <InputLeftElement pointerEvents="none">
@@ -47,7 +48,12 @@ const GameAutocomplete = () => {
       </InputGroup>
       <AutoCompleteList>
         {gamesFlat.map((game) => (
-          <AutoCompleteItem value={game.slug} label={game.name} key={game.slug}>
+          <AutoCompleteItem
+            value={game.slug}
+            label={game.name}
+            key={game.slug}
+            className="z-10"
+          >
             <Link href={`/games/${game.slug}`}>{game.name}</Link>
           </AutoCompleteItem>
         ))}

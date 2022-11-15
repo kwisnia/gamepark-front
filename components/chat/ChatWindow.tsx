@@ -38,10 +38,10 @@ const ChatWindow = () => {
   }, [user, mutate]);
 
   useEffect(() => {
-    if (users) {
+    if (users && selectedUser === null) {
       setSelectedUser(users[0]);
     }
-  }, [users]);
+  }, [users, selectedUser]);
 
   const userHistory = useMemo(
     () =>

@@ -10,7 +10,7 @@ const useUsers = (pageSize: number = 20) => {
       if (previousPageData && !previousPageData.length) return null;
       return `/users?page=${
         pageIndex + 1
-      }&pageSize=${pageSize}&search=${search}`;
+      }&pageSize=${pageSize}&search=${search.toLowerCase()}`;
     },
     [search, pageSize]
   );

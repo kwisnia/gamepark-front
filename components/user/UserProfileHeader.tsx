@@ -75,7 +75,9 @@ const UserProfileHeader = ({ user, mutate }: UserProfileHeaderProps) => {
               src={user.banner}
               priority
               alt="User header"
-              className="object-cover"
+              className={`object-cover ${
+                isPositionShiftEnabled ? "cursor-move" : ""
+              }`}
               fill
               style={{ objectPosition: `center ${state.value}%` }}
               onMouseDown={setIsDragging.on}
@@ -85,7 +87,7 @@ const UserProfileHeader = ({ user, mutate }: UserProfileHeaderProps) => {
               draggable={false}
             />
             {isOwner ? (
-              <Flex m={3}>
+              <Flex m={3} gap={1}>
                 {isPositionShiftEnabled ? (
                   <>
                     <Button

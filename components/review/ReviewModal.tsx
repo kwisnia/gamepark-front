@@ -37,7 +37,7 @@ interface RegisterModalProps {
 }
 
 const reviewSchema = yup.object().shape({
-  rating: yup.number().required().min(1).max(5),
+  rating: yup.number().required().min(0.5).max(5),
   title: yup.string().required("Title is required"),
   platform: yup.number().nullable(),
   body: yup.string().required("Body is required"),
@@ -83,6 +83,7 @@ const ReviewModal = ({
     values: ReviewForm,
     { setSubmitting }: FormikHelpers<ReviewForm>
   ) => {
+    console.log(values);
     try {
       await submitReview(values, game.slug);
       toast({

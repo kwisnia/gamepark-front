@@ -76,13 +76,13 @@ const FilterSortWindow = ({
               base: "none",
               md: "flex",
             }}
-            justifyContent="flex-end"
+            justifySelf="flex-end"
           >
             Filter options
           </Button>
         )}
       </PopoverTrigger>
-      <PopoverContent bg="gray.600" border="none" className="p-5 rounded-md">
+      <PopoverContent bg="gray.700" border="none" className="p-5 rounded-md">
         <Text>Game types</Text>
         <Select
           useBasicStyles

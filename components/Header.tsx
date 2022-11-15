@@ -47,7 +47,7 @@ const Header = () => {
       }}
       py={4}
       shadow="md"
-      zIndex={10}
+      zIndex={20}
     >
       <Flex alignItems="center" justifyContent="space-between" mx="auto">
         <HStack display="flex" spacing={3} alignItems="center" zIndex={10}>
