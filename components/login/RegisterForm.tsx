@@ -97,7 +97,6 @@ const RegisterForm = ({ mutate, onRequestClose }: RegisterFormProps) => {
                 name="displayName"
                 description="Name that will be displayed to other users"
               />
-              <FormTextField label="Username" name="username" />
               <FormTextField label="Password" name="password" type="password" />
               <FormTextField
                 label="Confirm password"

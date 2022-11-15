@@ -11,7 +11,7 @@ export interface UserGameInfo {
 
 const useUserGameInfo = (game: string) => {
   const { user, loggedOut } = useLoggedInUser();
-  const { data, mutate, isValidating } = useSWRImmutable<UserGameInfo>(
+  const { data, mutate, error } = useSWRImmutable<UserGameInfo>(
     `/games/${game}/user`
   );
 
@@ -21,11 +21,13 @@ const useUserGameInfo = (game: string) => {
     }
   }, [user, loggedOut, mutate]);
 
+  const isLoading = !data && !error;
+
   return {
     lists: data?.lists,
     review: data?.review,
     mutate,
-    loading: !data || isValidating,
+    isLoading,
   };
 };
 

@@ -9,6 +9,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Skeleton,
   Text,
   Tooltip,
   useToast,
@@ -36,7 +37,7 @@ const GameSidebar = ({ game }: Props) => {
   const [isRemoveReviewDialogOpen, setIsRemoveReviewDialogOpen] =
     useState(false);
   const { loggedOut, user } = useLoggedInUser();
-  const { lists, review, mutate } = useUserGameInfo(game.slug);
+  const { lists, review, mutate, isLoading } = useUserGameInfo(game.slug);
   const { openModal, setFormType } = useLoginModal();
   const [rating, setRating] = useState(review?.rating ?? 0);
   const toast = useToast();
@@ -152,14 +153,18 @@ const GameSidebar = ({ game }: Props) => {
             {review ? "Your rating" : "Rate this game"}
           </Text>
           <Flex alignItems="center">
-            <Rating
-              icons={5}
-              rating={rating}
-              onChange={openReviewModal}
-              readonly={Boolean(review)}
-              icon={<StarIcon />}
-              iconSize={32}
-            />
+            {isLoading ? (
+              <Skeleton height="20px" width="100px" />
+            ) : (
+              <Rating
+                icons={5}
+                rating={rating}
+                onChange={openReviewModal}
+                readonly={Boolean(review)}
+                icon={<StarIcon />}
+                iconSize={32}
+              />
+            )}
             {review ? (
               <>
                 <Tooltip label="Remove your rating">

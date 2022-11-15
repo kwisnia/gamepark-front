@@ -20,6 +20,7 @@ const GameListElement = ({ game, priority }: GameListElementProps) => {
       href={`/games/${slug}`}
       onMouseOver={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      prefetch={false}
     >
       {cover?.imageId ? (
         <Image

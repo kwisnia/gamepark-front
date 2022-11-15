@@ -114,7 +114,7 @@ const Header = () => {
                 </Button>
                 <Button
                   colorScheme={"green"}
-                  onClick={() => openForm(LoginModalTypes.Login)}
+                  onClick={() => openForm(LoginModalTypes.Register)}
                   display={{
                     base: "none",
                     md: "flex",

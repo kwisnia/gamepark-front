@@ -9,6 +9,7 @@ import {
 } from "react";
 import invariant from "tiny-invariant";
 import Notification from "../components/common/Notification";
+import { API_URL } from "../constants";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 import {
   isChatMessage,
@@ -71,7 +72,7 @@ export const WebSocketProvider = ({ children }: Props) => {
     console.log("New socket time");
     const authToken = localStorage.getItem("gaming-token");
     const newSocket = new WebSocket(
-      `ws://localhost:8080/ws?authorization=${encodeURIComponent(
+      `ws://${API_URL}/ws?authorization=${encodeURIComponent(
         "Bearer " + authToken
       )}`
     );
