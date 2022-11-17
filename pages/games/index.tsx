@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSpinDelay } from "spin-delay";
 import { useDebouncedCallback } from "use-debounce";
+import EmptyState from "../../components/common/EmptyState";
 import FilterSortWindow from "../../components/FilterWindow";
 import GameListElement from "../../components/GameListElement";
 import GameListSkeleton from "../../components/GameListElementSkeleton";
@@ -29,6 +30,7 @@ const GamesList: NextPage = () => {
     setSort,
     order,
     setOrder,
+    isEmpty,
     isLoadingInitialData,
     isLoadingMore,
     isReachingEnd,
@@ -86,6 +88,9 @@ const GamesList: NextPage = () => {
           setOrder={setOrder}
         />
       </Flex>
+      {isEmpty ? (
+        <EmptyState message="No games found matching your query" />
+      ) : null}
       <SimpleGrid
         columns={{
           base: 1,

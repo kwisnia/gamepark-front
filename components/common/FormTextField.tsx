@@ -22,9 +22,11 @@ const FormTextField = ({
 }: FormTextFieldProps & InputProps) => {
   const [field, meta] = useField(name);
   return (
-    <FormControl isInvalid={Boolean(meta.error && meta.touched)}>
+    <FormControl isInvalid={Boolean(meta.error && meta.touched)} my={2}>
       <FormLabel htmlFor={name}>{label}</FormLabel>
-      <FormHelperText>{description}</FormHelperText>
+      <FormHelperText mt={-1} mb={1}>
+        {description}
+      </FormHelperText>
       <Input {...field} {...rest} id={name} placeholder={label} />
       <FormErrorMessage>{meta.error}</FormErrorMessage>
     </FormControl>

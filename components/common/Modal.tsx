@@ -14,7 +14,12 @@ const Modal = ({
   size = "md",
 }: ModalProps) => {
   return (
-    <ChakraModal isOpen={isOpen} onClose={onRequestClose} size={size}>
+    <ChakraModal
+      isOpen={isOpen}
+      onClose={onRequestClose}
+      size={size}
+      closeOnOverlayClick={false}
+    >
       <ModalOverlay />
       {children}
     </ChakraModal>
