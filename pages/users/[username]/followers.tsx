@@ -9,6 +9,7 @@ import EmptyState from "../../../components/common/EmptyState";
 import UserPageLayout from "../../../components/user/UserPageLayout";
 import UserProfileOverview from "../../../components/user/UserProfileOverview";
 import UserProfileOverviewSkeleton from "../../../components/user/UserProfileOverviewSkeleton";
+import useLoggedInUser from "../../../hooks/useLoggedInUser";
 import useUserDetails from "../../../hooks/useUserDetails";
 import useUserFollowers from "../../../hooks/useUserFollowers";
 
@@ -17,6 +18,7 @@ const UserFollowersPage: NextPage = () => {
 
   const { username } = router.query;
 
+  const { user: loggedInUser } = useLoggedInUser();
   const { user } = useUserDetails(username as string);
   const {
     followers,
@@ -56,7 +58,11 @@ const UserFollowersPage: NextPage = () => {
             spacing={4}
           >
             {followers.map((user) => (
-              <UserProfileOverview key={user.id} user={user} />
+              <UserProfileOverview
+                key={user.id}
+                user={user}
+                isCurrentUser={loggedInUser?.id === user.id}
+              />
             ))}
           </SimpleGrid>
         ) : null}
