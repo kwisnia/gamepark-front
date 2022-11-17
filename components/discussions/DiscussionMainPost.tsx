@@ -1,10 +1,12 @@
-import { DeleteIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   Heading,
+  IconButton,
   Text,
+  Tooltip,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -83,6 +85,16 @@ const DiscussionMainPost = ({ discussion, game, mutate }: DiscussionProps) => {
 
   return (
     <Box>
+      <Tooltip label="Go back">
+        <IconButton
+          aria-label="Go back"
+          icon={<ArrowBackIcon />}
+          onClick={() => router.back()}
+          zIndex="1"
+          size="lg"
+          variant="ghost"
+        />
+      </Tooltip>
       <Flex gap={5} w="full" alignItems="center" my={5}>
         <DiscussionScore
           score={discussion.score}

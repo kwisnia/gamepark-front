@@ -57,6 +57,7 @@ const DiscussionReplyForm = ({
               )}
             </Field>
             <Button
+              my={2}
               type="submit"
               isLoading={isSubmitting}
               disabled={Boolean(errors.body)}

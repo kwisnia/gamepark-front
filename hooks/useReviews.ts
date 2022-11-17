@@ -19,7 +19,7 @@ const useReviews = (gameSlug: string, pageSize: number = 20) => {
     useSWRInfinite<UserReview[]>(getKey);
 
   useEffect(() => {
-    setSize(0);
+    setSize(1);
   }, [filters, setSize]);
 
   const fetchNextPage = useCallback(() => {
@@ -27,7 +27,7 @@ const useReviews = (gameSlug: string, pageSize: number = 20) => {
   }, [setSize]);
 
   const reviews = useMemo(() => data?.flat() ?? [], [data]);
-  
+
   const isLoadingInitialData = !data && !error;
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =

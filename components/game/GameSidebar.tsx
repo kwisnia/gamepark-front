@@ -51,8 +51,6 @@ const GameSidebar = ({ game }: Props) => {
     setRating(review?.rating ?? 0);
   }, [review]);
 
-  console.log(lists);
-
   const listsWithoutGame = user?.lists?.filter(
     (list) =>
       !lists || lists.some((gameList) => gameList.id === list.id) === false

@@ -24,7 +24,7 @@ interface ChatBoxProps {
 }
 
 const ChatBox = ({ user }: ChatBoxProps) => {
-  const socket = useWebSocket();
+  const { socket, soundEnabled } = useWebSocket();
   const { messages, mutate, fetchNextPage, isLoading } = useChatHistory(
     user.username
   );
@@ -72,14 +72,16 @@ const ChatBox = ({ user }: ChatBoxProps) => {
               />
             ),
           });
-          const audio = new Audio("/message-ding.mp3");
-          audio.volume = 0.5;
-          audio.play();
+          if (soundEnabled) {
+            const audio = new Audio("/message-ding.mp3");
+            audio.volume = 0.5;
+            audio.play();
+          }
         }
         mutate();
       }
     },
-    [mutate, toast, user.id]
+    [mutate, toast, user.id, soundEnabled]
   );
 
   useEffect(() => {

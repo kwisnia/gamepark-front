@@ -5,6 +5,7 @@ import {
   Flex,
   HStack,
   Icon,
+  IconButton,
   useColorModeValue,
   useDisclosure,
   VisuallyHidden,
@@ -12,7 +13,7 @@ import {
 import { useLoginModal } from "../contexts/LoginModalContext";
 import { LoginModalTypes } from "../contexts/LoginModalContext";
 import useLoggedInUser from "../hooks/useLoggedInUser";
-import { AiFillHome } from "react-icons/ai";
+import { AiFillHome, AiFillSound, AiOutlineSound } from "react-icons/ai";
 import { GiConsoleController } from "react-icons/gi";
 import GameparkLogo from "./assets/gamepark-logo.svg";
 import UserMenu from "./UserMenu";
@@ -20,11 +21,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import MobileHeaderMenu from "./header/MobileHeaderMenu";
 import GameAutocomplete from "./GameAutocomplete";
-import { BsChatRightFill } from "react-icons/bs";
+import { BsChatRightFill, BsPeopleFill } from "react-icons/bs";
+import { useWebSocket } from "../contexts/WebSocketContext";
 
 const Header = () => {
   const { user, loggedOut } = useLoggedInUser();
   const { setFormType, openModal } = useLoginModal();
+  const { soundEnabled, toggleSound } = useWebSocket();
   const mobileNav = useDisclosure();
   const router = useRouter();
   const bg = useColorModeValue("white", "gray.800");
@@ -90,6 +93,14 @@ const Header = () => {
                 Chat
               </Button>
             ) : null}
+            <Button
+              variant="ghost"
+              leftIcon={<Icon as={BsPeopleFill} />}
+              size="sm"
+              onClick={() => router.push("/users")}
+            >
+              Users
+            </Button>
           </HStack>
         </HStack>
         <HStack
@@ -97,8 +108,15 @@ const Header = () => {
           display={mobileNav.isOpen ? "none" : "flex"}
           alignItems="center"
         >
+          <IconButton
+            variant="ghost"
+            size="sm"
+            onClick={toggleSound}
+            title={soundEnabled ? "Disable sound" : "Enable sound"}
+            aria-label={soundEnabled ? "Disable sound" : "Enable sound"}
+            icon={<Icon as={soundEnabled ? AiFillSound : AiOutlineSound} />}
+          />
           <GameAutocomplete />
-
           <Center>
             {!loggedOut && user ? (
               <Center>

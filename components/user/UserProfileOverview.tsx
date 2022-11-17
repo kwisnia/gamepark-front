@@ -5,9 +5,13 @@ import FollowButton from "./FollowButton";
 
 interface UserProfileOverviewProps {
   user: BasicUserDetails;
+  isCurrentUser?: boolean;
 }
 
-const UserProfileOverview = ({ user }: UserProfileOverviewProps) => {
+const UserProfileOverview = ({
+  user,
+  isCurrentUser,
+}: UserProfileOverviewProps) => {
   return (
     <Stack rounded="md" bg="gray.700" p={4}>
       <Flex justifyContent="space-between" alignItems="center">
@@ -24,7 +28,7 @@ const UserProfileOverview = ({ user }: UserProfileOverviewProps) => {
             </Text>
           </Link>
         </Flex>
-        <FollowButton username={user.username} />
+        {isCurrentUser ? null : <FollowButton username={user.username} />}
       </Flex>
       <Flex gap={3}>
         <Text color="gray.400" fontWeight="semibold">

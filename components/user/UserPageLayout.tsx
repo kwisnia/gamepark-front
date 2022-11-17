@@ -17,6 +17,10 @@ const UserPageLayout = ({ children }: UserLayoutPageProps) => {
 
   const { user, mutate, isLoading } = useUserDetails(username as string);
 
+  if (!user && !isLoading) {
+    router.replace("/404");
+  }
+
   const tabsData = [
     {
       id: "user-info",

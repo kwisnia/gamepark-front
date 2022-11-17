@@ -135,7 +135,7 @@ const UserReview = ({ review, mutate, isUserPage }: UserReviewProps) => {
               width="100%"
               flexDirection="column"
               gap={3}
-              zIndex={10}
+              zIndex={5}
             >
               <Heading size="md" textColor="white">
                 This review contains spoilers

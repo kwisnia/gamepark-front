@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { BasicUserDetails } from "../types/user";
 
@@ -15,18 +15,32 @@ const useUsers = (pageSize: number = 20) => {
     [search, pageSize]
   );
 
-  const { data, setSize, mutate } = useSWRInfinite<BasicUserDetails[]>(getKey);
+  const { data, size, setSize, mutate, error } =
+    useSWRInfinite<BasicUserDetails[]>(getKey);
 
   const fetchNextPage = useCallback(() => {
     setSize((prev) => prev + 1);
   }, [setSize]);
 
+  const users = useMemo(() => data?.flat() ?? [], [data]);
+
+  const isLoadingInitialData = !data && !error;
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
+  const isLoadingMore =
+    size > 0 && data && typeof data[size - 1] === "undefined" && !isReachingEnd;
+
   return {
-    users: data,
+    users,
     fetchNextPage,
     search,
     setSearch,
     mutate,
+    isLoadingInitialData,
+    isLoadingMore,
+    isEmpty,
+    isReachingEnd,
   };
 };
 

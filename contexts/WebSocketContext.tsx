@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+import { useBoolean, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -21,7 +21,13 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const WebSocketContext = createContext<WebSocket | null | undefined>(
+interface SocketContext {
+  socket: WebSocket | null;
+  soundEnabled: boolean;
+  toggleSound: () => void;
+}
+
+export const WebSocketContext = createContext<SocketContext | undefined>(
   undefined
 );
 
@@ -30,6 +36,7 @@ export const WebSocketProvider = ({ children }: Props) => {
   const toast = useToast();
   const { user } = useLoggedInUser();
   const router = useRouter();
+  const [soundEnabled, setSoundEnabled] = useBoolean(true);
 
   const socketMessageHandler = useCallback(
     (event: MessageEvent<string>) => {
@@ -44,8 +51,11 @@ export const WebSocketProvider = ({ children }: Props) => {
             />
           ),
         });
-        const audio = new Audio("/message-ding.mp3");
-        audio.play();
+        if (soundEnabled) {
+          const audio = new Audio("/message-ding.mp3");
+          audio.volume = 0.2;
+          audio.play();
+        }
       } else if (isNewAchievement(data)) {
         toast({
           render: () => (
@@ -56,12 +66,14 @@ export const WebSocketProvider = ({ children }: Props) => {
             />
           ),
         });
-        const audio = new Audio("/new-achievement-ding.mp3");
-        audio.volume = 0.2;
-        audio.play();
+        if (soundEnabled) {
+          const audio = new Audio("/new-achievement-ding.mp3");
+          audio.volume = 0.2;
+          audio.play();
+        }
       }
     },
-    [router.pathname, toast]
+    [router.pathname, toast, soundEnabled]
   );
 
   useEffect(() => {
@@ -120,7 +132,13 @@ export const WebSocketProvider = ({ children }: Props) => {
   }, [socket]);
 
   return (
-    <WebSocketContext.Provider value={socket}>
+    <WebSocketContext.Provider
+      value={{
+        socket,
+        soundEnabled,
+        toggleSound: setSoundEnabled.toggle,
+      }}
+    >
       {children}
     </WebSocketContext.Provider>
   );

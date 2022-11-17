@@ -26,7 +26,10 @@ interface CreateDiscussionFormProps {
 }
 
 const reviewSchema = yup.object().shape({
-  title: yup.string().required("Title is required"),
+  title: yup
+    .string()
+    .required("Title is required")
+    .max(100, "Title is too long"),
   body: yup.string().required("Body is required"),
 });
 

@@ -29,8 +29,6 @@ const UserAutocomplete = ({ onSelect }: UserAutocompleteProps) => {
     500
   );
 
-  const usersFlat = users?.flat() ?? [];
-
   return (
     <AutoComplete
       emptyState={
@@ -52,7 +50,7 @@ const UserAutocomplete = ({ onSelect }: UserAutocompleteProps) => {
         />
       </InputGroup>
       <AutoCompleteList>
-        {usersFlat.map((user) => (
+        {users.map((user) => (
           <AutoCompleteItem value={user} label={user.displayName} key={user.id}>
             <Flex alignItems="center" gap={3}>
               <Avatar src={user.avatar ?? ""} />
