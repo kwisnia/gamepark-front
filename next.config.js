@@ -7,6 +7,7 @@ const nextConfig = {
       "media.istockphoto.com",
       "gamepark-images.s3.eu-central-1.amazonaws.com",
     ],
+    unoptimized: true,
   },
   webpack(config) {
     config.module.rules.push({
